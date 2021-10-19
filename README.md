@@ -1,6 +1,7 @@
 # 서울1반 A102팀 자율 프로젝트
 
 ## 📚 자료
+#### [🔖 Git Convention](https://jade-puffin-ae5.notion.site/Convention-d58fdb6a3b1b46e9b2582f8db560685b)
 
 #### [📄 Documents](https://jade-puffin-ae5.notion.site/198da8b96b0f4d79bdcf43180b955273)
 
