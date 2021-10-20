@@ -9,10 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleRight } from "@fortawesome/free-solid-svg-icons";
 import Web3 from "web3";
 // import getWeb3 from '../../utils/getWeb3'
-
-import { getFunction } from "../../utils/getFunction";
-import truffleContract from "truffle-contract";
-import BliCoin from "../../config/BliToken.json";
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -94,69 +90,46 @@ const Rent = () => {
   };
 
   const buyProduct = () => {
-    let minABI = [
-      // transfer
-      {
-        constant: false,
-        inputs: [
-          {
-            name: "_to",
-            type: "address",
-          },
-          {
-            name: "_value",
-            type: "uint256",
-          },
-        ],
-        name: "transfer",
-        outputs: [
-          {
-            name: "success",
-            type: "bool",
-          },
-        ],
-        payable: false,
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-    ];
-    let contractAddress = process.env.COINBASE;
-    let contract = new web3.eth.Contract(minABI, contractAddress);
-    let value = web3.utils.toWei(String(axiosPrice), "ether");
-    contract.methods
-      .transfer(historyState.ownerWallet, value)
-      .send({ from: accounts[0] })
-      .then((result) => {
-        setContractSuccess(true);
-      })
-      .catch((err) => {
-        alert("결제 실패");
-      });
+    console.log(1);
+    // let minABI = [
+    //   // transfer
+    //   {
+    //     constant: false,
+    //     inputs: [
+    //       {
+    //         name: "_to",
+    //         type: "address",
+    //       },
+    //       {
+    //         name: "_value",
+    //         type: "uint256",
+    //       },
+    //     ],
+    //     name: "transfer",
+    //     outputs: [
+    //       {
+    //         name: "success",
+    //         type: "bool",
+    //       },
+    //     ],
+    //     payable: false,
+    //     stateMutability: "nonpayable",
+    //     type: "function",
+    //   },
+    // ];
+    // let contractAddress = process.env.COINBASE;
+    // let contract = new web3.eth.Contract(minABI, contractAddress);
+    // let value = web3.utils.toWei(String(axiosPrice), "ether");
+    // contract.methods
+    //   .transfer(historyState.ownerWallet, value)
+    //   .send({ from: accounts[0] })
+    //   .then((result) => {
+    //     setContractSuccess(true);
+    //   })
+    //   .catch((err) => {
+    //     alert("결제 실패");
+    //   });
   };
-
-  useEffect(() => {
-    setWeb3(new Web3(Web3.givenProvider));
-    axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/contract/check/${historyState.itemId}`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
-      })
-      .then((response) => {
-        setDisabledDates(response.data.unavailableList);
-      })
-      .catch((error) => {
-        alert("메타마스크에 연결이 되지 않았습니다.");
-      });
-  }, []);
-
-  useEffect(() => {
-    if (web3 !== "") {
-      getFunction.connectMetamask().then((result) => {
-        setAccounts(result);
-      });
-    }
-  }, [web3]);
 
   useEffect(() => {
     if (contract !== "") {

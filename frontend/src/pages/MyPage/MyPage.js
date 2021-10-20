@@ -12,7 +12,6 @@ import "./MyPage.css";
 import axios from "axios";
 import { createWallet } from "../../api/user";
 import allActions from "../../redux/actions";
-import { getFunction } from "../../utils/getFunction";
 
 const MyPage = () => {
   const [wallet, setWallet] = useState(true);
@@ -25,60 +24,28 @@ const MyPage = () => {
 
   async function onCreateWallet() {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    getFunction.connectMetamask().then((result) => {
-      setCurrentUserWallet(result[0]);
-      axios
-        .post(
-          `${process.env.REACT_APP_SERVER_BASE_URL}/api/user/create/wallet`,
-          {
-            userWallet: result[0],
-          },
-          {
-            headers: {
-              Authentication: "Bearer " + token,
-            },
-          }
-        )
-        .then((response) => {
-          window.localStorage.setItem("token", JSON.stringify(response.headers.authentication.split(" ")[1].replaceAll('"', "")));
-        })
-        .catch(() => {
-          alert("메타마스크에 연결해 주세요.");
-        });
-    });
+    // getFunction.connectMetamask().then((result) => {
+    //   setCurrentUserWallet(result[0]);
+    //   axios
+    //     .post(
+    //       `${process.env.REACT_APP_SERVER_BASE_URL}/api/user/create/wallet`,
+    //       {
+    //         userWallet: result[0],
+    //       },
+    //       {
+    //         headers: {
+    //           Authentication: "Bearer " + token,
+    //         },
+    //       }
+    //     )
+    //     .then((response) => {
+    //       window.localStorage.setItem("token", JSON.stringify(response.headers.authentication.split(" ")[1].replaceAll('"', "")));
+    //     })
+    //     .catch(() => {
+    //       alert("메타마스크에 연결해 주세요.");
+    //     });
+    // });
   }
-
-  useEffect(() => {
-    if (currentUserWallet !== "") {
-      getFunction.getBliCoin().then((result) => {
-        setbliAmount(Math.floor(result));
-      });
-    }
-  }, [currentUserWallet]);
-
-  useEffect(() => {
-    const token = JSON.parse(window.localStorage.getItem("token"));
-    // console.log("Bearer " + token);
-    axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
-      })
-      .then((response) => {
-        console.log(response.data)
-        setUser(response.data);
-        if (response.data.existWallet === true) {
-          getFunction.connectMetamask().then((result) => {
-            setCurrentUserWallet(result[0]);
-          });
-        }
-        dispatch(allActions.userActions.loginUser(response.data));
-      })
-      .catch((error) => {
-        alert("다시 로그인하세요.")
-      });
-  }, []);
 
   const logout = () => {
     dispatch(allActions.userActions.logoutUser());

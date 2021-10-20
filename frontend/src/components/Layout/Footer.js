@@ -9,13 +9,13 @@ const Footer = () => {
       <div className="footer-team">
         <div className="footer-member">
           <p>
-            박혜빈 김민재 이진호 최동욱 정진주
+            이진호 권영린 김민재 윤영은 황성현
             <br /> 월 ~ 금 09 : 00 ~ 18 : 00
           </p>
         </div>
         <div className="footer-member-right">
           <div className="footer-team-icon">
-            <p className="footer-team-num">서울 4반 1팀</p>
+            <p className="footer-team-num">서울 1반 2팀</p>
           </div>
         </div>
       </div>
