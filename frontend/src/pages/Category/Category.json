@@ -1,0 +1,29 @@
+{
+  "category":[
+    {
+      "icon": "art",
+      "name": "식기",
+      "url" : "assets/icons/category/art.png"
+    },
+    {
+      "icon": "hair",
+      "name": "미용",
+      "url" : "../../assets/icons/category/art.png"
+    },  
+    {
+      "icon": "study",
+      "name": "서적",
+      "url" : "../../assets/icons/category/study.png"
+    },
+    {
+      "icon": "clothes",
+      "name": "의복",
+      "url" : "../../assets/icons/category/clothes.png"
+    },
+    {
+      "icon": "computer",
+      "name": "가전제품",
+      "url" : "../../assets/icons/category/computer.png"
+    }
+  ]
+}

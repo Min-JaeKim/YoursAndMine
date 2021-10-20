@@ -1,0 +1,41 @@
+.rent-user-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 30%;
+  margin-right: 30px;
+}
+.rent-user {
+  margin-bottom: 15%;
+  margin: 20px;
+}
+.rent-user-box {
+  display: flex;
+  align-items: center;
+}
+.rent-user-list {
+  position: relative;
+  height: 100px;
+  margin-bottom: 3%;
+}
+.rent-user-name {
+  font-size: x-large;
+  font-weight: bold;
+  margin-bottom: 10%;
+}
+.rent-user-vertical {
+  width: fit-content;
+  margin-bottom: auto;
+  padding-top: 2%;
+}
+.rent-user-period {
+  position: absolute;
+  bottom: 5%;
+}
+.rent-user-box > button {
+  width: 100%;
+  height: 34px;
+  margin: 2px;
+  border-radius: 8px;
+  border: 1px solid #c5d3cc;
+  background: #fff;
+}

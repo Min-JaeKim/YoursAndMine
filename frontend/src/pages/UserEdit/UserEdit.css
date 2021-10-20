@@ -1,0 +1,49 @@
+.user-edit {
+  min-height: auto;
+  position: static;
+  text-align: center;
+  margin-top: 10%;
+}
+.user-edit > img {
+  width: 100px;
+  height: 100px;
+  border-radius: 30%;
+}
+.user-edit-input {
+  width: 60%;
+  margin-right: 2%;
+  padding: 4%;
+  padding-left: 5%;
+  margin-top: 10%;
+  border-radius: 24px;
+  border: 1px solid #e2e2e2;
+}
+.user-edit-button {
+  height: 36px;
+  width: 17%;
+  border-radius: 24px;
+  background: #497c5f;
+  color: white;
+  border: none;
+  margin-top: 15%;
+}
+
+.profile-title {
+  font-size: 130%;
+}
+
+.profile-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-img {
+  margin-left: 20%;
+}
+
+.profile_preview {
+  width: 40%;
+  border-radius: 30%;
+}

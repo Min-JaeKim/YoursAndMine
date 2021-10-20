@@ -1,0 +1,86 @@
+.detail-product {
+  width: 100%;
+  height: 100%;
+}
+
+.detail-profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.detail-user-icon {
+  width: 15%;
+  border-radius: 30%;
+}
+
+.detail-user-info {
+  margin-right: 30%;
+}
+
+.detail-user-name {
+  font-weight: bold;
+  font-size: 120%;
+  margin-bottom: 8%;
+}
+
+.detail-user-address {
+  margin-top: 0;
+}
+
+.detail-like {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.detail-like-icon {
+  width: 50%;
+}
+
+.detail-box {
+  display: flex;
+  justify-content: center;
+  background-color: #f5f5f5;
+  padding: 1%;
+}
+
+.detail-product-detail {
+  margin: 5%;
+}
+
+.detail-product-name {
+  font-size: 160%;
+  font-weight: bold;
+}
+
+.detail-product-category-time {
+  color: #939597;
+  font-size: 13px;
+}
+
+.detail-oneday-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 10%;
+  margin-bottom: 2%;
+  margin-top: 2%;
+}
+
+.detail-price {
+  font-size: 200%;
+  margin-bottom: 5%;
+}
+
+.detail-day {
+  color: #939597;
+}
+
+.detail-inquire-buy {
+  background-color: #c5d3cc;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

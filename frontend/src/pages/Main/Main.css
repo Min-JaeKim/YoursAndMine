@@ -1,0 +1,70 @@
+.main .slick-slider {
+  background-color: rgb(73, 124, 95);
+}
+.main .carousel-page {
+  height: 100px;
+}
+
+.main .carousel-page h3 {
+  color: white;
+  font-family: "Noto Sans CJK KR" !important;
+  height: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.main .slick-dots {
+  position: initial;
+}
+
+.main .slick-dots li.slick-active button:before {
+  color: white;
+  opacity: 1;
+}
+
+.main .main-near-product .slick-slider,
+.main-current-rent .slick-slider {
+  background-color: white;
+  padding-left: 14px;
+}
+.main .main-near-product .slick-next:before,
+.main-current-rent .slick-next:before {
+  color: #939597 !important;
+}
+
+.main .main-near-product .slick-next,
+.main-current-rent .slick-next {
+  right: -15px !important;
+}
+
+.main .main-near-product .slick-list,
+.main-current-rent .slick-list {
+  width: 95%;
+}
+
+.main-near-product,
+.main-current-rent {
+  padding: 24px;
+}
+
+.main-near-product h4,
+.main-current-rent h4 {
+  margin-bottom: 24px;
+}
+
+.main-current-rent-header {
+  display: flex;
+  width: 100%;
+}
+
+.rent-header-link {
+  margin-left: auto;
+}
+
+.main-search {
+  width: 90%;
+  margin: 20px;
+}
+.main-search input {
+  border-radius: 20px !important;
+}
