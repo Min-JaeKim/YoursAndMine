@@ -1,0 +1,9 @@
+.trade-log-button {
+  position: absolute;
+  bottom: -6px;
+  right: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #c5d3cc;
+  border: none;
+}

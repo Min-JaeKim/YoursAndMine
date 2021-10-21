@@ -1,0 +1,36 @@
+/* SearchPlace.js*/
+.result-list hr {
+  border-top: 1px solid #c4c4c4;
+}
+.title {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.set-address-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.set-address-button {
+  display: flex;
+  margin: auto !important;
+  background-color: #497c5f !important;
+  color: white !important;
+  border-radius: 24px !important;
+  width: 200px;
+  height: 35px;
+  font-weight: 500 !important;
+}
+
+/* Location.js*/
+
+.pagination {
+  text-align: center;
+  font-size: large;
+}
+
+.result-list {
+  margin-left: 25px;
+  margin-right: 25px;
+}

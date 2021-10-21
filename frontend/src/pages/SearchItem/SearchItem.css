@@ -1,0 +1,21 @@
+.filter hr {
+  color: #e2e2e2;
+}
+.recent-search-top {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px;
+}
+
+.recent-search-item {
+  display: inline-block;
+  width: 40%;
+  margin: 15px;
+}
+.recent-search-word {
+  display: flex;
+  justify-content: space-between;
+}
+.recent-search-word img {
+  margin: 3px;
+}
