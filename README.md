@@ -9,6 +9,6 @@
 
 #### [🍻 와이어프레임](https://www.figma.com/file/CXrbBcaXfdqFolMzwmwCxZ/%EC%9E%90%EC%9C%A8%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=4%3A9)
 
-#### [🗃 DB 설계](https://jade-puffin-ae5.notion.site/DB-ed2c47180fe6470a9a99320c6d47d28a)
+#### [🗃 DB 설계](https://www.erdcloud.com/d/zrrH6z22So59hjqCj)
 
 #### [📺 UCC]()  
