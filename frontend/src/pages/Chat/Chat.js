@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ChatList from "./ChatList";
 
 const Chat = () => {
   return (
-    <div>채팅 페이지
-      <Link to={`/tradedetail`}>
+    <div>
+      <ChatList></ChatList>
+      {/* <Link to={`/tradedetail`}>
         <button>디테일</button>
-     </Link>
+      </Link> */}
     </div>
   );
 };
