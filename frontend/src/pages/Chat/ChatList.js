@@ -1,6 +1,7 @@
 import React from "react";
 import ChatDetatil from "./ChatDetail";
 function ChatList() {
+  // 더미 데이터
   const users = [
     {
       id: 1,
@@ -33,7 +34,7 @@ function ChatList() {
       productImg: "",
     },
     {
-      id: 1,
+      id: 4,
       profileImg: "",
       username: "이름 D",
       name: "상품 D",
@@ -42,7 +43,7 @@ function ChatList() {
       productImg: "",
     },
     {
-      id: 4,
+      id: 5,
       profileImg: "",
       username: "이름 E",
       name: "상품 E",
@@ -50,7 +51,7 @@ function ChatList() {
       productImg: "",
     },
     {
-      id: 5,
+      id: 6,
       profileImg: "",
       username: "이름 F",
       name: "상품 F",
@@ -58,7 +59,7 @@ function ChatList() {
       productImg: "",
     },
     {
-      id: 6,
+      id: 7,
       profileImg: "",
       username: "이름 G",
       name: "상품 G",

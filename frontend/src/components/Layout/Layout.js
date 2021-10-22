@@ -15,10 +15,10 @@ const Layout = (props) => {
         <Header location={props.location} history={props.history} />
         <section id="section">
           <main id="main">{props.children}</main>
-          <Footer />
+          <Footer location={props.location} />
         </section>
         <NavBottom location={props.location} />
-        <FloatButton />
+        <FloatButton location={props.location} />
       </div>
       <Side />
     </div>
