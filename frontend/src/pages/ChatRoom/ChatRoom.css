@@ -1,0 +1,18 @@
+.send-img-btn {
+  border: transparent;
+  background-color: transparent;
+}
+
+.send-msg-btn {
+  border: transparent;
+  background-color: transparent;
+}
+
+.msg-input {
+  padding-left: 3%;
+  padding-right: 3%;
+  border: 1px solid rgba(128, 128, 128, 0.486);
+  border-radius: 20px;
+  width: 70%;
+  height: 50%;
+}

@@ -11,6 +11,7 @@ import chat from "../../assets/icons/chat.png";
 import chatOn from "../../assets/icons/chat-on.png";
 import myPage from "../../assets/icons/my.png";
 import myPageOn from "../../assets/icons/my-on.png";
+import ChatInput from "../../pages/ChatRoom/ChatInput";
 import { Link } from "react-router-dom";
 const NavBottom = (props) => {
   const [pathname, setPathname] = useState();
@@ -22,7 +23,11 @@ const NavBottom = (props) => {
 
   return (
     <>
-      {pathname ? null : (
+      {pathname ? (
+        <div className="nav-bottom">
+          <ChatInput />
+        </div>
+      ) : (
         <div className="nav-bottom">
           <Link to="/">
             <div className="nav-bottom-items">
