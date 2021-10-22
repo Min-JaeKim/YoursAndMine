@@ -13,6 +13,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import Wish from "./pages/Wish/Wish";
 import Write from "./pages/Write/Write";
 import Chat from "./pages/Chat/Chat";
+import ChatRoom from "./pages/ChatRoom/ChatRoom";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import FindPwd from "./pages/FindPwd/FindPwd";
@@ -22,8 +23,8 @@ import Charge from "./pages/Charge/Charge";
 import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
 import RentUserList from "./pages/RentUserList/RentUserList";
-import axios from 'axios';
-import TradeDetail from './pages/TradeDetail/TradeDetail';
+import axios from "axios";
+import TradeDetail from "./pages/TradeDetail/TradeDetail";
 function App() {
   return (
     <div className="App">
@@ -47,6 +48,7 @@ function App() {
             <PrivateRouter path="/wish" component={Wish} exact />
             <PrivateRouter path="/write" component={Write} exact />
             <PrivateRouter path="/chat" component={Chat} exact />
+            <PrivateRouter path="/chat-room" component={ChatRoom} exact />
             <PrivateRouter path="/rentuser/:pNo" component={RentUserList} exact />
             <PrivateRouter path="/tradedetail/:cNo" component={TradeDetail} exact />
           </Layout>

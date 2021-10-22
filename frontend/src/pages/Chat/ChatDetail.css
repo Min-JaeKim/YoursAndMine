@@ -1,0 +1,60 @@
+.user-detail {
+  display: flex;
+  border-bottom: solid 1px;
+  border-color: #c4c4c480;
+  height: 80px;
+}
+
+.user-info {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.user-info .user-header {
+  display: flex;
+  font-size: 10pt;
+}
+
+.user-name {
+  margin-right: 10px;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.user-location {
+  color: rgba(128, 128, 128, 0.871);
+  font-size: 9pt;
+}
+
+.user-info .user-footer {
+}
+
+.product-img {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.product-img img {
+  height: 50px;
+  width: 50px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.263);
+  object-fit: cover;
+}
+
+.profile-img {
+  padding: 10px;
+}
+
+.profile-img img {
+  height: 50px;
+  width: 50px;
+  border-radius: 75px;
+  object-fit: cover;
+}
