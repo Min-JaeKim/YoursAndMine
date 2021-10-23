@@ -6,7 +6,7 @@ import defaultUserImage from "../../assets/image/defaultuser.png";
 // 채팅방 버튼
 function ChatDetail({ user }) {
   return (
-    <Link to={`/chat/` + user.username}>
+    <Link to={{ pathname: `/chat/` + user.username, state: { profileImg: user.profileImg } }}>
       <div className="user-detail">
         <div class="profile-img">
           {user.profileImg ? (

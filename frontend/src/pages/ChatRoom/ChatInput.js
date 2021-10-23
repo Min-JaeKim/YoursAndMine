@@ -14,6 +14,10 @@ function ChatInput() {
     setMsg("");
   };
 
+  const sendImg = () => {
+    console.log("send Img");
+  };
+
   const sendKeyPress = (e) => {
     if (e.key === "Enter") {
       sendMsg();
@@ -22,7 +26,8 @@ function ChatInput() {
 
   return (
     <>
-      <button className="send-img-btn">
+      {/* <input type="file" name="file" onChange={null} /> */}
+      <button className="send-img-btn" onClick={sendImg}>
         <img alt="send-img" src={ImageSendBtn}></img>
       </button>
       <input

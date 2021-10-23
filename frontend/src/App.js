@@ -48,7 +48,7 @@ function App() {
             <PrivateRouter path="/wish" component={Wish} exact />
             <PrivateRouter path="/write" component={Write} exact />
             <PrivateRouter path="/chat" component={Chat} exact />
-            <PrivateRouter path="/chatroom" component={ChatRoom} exact />
+            <PrivateRouter path="/chat/:name" component={ChatRoom} exact />
             <PrivateRouter path="/rentuser/:pNo" component={RentUserList} exact />
             <PrivateRouter path="/tradedetail/:cNo" component={TradeDetail} exact />
           </Layout>

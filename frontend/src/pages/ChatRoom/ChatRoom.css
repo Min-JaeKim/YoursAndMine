@@ -16,3 +16,78 @@
   width: 70%;
   height: 50%;
 }
+
+/* 받은 메시지  */
+.receive-msg-box {
+  display: flex;
+  flex-direction: row;
+  min-height: 50px;
+}
+
+.receive-profile-img {
+  padding: 10px;
+}
+.receive-profile-img img {
+  height: 40px;
+  width: 40px;
+  border: solid rgba(128, 128, 128, 0.517) 1px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.receive-msg-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #bababa;
+  color: white;
+  border-radius: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 13px;
+  max-width: 65%;
+}
+
+.receive-msg-time {
+  display: flex;
+  align-content: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #939597;
+  font-size: 5pt;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+/* 보내는 메시지 */
+.send-msg-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  min-height: 50px;
+}
+
+.send-msg-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #497c5f;
+  color: #f5f5f5;
+  border-radius: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  max-width: 65%;
+  margin-right: 10px;
+}
+
+.send-msg-time {
+  display: flex;
+  align-content: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #939597;
+  font-size: 5pt;
+  margin-bottom: 10px;
+  margin-right: 5px;
+}
