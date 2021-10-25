@@ -6,7 +6,7 @@
 .mypage-profile {
   display: flex;
   align-items: center;
-  margin: 20px;
+  margin: 20px 20px 20px 20px;
 }
 .mypage-profile a,
 .mypage-option img {
@@ -28,7 +28,7 @@
   font-size: 14px;
 }
 .mypage-useredit {
-  margin: 10px 20px 30px 20px;
+  margin: 0px 20px 20px 20px;
   width: calc(100% - 40px);
   background-color: white;
   border: 1px solid #e2e2e2;
@@ -36,68 +36,6 @@
   font-weight: 500;
   cursor: pointer;
 }
-.mypage-wallet {
-  position: relative;
-  background-color: #497c5f;
-  margin: 0 20px;
-  height: 180px;
-  border-radius: 24px;
-}
-
-.mypage-wallet-create {
-  position: relative;
-  top: 10px;
-  left: 10px;
-  margin: 0 20px 0 0;
-  height: 160px;
-  border: 3px dashed white;
-  border-radius: 24px;
-  padding: 20px;
-  color: white;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 36px;
-  font-weight: bold;
-}
-
-.mypage-wallet-info {
-  position: relative;
-  margin: 0 5px 0 0;
-  height: 130px;
-  border-radius: 24px;
-  padding: 20px;
-  color: white;
-  font-weight: bold;
-}
-
-.mypage-wallet-info :nth-child(1) {
-  display: flex;
-  justify-content: space-between;
-  font-size: 16px;
-}
-
-.mypage-wallet-info div button {
-  padding: 3px 14px;
-  border: 1px solid #e2e2e2;
-  border-radius: 5px;
-  font-size: 14px !important;
-  cursor: pointer;
-}
-.mypage-wallet-info :nth-child(2) {
-  font-size: 40px;
-  margin: 24px 0 50px 0;
-}
-.mypage-wallet-info :nth-child(3) {
-  background-color: #f5f5f5;
-  color: black;
-  padding: 5px 10px;
-  font-size: 14px;
-  border-radius: 10px;
-  width: 100%;
-  opacity: 0.6;
-}
-
 .mypage-user-info {
   display: flex;
   justify-content: space-evenly;
@@ -143,4 +81,25 @@
 }
 .charge-modal-input input {
   margin: 0 20px !important;
+}
+
+.auth-box {
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.auth-box button {
+  border: transparent;
+  background-color: transparent;
+}
+
+.auth-box .auth-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.auth-box img {
+  margin-top: 15px;
+  width: 100%;
 }
