@@ -30,8 +30,7 @@
 .receive-profile-img img {
   height: 40px;
   width: 40px;
-  border: solid rgba(128, 128, 128, 0.517) 1px;
-  border-radius: 18px;
+  border-radius: 100px;
   object-fit: cover;
 }
 
@@ -90,4 +89,60 @@
   font-size: 5pt;
   margin-bottom: 10px;
   margin-right: 5px;
+}
+
+.reserve-btn {
+  position: absolute;
+  bottom: 11%;
+  left: 4%;
+}
+
+.reserve-btn img {
+  width: 50px;
+  opacity: 70%;
+}
+
+.calendar-modal-background {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: #c4c4c47e;
+
+  animation: fadein 0.5s;
+  -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+}
+
+.calendar-modal {
+  position: absolute;
+  left: 15%;
+  top: 25%;
+  width: 70%;
+  height: 50%;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0px 4px 4px 0px #00000025;
+
+  animation: fadein 0.5s;
+  -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadein {
+  /* Safari and Chrome */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
