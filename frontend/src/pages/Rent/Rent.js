@@ -7,8 +7,6 @@ import { DateRange } from "react-date-range";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleRight } from "@fortawesome/free-solid-svg-icons";
-import Web3 from "web3";
-// import getWeb3 from '../../utils/getWeb3'
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -131,48 +129,48 @@ const Rent = () => {
     //   });
   };
 
-  useEffect(() => {
-    if (contract !== "") {
-      contract.balanceOf(accounts).then((result) => {});
-    }
-  }, [contract]);
+  // useEffect(() => {
+  //   if (contract !== "") {
+  //     contract.balanceOf(accounts).then((result) => {});
+  //   }
+  // }, [contract]);
 
-  useEffect(() => {
-    if (contractSuccess === true) {
-      axios
-        .post(
-          `${process.env.REACT_APP_SERVER_BASE_URL}/api/contract/save`,
-          {
-            endDate: String(rentalEndYear) + "-" + ("0" + String(rentalEndMonth)).slice(-2) + "-" + ("0" + String(rentalEndDay)).slice(-2),
-            itemId: historyState.itemId,
-            ownerId: historyState.ownerId,
-            startDate:
-              String(rentalStartYear) + "-" + ("0" + String(rentalStartMonth)).slice(-2) + "-" + ("0" + String(rentalStartDay)).slice(-2),
-            totalPrice: price,
-          },
-          {
-            headers: {
-              Authentication: "Bearer " + token,
-            },
-          }
-        )
-        .then((response) => {
-          alert("정상적으로 결제가 완료되었습니다.");
-          history.push('/tradelog');
-        })
-        .catch((error) => {
-          alert("결제가 정상적으로 이뤄지지 않았습니다.");
-        });
-    }
-  }, [contractSuccess]);
+  // useEffect(() => {
+  //   if (contractSuccess === true) {
+  //     axios
+  //       .post(
+  //         `${process.env.REACT_APP_SERVER_BASE_URL}/api/contract/save`,
+  //         {
+  //           endDate: String(rentalEndYear) + "-" + ("0" + String(rentalEndMonth)).slice(-2) + "-" + ("0" + String(rentalEndDay)).slice(-2),
+  //           itemId: historyState.itemId,
+  //           ownerId: historyState.ownerId,
+  //           startDate:
+  //             String(rentalStartYear) + "-" + ("0" + String(rentalStartMonth)).slice(-2) + "-" + ("0" + String(rentalStartDay)).slice(-2),
+  //           totalPrice: price,
+  //         },
+  //         {
+  //           headers: {
+  //             Authentication: "Bearer " + token,
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         alert("정상적으로 결제가 완료되었습니다.");
+  //         history.push('/tradelog');
+  //       })
+  //       .catch((error) => {
+  //         alert("결제가 정상적으로 이뤄지지 않았습니다.");
+  //       });
+  //   }
+  // }, [contractSuccess]);
 
-  useEffect(() => {
-    if (disabledDates.length !== 0 && disabledDatesFlag === false) {
-      const tmp = disabledDates.map((x) => dayjs(x).toDate());
-      setDisabledDates(tmp);
-      setDisabledDatesFlag(true);
-    }
-  }, [disabledDates]);
+  // useEffect(() => {
+  //   if (disabledDates.length !== 0 && disabledDatesFlag === false) {
+  //     const tmp = disabledDates.map((x) => dayjs(x).toDate());
+  //     setDisabledDates(tmp);
+  //     setDisabledDatesFlag(true);
+  //   }
+  // }, [disabledDates]);
 
   return (
     <div>

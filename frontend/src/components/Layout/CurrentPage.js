@@ -23,7 +23,8 @@ const CurrentPage = (props) => {
       myproduct: "등록한 대여제품",
       charge: "충전하기",
       rentuser: "대여자목록",
-      tradedetail: "거래내역"
+      tradedetail: "거래내역",
+      mycalendar: "나의 일정",
     };
     setPageName(page[props.url.split("/")[1]]);
   }, [props.url]);
