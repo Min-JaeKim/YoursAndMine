@@ -12,6 +12,8 @@ import "./MyPage.css";
 import axios from "axios";
 import { createWallet } from "../../api/user";
 import allActions from "../../redux/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 const MyPage = () => {
   const [wallet, setWallet] = useState(true);
@@ -121,6 +123,13 @@ const MyPage = () => {
           <div className="user-info">
             <img src={star} width="30px" alt="eth" />
             <p>찜</p>
+          </div>
+        </Link>
+
+        <Link to="/myschedule">
+          <div className="user-calendar">
+          <FontAwesomeIcon icon={faCalendarAlt} size="2x" style={{ color: "#7d7d7d"}}/>
+            <p>나의 일정</p>
           </div>
         </Link>
       </div>

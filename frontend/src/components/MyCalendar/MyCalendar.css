@@ -1,0 +1,49 @@
+html,
+body {
+  height: 100%;
+}
+
+.All {
+  height: 60vh;
+  width: 60vw;
+  font-size: 1.5vh;
+  display: flex; /* display 설정해줘야 아래 flex로 해주면 direction 선택가능*/
+  flex-direction: column; /* 이건 세로순으로  태그들을 표시함 css*/
+  align-items: center; /* 이건 가로 중앙 css*/
+  justify-content: center; /* 이건 세로 중앙 css*/
+}
+.All .control {
+  display: flex;
+  flex-direction: row;
+  margin-right: 15vh;
+  margin-bottom: 3vh;
+}
+
+.All .control {
+  display: flex;
+  flex-direction: row;
+}
+.All table {
+  display: flex;
+  width: 50vw;
+  height: 50vh;
+}
+.All table tbody {
+  display: flex;
+  flex-direction: column;
+}
+.All tr {
+  display: flex;
+  flex-direction: row;
+}
+.All td {
+  display: flex;
+  width: 5vw;
+  height: 7vh;
+  border-bottom: solid #eeeeee 1px;
+}
+.All td span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

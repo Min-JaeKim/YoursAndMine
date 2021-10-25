@@ -25,6 +25,7 @@ const CurrentPage = (props) => {
       charge: "충전하기",
       rentuser: "대여자목록",
       tradedetail: "거래내역",
+      mycalendar: "나의 일정",
     };
 
     const url = props.url.split("/");
