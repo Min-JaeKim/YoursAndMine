@@ -16,6 +16,7 @@ const CurrentPage = (props) => {
       useredit: "회원정보 수정",
       wish: "관심목록",
       chat: "채팅",
+      chatroom: "하이",
       signin: "로그인",
       signup: "회원 가입",
       findpwd: "비밀번호 찾기",
@@ -26,7 +27,14 @@ const CurrentPage = (props) => {
       tradedetail: "거래내역",
       mycalendar: "나의 일정",
     };
-    setPageName(page[props.url.split("/")[1]]);
+
+    const url = props.url.split("/");
+    // 채팅방 헤더 설정
+    if (url.length > 2 && url[1] === "chat") {
+      setPageName(url[2]);
+    } else {
+      setPageName(page[url[1]]);
+    }
   }, [props.url]);
 
   return <div className="header-location">{pageName}</div>;

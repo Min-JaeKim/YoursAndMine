@@ -10,11 +10,7 @@ const PrivateRouter = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) => {
         !currentUser && alert("로그인이 필요한 페이지입니다.");
-        return currentUser ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/signin" />
-        );
+        return currentUser ? <Component {...props} /> : <Redirect to="/signin" />;
       }}
     />
   );
