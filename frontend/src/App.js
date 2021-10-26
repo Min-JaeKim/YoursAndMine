@@ -24,8 +24,10 @@ import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
 import RentUserList from "./pages/RentUserList/RentUserList";
 import Notice from "./pages/Notice/Notice";
-import axios from "axios";
-import TradeDetail from "./pages/TradeDetail/TradeDetail";
+import axios from 'axios';
+import TradeDetail from './pages/TradeDetail/TradeDetail';
+import MySchedule from './pages/MySchedule/MySchedule';
+
 function App() {
   return (
     <div className="App">
@@ -53,6 +55,7 @@ function App() {
             <PrivateRouter path="/chat/:name" component={ChatRoom} exact />
             <PrivateRouter path="/rentuser/:pNo" component={RentUserList} exact />
             <PrivateRouter path="/tradedetail/:cNo" component={TradeDetail} exact />
+            <PrivateRouter path="/myschedule" component={MySchedule} exact />
           </Layout>
         </Switch>
       </Router>

@@ -50,6 +50,11 @@
   margin: 5px 0;
   font-weight: 500;
 }
+
+.user-calendar p {
+  margin: 20% 0;
+  font-weight: 500;
+}
 .user-info span {
   color: #497c5f;
 }

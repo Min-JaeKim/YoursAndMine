@@ -26,6 +26,7 @@ const CurrentPage = (props) => {
       rentuser: "대여자목록",
       tradedetail: "거래내역",
       notice: "알림",
+      mycalendar: "나의 일정",
     };
 
     const url = props.url.split("/");

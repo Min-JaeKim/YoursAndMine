@@ -9,6 +9,8 @@ import productlist from "../../assets/icons/productlist.png";
 import "./MyPage.css";
 import axios from "axios";
 import allActions from "../../redux/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 import authLevel1 from "../../assets/icons/auth-level1.png";
 import authLevel2 from "../../assets/icons/auth-level2.png";
@@ -67,6 +69,13 @@ const MyPage = () => {
           <div className="user-info">
             <img src={star} width="30px" alt="eth" />
             <p>찜</p>
+          </div>
+        </Link>
+
+        <Link to="/myschedule">
+          <div className="user-calendar">
+          <FontAwesomeIcon icon={faCalendarAlt} size="2x" style={{ color: "#7d7d7d"}}/>
+            <p>나의 일정</p>
           </div>
         </Link>
       </div>
