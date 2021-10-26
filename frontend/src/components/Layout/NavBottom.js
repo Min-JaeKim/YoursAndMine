@@ -11,6 +11,9 @@ import chat from "../../assets/icons/chat.png";
 import chatOn from "../../assets/icons/chat-on.png";
 import myPage from "../../assets/icons/my.png";
 import myPageOn from "../../assets/icons/my-on.png";
+import notificationOn from "../../assets/icons/notification-on.png";
+import notification from "../../assets/icons/notification.png";
+
 import ChatInput from "../../pages/ChatRoom/ChatInput";
 import { Link } from "react-router-dom";
 const NavBottom = (props) => {
@@ -39,16 +42,17 @@ const NavBottom = (props) => {
               <div>홈</div>
             </div>
           </Link>
-          <Link to="/wish">
+          <Link to="/chat">
             <div className="nav-bottom-items">
-              {props.location.pathname === "/wish" ? (
-                <img src={starOn} alt="starIconOn" className="nav-bottom-like" />
+              {props.location.pathname === "/chat" ? (
+                <img src={chatOn} alt="chatIconOn" className="nav-bottom-chatting" />
               ) : (
-                <img src={star} alt="starIcon" className="nav-bottom-like" />
+                <img src={chat} alt="chatIcon" className="nav-bottom-chatting" />
               )}
-              <div>찜</div>
+              <div>채팅</div>
             </div>
           </Link>
+
           <Link to="/write">
             <div className="nav-bottom-items">
               {props.location.pathname === "/write" ? (
@@ -59,14 +63,14 @@ const NavBottom = (props) => {
               <div>글쓰기</div>
             </div>
           </Link>
-          <Link to="/chat">
+          <Link to="/notice">
             <div className="nav-bottom-items">
-              {props.location.pathname === "/chat" ? (
-                <img src={chatOn} alt="chatIconOn" className="nav-bottom-chatting" />
+              {props.location.pathname === "/notice" ? (
+                <img src={notificationOn} alt="starIconOn" className="nav-bottom-like" />
               ) : (
-                <img src={chat} alt="chatIcon" className="nav-bottom-chatting" />
+                <img src={notification} alt="starIcon" className="nav-bottom-like" />
               )}
-              <div>채팅</div>
+              <div>알림</div>
             </div>
           </Link>
           <Link to="/mypage">

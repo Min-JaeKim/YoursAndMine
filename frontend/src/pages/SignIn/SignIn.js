@@ -47,9 +47,6 @@ const SignIn = ({ history }) => {
         alert("아이디 혹은 비밀번호를 확인해주세요")
       })
   }
-  const SignInKakao = () => {
-    alert("카카오로 로그인");
-  };
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -75,10 +72,7 @@ const SignIn = ({ history }) => {
         <Link to="/signup">{"회원가입  "}</Link>
       </div>
       <hr />
-      <div className="signin-kakao" onClick={SignInKakao}>
-        <img src={kakao} alt="kakao" className="signin-kakao-logo" />
-        카카오로 간편 로그인
-      </div>
+
     </div>
   );
 };

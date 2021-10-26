@@ -57,7 +57,15 @@ const Main = () => {
 
   const NextArrow = (props) => {
     const { className, style, onClick } = props;
-    return <img src={arrow} alt="arrow" className={className} style={{ ...style, display: "block" }} onClick={onClick} />;
+    return (
+      <img
+        src={arrow}
+        alt="arrow"
+        className={className}
+        style={{ ...style, display: "block" }}
+        onClick={onClick}
+      />
+    );
   };
   const settings = {
     dots: true,
