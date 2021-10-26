@@ -23,6 +23,7 @@ import Charge from "./pages/Charge/Charge";
 import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
 import RentUserList from "./pages/RentUserList/RentUserList";
+import Notice from "./pages/Notice/Notice";
 import axios from "axios";
 import TradeDetail from "./pages/TradeDetail/TradeDetail";
 function App() {
@@ -45,7 +46,8 @@ function App() {
             <PrivateRouter path="/tradelog" component={TradeLog} exact />
             <PrivateRouter path="/myproduct" component={MyProduct} exact />
             <PrivateRouter path="/charge" component={Charge} exact />
-            <PrivateRouter path="/wish" component={Wish} exact />
+            {/* <PrivateRouter path="/wish" component={Wish} exact /> */}
+            <PrivateRouter path="/notice" component={Notice} exact />
             <PrivateRouter path="/write" component={Write} exact />
             <PrivateRouter path="/chat" component={Chat} exact />
             <PrivateRouter path="/chat/:name" component={ChatRoom} exact />
