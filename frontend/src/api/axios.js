@@ -11,7 +11,6 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-
     const status = error.response ? error.response.status : -1;
     const errorMessage = error.response ? error.response.data.error : -1;
     switch (status) {
