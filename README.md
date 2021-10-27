@@ -12,3 +12,6 @@
 #### [🗃 DB 설계](https://www.erdcloud.com/d/zrrH6z22So59hjqCj)
 
 #### [📺 UCC]()  
+
+d
+
