@@ -7,7 +7,7 @@ import "./Main.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ThumbNail from "../../components/ThumbNail/ThumbNail";
-import axios from "axios";
+import axios from "../../api/axios";
 import SearchInput from "../../components/SearchInput/SearchInput";
 
 const Main = () => {
@@ -19,12 +19,13 @@ const Main = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/item/list`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
+      .get(`/item`, {
+        // headers: {
+        //   Authentication: "Bearer " + token,
+        // },
       })
       .then((response) => {
+        console.log(response);
         setNearProduct(response.data);
         if (response.data.length >= 3) {
           setNearProdcutCount(3);
@@ -37,11 +38,7 @@ const Main = () => {
       });
 
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/contract/rent`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
-      })
+      .get(`/user/item/take`)
       .then((response) => {
         setRentProduct(response.data);
         if (response.data.length >= 3) {
@@ -146,7 +143,12 @@ const Main = () => {
       </Slider>
 
       <div className="main-near-product">
-        <h4>가까운 위치에 있는 물건 소개</h4>
+        <div className="main-current-rent-header">
+          <h4>가까운 위치에 있는 물건 소개 ✌🏻</h4>
+          <Link to="/product" className="rent-header-link">
+            {"전체 상품보기 >"}
+          </Link>
+        </div>
 
         <Slider {...responsiveSettings}>{productCarousel(nearProduct)}</Slider>
       </div>

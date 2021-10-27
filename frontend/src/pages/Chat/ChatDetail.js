@@ -22,7 +22,7 @@ function ChatDetail({ user }) {
           </div>
           <div className="user-footer">{user.msg}</div>
         </div>
-        <div className="product-img">
+        <div className="chat-product-img">
           {user.productImg ? (
             <img src={user.productImg} alt="product"></img>
           ) : (
