@@ -1,0 +1,10 @@
+.search-result {
+  margin: 15px;
+}
+.search-result-item {
+  display: flex;
+  margin: 10px;
+}
+.wish-item {
+  text-align: right;
+}

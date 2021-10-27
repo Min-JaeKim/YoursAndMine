@@ -1,0 +1,46 @@
+.wish-item-icon {
+  margin-top: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 30%;
+  margin-right: 30px;
+  /* border: 1px solid #c5d3cc; */
+  box-shadow: 0.1px 0.3px 10px 1px rgba(197, 211, 204, 0.3);
+}
+.wish-item-list {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  height: 100px;
+  margin-bottom: 15%;
+}
+.wish-item-vertical {
+  width: fit-content;
+  margin-bottom: auto;
+  padding-top: 2%;
+}
+.wish-item-title {
+  font-size: large;
+  font-weight: bold;
+}
+.wish-item-price {
+  position: absolute;
+  font-size: x-large;
+  bottom: 2px;
+}
+.wish-item-bookmark {
+  width: 30px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+.wish-item-borrow {
+  position: absolute;
+  right: 2px;
+  bottom: 0px;
+  background-color: #c5d3cc;
+  padding: 2%;
+  border: none;
+  border-radius: 8px;
+}

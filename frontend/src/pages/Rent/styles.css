@@ -1,0 +1,81 @@
+.rdrMonths {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.rdrDayToday .rdrDayNumber span:after {
+  background: #497c5f;
+}
+
+.rent-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rent-raental-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8%;
+  border: solid;
+  border-color: #c5d3cc;
+  border-width: 1px 0px 0px 0px;
+}
+
+.rent-return-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8%;
+  border: solid;
+  border-color: #c5d3cc;
+  border-width: 1px 0px 0px 0px;
+}
+
+.rent-raental-date {
+  font-size: 130%;
+}
+
+.rent-return-date {
+  font-size: 130%;
+}
+
+.rent-estimated-price-box {
+  background-color: #497c5f;
+  display: flex;
+  justify-content: space-between;
+  padding: 3%;
+  color: white;
+}
+
+.rent-estimated-comment {
+  font-size: 160%;
+}
+
+.rent-nbutton-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.rent-next-button {
+  margin-bottom: 20%;
+}
+
+.rent-price-krw {
+  display: flex;
+}
+
+.rent-estimated-price {
+  font-size: 200%;
+}
+
+.rent-estimated-krw {
+  font-size: 160%;
+}

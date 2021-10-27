@@ -1,0 +1,110 @@
+.mypage {
+  position: relative;
+  height: 100%;
+}
+
+.mypage-profile {
+  display: flex;
+  align-items: center;
+  margin: 20px 20px 20px 20px;
+}
+.mypage-profile a,
+.mypage-option img {
+  margin-left: auto;
+}
+.mypage-user-icon {
+  width: 100px;
+  border-radius: 30%;
+  margin-right: 30px;
+}
+.mypage-profile-desc h4 {
+  color: #424242;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.mypage-profile-desc span {
+  color: #7d7d7d;
+  font-size: 14px;
+}
+.mypage-useredit {
+  margin: 0px 20px 20px 20px;
+  width: calc(100% - 40px);
+  background-color: white;
+  border: 1px solid #e2e2e2;
+  height: 40px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.mypage-user-info {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.mypage-user-info {
+  text-align: center;
+  margin: 40px 0 20px 0;
+}
+
+.user-info p {
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+.user-calendar p {
+  margin: 20% 0;
+  font-weight: 500;
+}
+.user-info span {
+  color: #497c5f;
+}
+
+.mypage-options {
+  margin-bottom: 60px;
+}
+.mypage-option {
+  margin: 0 20px;
+  border-bottom: 1px solid #e2e2e2;
+  display: flex;
+  padding: 18px 0;
+  align-items: center;
+}
+
+.mypage-option p {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.charge-modal-input {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+}
+
+.charge-modal-input span {
+  width: 10%;
+}
+.charge-modal-input input {
+  margin: 0 20px !important;
+}
+
+.auth-box {
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.auth-box button {
+  border: transparent;
+  background-color: transparent;
+}
+
+.auth-box .auth-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.auth-box img {
+  margin-top: 15px;
+  width: 100%;
+}
