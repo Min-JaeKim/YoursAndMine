@@ -4,29 +4,28 @@ body {
 }
 
 .All {
-  height: 60vh;
-  width: 60vw;
-  font-size: 1.5vh;
-  display: flex; /* display 설정해줘야 아래 flex로 해주면 direction 선택가능*/
-  flex-direction: column; /* 이건 세로순으로  태그들을 표시함 css*/
-  align-items: center; /* 이건 가로 중앙 css*/
-  justify-content: center; /* 이건 세로 중앙 css*/
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
 .All .control {
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
-  margin-right: 15vh;
-  margin-bottom: 3vh;
+  justify-content: space-between;
+  padding: 3vh 0vh;
 }
 
-.All .control {
-  display: flex;
-  flex-direction: row;
+.year-month {
+  font-size: 1.8vw;
 }
+
 .All table {
   display: flex;
-  width: 50vw;
-  height: 50vh;
+  padding: 3vh 0;
 }
 .All table tbody {
   display: flex;
@@ -38,12 +37,112 @@ body {
 }
 .All td {
   display: flex;
-  width: 5vw;
-  height: 7vh;
-  border-bottom: solid #eeeeee 1px;
+  width: 3vw;
+  height: 6vh;
 }
 .All td span {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  margin: 0 auto;
+  font-size: 18px;
+  margin-top: 18%;
+  font-weight: bold;
+  height: 21px;
+  width: 21px;
 }
+
+.available-date-box {
+  border-top: solid #eeeeee 1px;
+}
+
+.today-box {
+  border-top: solid #eeeeee 1px;
+  background-image: url("../../assets/image/today.png");
+  background-size: 2.9vw;
+  /* background-color: #f5f5f5;
+  border-radius: 80%; */
+  /* height: 6vh; */
+}
+
+.return-date-set {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.date-check {
+  width: 0.6vw;
+  height: auto;
+}
+
+/* html,
+body {
+  height: 100%;
+} */
+
+/* .All {
+  height: 60vh;
+  width: 33vw;
+  font-size: 1.5vh;
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5vh;
+} */
+/* .All .control {
+  display: flex;
+  flex-direction: row;
+  margin-right: 15vh;
+  margin-bottom: 3vh;
+  display: flex;
+  flex-direction: row;
+  padding-right: 15%;
+} */
+
+/* .year-month {
+  font-size: 2vw;
+} */
+
+/* .All table {
+  display: flex;
+  width: 32vw;
+  height: 50vh;
+  padding-top: 1vh;
+} */
+/* .All table tbody {
+  display: flex;
+  flex-direction: column;
+  width: 28vw;
+} */
+/* .All tr {
+  display: flex;
+  flex-direction: row;
+} */
+/* .All td {
+  display: flex;
+  width: 3vw;
+  height: 6vh;
+} */
+/* .All td span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0 auto;
+  font-size: 18px;
+  margin-top: 18%;
+  font-weight: bold;
+} */
+/* 
+.available-date-box {
+  border-top: solid #eeeeee 1px;
+} */
+
+/* .today-box {
+  background-color: #f5f5f5;
+  border-radius: 80%;
+  height: 6vh;
+} */
