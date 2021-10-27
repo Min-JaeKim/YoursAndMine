@@ -7,7 +7,7 @@ import "./Main.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ThumbNail from "../../components/ThumbNail/ThumbNail";
-import axios from "axios";
+import axios from "../../api/axios";
 import SearchInput from "../../components/SearchInput/SearchInput";
 
 const Main = () => {
@@ -19,40 +19,13 @@ const Main = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/item/list`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
+      .get(`/user/email`, {
+        userEmail: "test@test.com",
       })
       .then((response) => {
-        setNearProduct(response.data);
-        if (response.data.length >= 3) {
-          setNearProdcutCount(3);
-        } else {
-          setNearProdcutCount(response.data.length);
-        }
+        console.log(response);
       })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/contract/rent`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
-      })
-      .then((response) => {
-        setRentProduct(response.data);
-        if (response.data.length >= 3) {
-          setRentProductCount(3);
-        } else {
-          setRentProductCount(response.data.length);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((error) => {});
   }, []);
 
   const NextArrow = (props) => {
