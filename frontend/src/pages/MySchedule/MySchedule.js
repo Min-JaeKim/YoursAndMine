@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from "semantic-ui-react";
 import "./MySchedule.css";
 import Calendar from "../../components/MyCalendar/MyCalendar"
+import MyProduct from "../../components/MyProduct/MyProduct"
 
 const MySchedule = () => {
 
@@ -29,7 +30,14 @@ const MySchedule = () => {
 				회수 일정
 			</Button>
 		</div>
+		<div>
+
 		<Calendar />
+		</div>
+		<div>
+
+		<MyProduct />
+		</div>
 		</div>
 	)
 }
