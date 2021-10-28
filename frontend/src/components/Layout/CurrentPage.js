@@ -27,6 +27,7 @@ const CurrentPage = (props) => {
       tradedetail: "거래내역",
       notice: "알림",
       mycalendar: "나의 일정",
+      product: "전체 상품",
     };
 
     const url = props.url.split("/");

@@ -1,0 +1,74 @@
+.All2 {
+  background-color: #f5f5f5;
+  padding: 8px;
+}
+.mp-selected-date-rent-list {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.mpd-card {
+  background-color: #f5f5f5;
+  margin: 25px 0;
+}
+
+.mpd-content {
+  background-color: white;
+  border-radius: 0px 30px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 3px 4px 6px 2px grey;
+  height: 132px;
+  margin: 2%;
+}
+
+.mpd-product-info {
+  width: 48%;
+  position: relative;
+  right: -8px;
+}
+
+.mpd-product-img {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto;
+  border-radius: 30px;
+}
+
+.mpd-rent-button {
+  border-radius: 16px !important;
+  position: relative;
+  bottom: -40px;
+  left: -3px;
+  font-size: 13px;
+}
+
+.mpd-product-name-rent-flag {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mpd-product-name {
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.mpd-product-rent-falg {
+  background-color: #ec3d2f;
+  border-radius: 30px;
+  padding: 4%;
+  color: white;
+  font-size: 14px;
+}
+
+.mpd-product-date {
+  position: relative;
+  top: 5px;
+}
+
+.mpd-owner-name {
+  position: relative;
+  top: 10px;
+}

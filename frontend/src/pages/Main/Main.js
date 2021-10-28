@@ -19,9 +19,26 @@ const Main = () => {
 
   useEffect(() => {
     axios
-      .get(`/user/email`, {
-        userEmail: "test@test.com",
+      .get(`/item`, {
+        // headers: {
+        //   Authentication: "Bearer " + token,
+        // },
       })
+      .then((response) => {
+        console.log(response);
+        setNearProduct(response.data);
+        if (response.data.length >= 3) {
+          setNearProdcutCount(3);
+        } else {
+          setNearProdcutCount(response.data.length);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get(`/user/item/take`)
       .then((response) => {
         console.log(response);
       })
@@ -119,7 +136,12 @@ const Main = () => {
       </Slider>
 
       <div className="main-near-product">
-        <h4>가까운 위치에 있는 물건 소개</h4>
+        <div className="main-current-rent-header">
+          <h4>가까운 위치에 있는 물건 소개 ✌🏻</h4>
+          <Link to="/product" className="rent-header-link">
+            {"전체 상품보기 >"}
+          </Link>
+        </div>
 
         <Slider {...responsiveSettings}>{productCarousel(nearProduct)}</Slider>
       </div>

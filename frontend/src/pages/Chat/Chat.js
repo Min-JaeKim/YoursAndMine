@@ -6,9 +6,6 @@ const Chat = () => {
   return (
     <div>
       <ChatList></ChatList>
-      {/* <Link to={`/tradedetail`}>
-        <button>디테일</button>
-      </Link> */}
     </div>
   );
 };
