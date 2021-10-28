@@ -102,7 +102,7 @@ export const Detail = () => {
           <Slider {...settings}>
             {detail
               ? detail.itemImage.map((image) => (
-                  <img src={image} alt="product" className="detail-product" />
+                  <img key={image} src={image} alt="product" className="detail-product" />
                 ))
               : null}
           </Slider>

@@ -2,7 +2,9 @@ import axios from "axios";
 import https from "https";
 
 const axiosInstance = axios.create({
-  baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}`,
+  baseURL: `https://720eb46e-1921-49a2-ba1b-fffd6a58d054.mock.pstmn.io`,
+  // baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}`,
+
   httpsAgent: new https.Agent({ rejectUnauthorized: false }),
 });
 
@@ -11,7 +13,6 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-
     const status = error.response ? error.response.status : -1;
     const errorMessage = error.response ? error.response.data.error : -1;
     switch (status) {
