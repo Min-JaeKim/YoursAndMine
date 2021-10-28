@@ -22,7 +22,6 @@ const MySchedule = () => {
 		<div>
 		<div className="select-button">
 			<Button className="rent-button">
-			{/* <Button style={{ backgroundColor: "#F5F5F5", color: "black" }}> */}
 				반납 일정
 			</Button>
 			<Button className="return-button" >
