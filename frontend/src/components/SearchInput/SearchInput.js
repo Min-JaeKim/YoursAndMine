@@ -11,20 +11,22 @@ const SearchInput = () => {
     e.preventDefault();
     history.push(`/searchitem?text=${inputText}`);
     window.location.replace(`/searchitem?text=${inputText}`); //새로고침
-  }; 
-  return <>
-    <form className="inputForm" onSubmit={handleSubmit}>
-      <Input
-        className="main-search"
-        icon="search"
-        iconPosition="left"
-        placeholder="상품명을 입력해주세요"
-        onChange={onChange}
-        value={inputText}
-      />
-      <br />
-    </form>
-  </>;
+  };
+  return (
+    <>
+      <form className="inputForm" onSubmit={handleSubmit}>
+        <Input
+          className="main-search"
+          icon="search"
+          iconPosition="left"
+          placeholder="상품명을 입력해주세요"
+          onChange={onChange}
+          value={inputText}
+        />
+        <br />
+      </form>
+    </>
+  );
 };
 
 export default SearchInput;
