@@ -28,6 +28,7 @@ import axios from "axios";
 import TradeDetail from "./pages/TradeDetail/TradeDetail";
 import MySchedule from "./pages/MySchedule/MySchedule";
 import Product from "./pages/Product/Product";
+import Category from "./pages/Category/Category";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <PublicRouter path="/signin" component={SignIn} exact />
             <PublicRouter path="/signup" component={SignUp} exact />
             <PublicRouter path="/findpwd" component={FindPwd} exact />
+            <PublicRouter path="/category" component={Category} exact />
 
             <PrivateRouter path="/rent" component={Rent} exact />
             <PrivateRouter path="/mypage" component={MyPage} exact />
