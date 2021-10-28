@@ -130,12 +130,6 @@ const calendarArr=()=>{
 						</tbody>
 					</table>
 			</div>
-			<div>
-				<div className="selected-date-rent-list">
-					{selectMonth}월 {selectDay}일
-				</div>
-				<div></div>
-			</div>
 		</div>
 	);
 }
