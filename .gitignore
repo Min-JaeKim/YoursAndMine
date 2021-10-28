@@ -10,6 +10,7 @@
 backend/billige/src/main/resources/application.yml
 .idea
 .gradle
+backend/billige/src/main/resources/dist/
 
 # User-specific stuff
 .idea/**/workspace.xml

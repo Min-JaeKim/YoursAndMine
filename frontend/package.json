@@ -35,8 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "BUILD_PATH='../backend/yam/src/main/resources/dist/' react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

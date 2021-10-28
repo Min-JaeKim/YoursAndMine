@@ -40,16 +40,9 @@ const Main = () => {
     axios
       .get(`/user/item/take`)
       .then((response) => {
-        setRentProduct(response.data);
-        if (response.data.length >= 3) {
-          setRentProductCount(3);
-        } else {
-          setRentProductCount(response.data.length);
-        }
+        console.log(response);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((error) => {});
   }, []);
 
   const NextArrow = (props) => {
