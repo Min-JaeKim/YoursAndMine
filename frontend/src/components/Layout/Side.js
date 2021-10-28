@@ -1,12 +1,12 @@
 import React from "react";
-import billige from "../../assets/image/billige.PNG";
+import yam from "../../assets/image/yam.png";
 import eventImage from "../../assets/image/event.png";
 import mock from "../../assets/image/mock.jpg";
 import "./Layout.css";
 const Side = () => {
   return (
     <div className="sidebar">
-      <img className="logo" src={billige} alt="billige" width="300px" />
+      <img className="logo" src={yam} alt="yam" width="300px" />
       <br />
       <img className="eventimage" src={eventImage} alt="event" width="300px" />
       <br />

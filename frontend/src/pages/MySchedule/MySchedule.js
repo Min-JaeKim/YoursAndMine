@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from "semantic-ui-react";
 import "./MySchedule.css";
 import Calendar from "../../components/MyCalendar/MyCalendar"
+import MyProduct from "../../components/MyProduct/MyProduct"
 
 const MySchedule = () => {
 
@@ -21,7 +22,6 @@ const MySchedule = () => {
 		<div>
 		<div className="select-button">
 			<Button className="rent-button">
-			{/* <Button style={{ backgroundColor: "#F5F5F5", color: "black" }}> */}
 				반납 일정
 			</Button>
 			<Button className="return-button" >
@@ -29,7 +29,14 @@ const MySchedule = () => {
 				회수 일정
 			</Button>
 		</div>
+		<div>
+
 		<Calendar />
+		</div>
+		<div>
+
+		<MyProduct />
+		</div>
 		</div>
 	)
 }

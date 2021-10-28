@@ -1,17 +1,17 @@
 .thumbnail {
   position: relative;
   background-color: #f5f5f5;
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 100px;
   border-radius: 10px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.thumbnail > img {
-  width: 80px;
-  height: 80px;
+.thumbnail img {
+  width: 100px;
+  height: 100px;
   border-radius: 10px;
 }
 
@@ -38,4 +38,19 @@
   background-color: #497c65;
   top: 5px;
   right: -46px;
+}
+
+.main-item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.main-item-box {
+  max-width: 100px;
+}
+
+.main-item-price {
+  font-weight: 300;
 }

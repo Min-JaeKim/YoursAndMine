@@ -21,9 +21,9 @@ const MyProduct = (props) => {
       .then((response) => {
         setProduct(response.data);
         const groups = {};
-        response.data.forEach(p => {
-          groups[p.itemId] = p.status === 'Y' ? true : false
-        })
+        response.data.forEach((p) => {
+          groups[p.itemId] = p.status === "Y" ? true : false;
+        });
         setRadioGroups(groups);
         console.log(response.data);
         setLoading(false);
@@ -33,11 +33,9 @@ const MyProduct = (props) => {
       });
   }, []);
 
-
-
   const isActive = (idx) => {
-    const p = product[idx]
-    console.log(p)
+    const p = product[idx];
+    console.log(p);
     setRadioGroups({ ...radioGroups, [p.itemId]: !radioGroups[p.itemId] });
     // console.log(product[idx])
     // if (product[idx].status == "Y")
@@ -45,7 +43,7 @@ const MyProduct = (props) => {
     // else product[idx].status = "Y";
     itemOnOff(idx);
     // console.log(product);
-    console.log(radioGroups)
+    console.log(radioGroups);
   };
 
   const itemOnOff = (idx) => {
@@ -69,12 +67,18 @@ const MyProduct = (props) => {
 
   return (
     <div>
-      {loading ? <>loading...</> :
+      {loading ? (
+        <>loading...</>
+      ) : (
         <>
           {product.map((item, idx) => {
             return (
               <div className="wish-item-list" key={idx}>
-                <img src={item.image == null ? noImage : item.image} className="wish-item-icon" alt="profile"></img>
+                <img
+                  src={item.image == null ? noImage : item.image}
+                  className="wish-item-icon"
+                  alt="profile"
+                ></img>
                 <div className="wish-item-vertical">
                   <div className="wish-item-title">
                     <Link to={`/rentuser/${item.itemId}`}>{item.itemname}</Link>
@@ -84,15 +88,19 @@ const MyProduct = (props) => {
                 </div>
                 <div>
                   <label className="switch">
-                    <input type="checkbox" onClick={() => isActive(idx)} checked={radioGroups[item.itemId]} />
+                    <input
+                      type="checkbox"
+                      onClick={() => isActive(idx)}
+                      checked={radioGroups[item.itemId]}
+                    />
                     <span className="slider round"></span>
                   </label>
                 </div>
               </div>
-            )
+            );
           })}
         </>
-      }
+      )}
     </div>
   );
 };

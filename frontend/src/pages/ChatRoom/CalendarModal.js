@@ -2,10 +2,6 @@ import React, { useEffect } from "react";
 import "./ChatRoom.css";
 
 function CalendarModal(props) {
-  useEffect(() => {
-    console.log(props.isOpen);
-  }, [props]);
-
   const closeModal = () => {
     props.setOpenReserve(false);
   };
