@@ -1,5 +1,7 @@
 import React from "react";
 import ChatDetatil from "./ChatDetail";
+import { Link } from "react-router-dom";
+
 function ChatList() {
   // 더미 데이터
   const users = [
@@ -71,7 +73,9 @@ function ChatList() {
   return (
     <div>
       {users.map((user) => (
-        <ChatDetatil user={user} key={user.id}></ChatDetatil>
+        <Link to={{ pathname: `/item/` + user.username, state: { profileImg: user.profileImg } }}>
+          <ChatDetatil user={user} key={user.id}></ChatDetatil>
+        </Link>
       ))}
     </div>
   );

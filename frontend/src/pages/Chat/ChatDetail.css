@@ -30,14 +30,14 @@
   font-size: 9pt;
 }
 
-.product-img {
+.chat-product-img {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
   padding: 10px;
 }
 
-.product-img img {
+.chat-product-img img {
   height: 50px;
   width: 50px;
   border-radius: 10px;
