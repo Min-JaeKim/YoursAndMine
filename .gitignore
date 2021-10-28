@@ -7,10 +7,11 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # springboot
-backend/billige/src/main/resources/application.yml
+backend/yam/src/main/resources/application.yml
+.yml
 .idea
 .gradle
-backend/billige/src/main/resources/dist/
+backend/yam/src/main/resources/dist/
 
 # User-specific stuff
 .idea/**/workspace.xml
