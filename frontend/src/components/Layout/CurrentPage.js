@@ -28,6 +28,7 @@ const CurrentPage = (props) => {
       notice: "알림",
       mycalendar: "나의 일정",
       product: "전체 상품",
+      category: "카테고리로 검색"
     };
 
     const url = props.url.split("/");
