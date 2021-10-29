@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import User from "../../assets/image/user.png";
+
+import DetailCalendar from "./DetailCalendar";
 import "./Detail.css";
 import unlikeIcon from "../../assets/icons/wish.png";
 import likeIcon from "../../assets/icons/wish-on.png";
@@ -137,11 +138,6 @@ export const Detail = () => {
             <div className="detail-product-name">{detail.itemName}</div>
             <div className="detail-product-category-time">{detail.itemCategory}</div>
           </div>
-
-          <div className="detail-box">제품 상세</div>
-          <div className="detail-product-detail">
-            <div>{detail.itemContent}</div>
-          </div>
           <div className="detail-inquire-buy">
             <div className="detail-oneday-price">
               <div className="detail-price">₩ {detail.itemPrice.toLocaleString("ko-KR")}</div>
@@ -155,6 +151,29 @@ export const Detail = () => {
               >
                 문의하기
               </Button>
+            </div>
+          </div>
+
+          <div className="detail-tabs">
+            <div className="tab-2">
+              <label htmlFor="tab2-1">상품 상세</label>
+              <input id="tab2-1" name="tabs-two" type="radio" defaultChecked="checked" />
+              <div>
+                <div className="detail-product-detail">
+                  <div>{detail.itemContent}</div>
+                </div>
+              </div>
+            </div>
+            <div className="tab-2">
+              <label htmlFor="tab2-2">대여 가능 일정</label>
+              <input id="tab2-2" name="tabs-two" type="radio" />
+              <div>
+                <div>
+                  <div className="detail-product-detail">
+                    <DetailCalendar />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </>
