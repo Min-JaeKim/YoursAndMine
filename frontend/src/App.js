@@ -29,6 +29,7 @@ import TradeDetail from "./pages/TradeDetail/TradeDetail";
 import MySchedule from "./pages/MySchedule/MySchedule";
 import Product from "./pages/Product/Product";
 import Category from "./pages/Category/Category";
+import Join from "./pages/Join/Join";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             <PublicRouter path="/signup" component={SignUp} exact />
             <PublicRouter path="/findpwd" component={FindPwd} exact />
             <PublicRouter path="/category" component={Category} exact />
+            <PublicRouter path="/join" component={Join} exact />
 
             <PrivateRouter path="/rent" component={Rent} exact />
             <PrivateRouter path="/mypage" component={MyPage} exact />
