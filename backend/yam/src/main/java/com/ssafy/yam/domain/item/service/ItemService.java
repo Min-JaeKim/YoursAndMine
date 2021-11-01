@@ -1,6 +1,8 @@
 package com.ssafy.yam.domain.item.service;
 
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
+import com.ssafy.yam.domain.image.entity.Image;
+import com.ssafy.yam.domain.image.repository.ImageRepository;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
@@ -10,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -17,12 +22,10 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final ImageRepository imageRepository;
 
     public ItemResponse getItemByItemId(int itemId){
         Item item = itemRepository.findItemByItemId(itemId);
-//        User user = userRepository.findUserByUserId(item.getSellerId().getUserId());
-        System.out.println(item.getSellerId().toString());
-        System.out.println(item.getSellerId().getClass());
         User owner = item.getSellerId();
         ItemResponse response = ItemResponse.builder()
                 .itemId(itemId)
@@ -50,8 +53,12 @@ public class ItemService {
         else
             response.setBookmark("Y");
         response.setBookmarkCount(bookmarkCnt);
-//        ItemResponse newResponse = new ItemResponse(item);
 
+        List<Image> images = imageRepository.findAllByItem_ItemId(itemId);
+
+        response.setItemImage(images.stream()
+                .map(Image::getImageUrl)
+                .collect(Collectors.toList()));
         return response;
     }
 

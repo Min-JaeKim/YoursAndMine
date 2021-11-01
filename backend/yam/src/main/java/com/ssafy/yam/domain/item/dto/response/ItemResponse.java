@@ -6,6 +6,8 @@ import com.ssafy.yam.domain.user.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,7 +22,7 @@ public class ItemResponse {
     private int itemPrice;
     private String itemAddress;
     private Owner owner;
-
+    private List<String> itemImage = new ArrayList<>();
     private int itemAreaCode;
     private LocalDateTime itemModifiedTime;
     private int bookmarkCount;
