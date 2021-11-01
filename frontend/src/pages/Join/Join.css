@@ -1,0 +1,28 @@
+.join-all {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.join-welcome {
+  margin: 30px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.join-congratulate {
+  font-size: 20px;
+  margin-bottom: 60px;
+}
+
+.join-to-login {
+  background-color: #497c5f !important;
+  color: white !important;
+  width: 199px !important;
+  border-radius: 30px !important;
+  font-size: 18px !important;
+  margin-bottom: 17px !important;
+}
+
+.join-to-home {
+}

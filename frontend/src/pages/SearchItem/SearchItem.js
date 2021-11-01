@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from "react";
+import "./Filter.css";
+import axios from "axios";
 import "./SearchItem.css";
 import "./SearchResult.css";
-import { Input } from "semantic-ui-react";
-import queryString from "query-string";
 import Filter from "./Filter";
-import "./Filter.css";
-// import product from "../../assets/image/product.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import queryString from "query-string";
+import { Input } from "semantic-ui-react";
+import { useLocation } from "react-router";
 import noImage from "../../assets/image/no-image.jpg";
+// import product from "../../assets/image/product.png";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SearchInput from "../../components/SearchInput/SearchInput";
+
 const SearchItem = ({ location, match }) => {
+  // 카테고리로 필터링 했을 때,
+  const location2 = useLocation();
+  const historyState = location2.state;
+  console.log(historyState);
+
   //Main.js의 SearchInput에서 넘어온 검색어(text)
   const query = queryString.parse(location.search);
   const text = query.text;

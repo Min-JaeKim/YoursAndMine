@@ -57,11 +57,13 @@
   height: 100%;
 }
 
-.hd-page-category-img {
-  width: 6%;
+.hd-category-img {
+  width: 30px;
+  height: 30px;
   position: relative;
-  right: 18px;
-  top: 1px;
+  bottom: 45px;
+  left: 370px;
+  cursor: pointer;
 }
 
 .header-icon {
