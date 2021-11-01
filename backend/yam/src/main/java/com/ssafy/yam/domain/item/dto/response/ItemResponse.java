@@ -23,6 +23,8 @@ public class ItemResponse {
 
     private int itemAreaCode;
     private LocalDateTime itemModifiedTime;
+    private int bookmarkCount;
+    private String bookmark;
 
 //    private int bookmarkCount;
 

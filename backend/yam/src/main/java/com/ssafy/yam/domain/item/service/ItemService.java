@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.item.service;
 
+import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     public ItemResponse getItemByItemId(int itemId){
         Item item = itemRepository.findItemByItemId(itemId);
@@ -26,6 +28,7 @@ public class ItemService {
                 .itemId(itemId)
                 .itemCategory(item.getItemCategory())
                 .itemName(item.getItemName())
+                .itemContent(item.getItemContent())
                 .itemPrice(item.getItemPrice())
                 .itemAddress(item.getItemAddress())
                 .itemAreaCode(item.getItemAreaCode())
@@ -41,6 +44,12 @@ public class ItemService {
                         .build()
         );
 
+        int bookmarkCnt = bookmarkRepository.countByItemId(itemId);
+        if(bookmarkCnt == 0)
+            response.setBookmark("N");
+        else
+            response.setBookmark("Y");
+        response.setBookmarkCount(bookmarkCnt);
 //        ItemResponse newResponse = new ItemResponse(item);
 
         return response;
