@@ -74,7 +74,8 @@
 section {
   display: flex !important;
   flex-direction: column;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
   position: relative;
   border-bottom: none;
   height: calc(100vh - 142px);
