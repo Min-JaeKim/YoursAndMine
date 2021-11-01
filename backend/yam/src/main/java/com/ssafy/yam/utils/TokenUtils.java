@@ -99,7 +99,7 @@ public final class TokenUtils {
 
     public static String getUserEmailFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
-        return (String) claims.get("email");
+        return (String) claims.get("userEmail");
     }
 
     public static boolean isSameUid(String header, String uid) {

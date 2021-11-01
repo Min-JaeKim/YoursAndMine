@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		//AuthenticationFilter에서 생성된 토큰으로부터 아이디와 비밀번호를 조회
 		final String userEmail = token.getName();
 		final String userPassword = (String) token.getCredentials();
-	
+
 		//UserDetailsService를 통해 DB에서 아이디로 사용자 조회
 		final MyUserDetails userDetails = (MyUserDetails) userDetailsService.loadUserByUsername(userEmail);
 

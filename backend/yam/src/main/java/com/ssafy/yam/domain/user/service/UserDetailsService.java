@@ -5,7 +5,6 @@ import com.ssafy.yam.domain.user.repository.UserRepository;
 import com.ssafy.yam.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,8 @@ public class UserDetailsService implements org.springframework.security.core.use
 	}
 
 	// 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 리턴
-	private UserDetails createUserDetails(MyUserDetails user) {
-		return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
-	}
+//	private UserDetails createUserDetails(MyUserDetails user) {
+//	private UserDetails createUserDetails(com.ssafy.yam.domain.user.entity.User user) {
+//		return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
+//	}
 }

@@ -2,7 +2,6 @@ package com.ssafy.yam.config;
 
 import com.ssafy.yam.auth.Filter.CustomAuthenticationFilter;
 import com.ssafy.yam.auth.Provider.CustomAuthenticationProvider;
-//import com.ssafy.yam.auth.Provider.JwtTokenProvider;
 import com.ssafy.yam.auth.handler.CustomLoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private final UserDetailsService userDetailsService;
-//    private final JwtTokenProvider jwtTokenProvider;
 
     // 정적 자원에 대해서는 Security 설정을 적용하지 않음.
     @Override
@@ -44,11 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/user/sign-up", "/user/login", "/user/authority").permitAll()
-//                .antMatchers("/api/v1/users/userTest").hasRole("USER")
-//                .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
+                .antMatchers("/user/sign-up", "/user/login", "/user/authority").permitAll()
+                .antMatchers("/api/v1/users/userTest").hasRole("USER")
+                .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
                 // 토큰을 활용하는 경우 모든 요청에 대해 접근이 가능하도록 함
-                .anyRequest().permitAll()
+//                .anyRequest().permitAll()
                 .and()
                 // form 기반의 로그인에 대해 비활성화 한다.
                 .formLogin().disable()
@@ -82,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    	handler.setDefaultTargetUrl("/user/login");
         return handler;
     }
-    
+//
 //    @Bean
 //    public CustomLoginFailureHandler customLoginFailureHandler() {
 //        return new CustomLoginFailureHandler();
