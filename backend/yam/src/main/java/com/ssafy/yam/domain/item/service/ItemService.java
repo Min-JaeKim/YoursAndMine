@@ -26,7 +26,7 @@ public class ItemService {
 
     public ItemResponse getItemByItemId(int itemId){
         Item item = itemRepository.findItemByItemId(itemId);
-        User owner = item.getSellerId();
+        User owner = item.getSeller();
         ItemResponse response = ItemResponse.builder()
                 .itemId(itemId)
                 .itemCategory(item.getItemCategory())

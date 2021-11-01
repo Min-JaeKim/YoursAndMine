@@ -40,7 +40,7 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sellerId")
-    private User sellerId;
+    private User seller;
 
     @Override
     public String toString() {
@@ -55,7 +55,7 @@ public class Item {
                 ", itemCreatedTime=" + itemCreatedTime +
                 ", itemModifiedTime=" + itemModifiedTime +
                 ", itemIsActive='" + itemIsActive + '\'' +
-                ", sellerId=" + sellerId +
+                ", seller=" + seller +
                 '}';
     }
 }
