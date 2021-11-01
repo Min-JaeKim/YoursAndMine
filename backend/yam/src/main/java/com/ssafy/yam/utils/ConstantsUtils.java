@@ -17,7 +17,7 @@ public class ConstantsUtils {
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
 	// MailSender
-	public static final String FROM_ADDRESS = "billige2021@gmail.com";
+	public static final String FROM_EMAIL_ADDRESS = "yam.ssafy@gmail.com";
 
 	public static final String SUCCESS = "success";
 
