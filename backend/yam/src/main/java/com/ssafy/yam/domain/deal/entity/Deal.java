@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,10 +22,10 @@ public class Deal {
     private int dealId;
 
     @Column(nullable = false)
-    private Date dealStartDate;
+    private LocalDate dealStartDate;
 
     @Column(nullable = false)
-    private Date dealEndDate;
+    private LocalDate dealEndDate;
     private int dealTotalPrice;
     private String dealStatus;
 
