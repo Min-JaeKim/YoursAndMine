@@ -12,12 +12,9 @@ import noImage from "../../assets/image/no-image.jpg";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SearchInput from "../../components/SearchInput/SearchInput";
+import { Form, Radio, Button } from "semantic-ui-react";
 
 const SearchItem = ({ location, match }) => {
-  // 카테고리로 필터링 했을 때,
-  const location2 = useLocation();
-  const historyState = location2.state;
-  console.log(historyState);
 
   //Main.js의 SearchInput에서 넘어온 검색어(text)
   const query = queryString.parse(location.search);
@@ -66,36 +63,48 @@ const SearchItem = ({ location, match }) => {
   return (
     <>
       <SearchInput />
-      <div className="filter">
-        <h4 onClick={onClickFilter}>
-          <FontAwesomeIcon icon={faFilter} /> 검색필터
-        </h4>
-        <hr></hr>
-      </div>
-      {!visible && (
-        <div className="search-result">
-          {searchItem &&
-            searchItem.map((item, idx) => {
-              return (
-                <div key={idx} className="search-result-item">
-                  <div>
-                    <img
-                      src={item.image ? item.image : noImage}
-                      className="wish-item-icon"
-                      alt="product"
-                    ></img>
-                  </div>
-                  <div>
-                    <h3>{item.itemname}</h3>
-                    <p>{item.position}</p>
-                    <h4>{item.price} BLI</h4>
-                  </div>
-                </div>
-              );
-            })}
+      <div className="search-filter">
+
+      <FontAwesomeIcon className="search-filter-icon" icon={faFilter} />
+      <h4 className="search-filter-text">정렬</h4>
+        <div>
+
+        <Form onSubmit={handleSubmit} className="radio-group">
+          {/* <Form.Field>
+          Selected value: <b>{inputStatus}</b>
+        </Form.Field>
+         */}
+          <Form.Field>
+            <Radio className="search-radio"
+              id="radio1"
+              label="대여순"
+              name="radioGroup"
+              // checked={inputStatus === "대여순"}
+              // onClick={() => handleClickRadioButton("대여순")}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Radio className="search-radio"
+              id="radio2"
+              label="북마크순"
+              name="radioGroup"
+              // checked={inputStatus === "북마크순"}
+              // onClick={() => handleClickRadioButton("북마크순")}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Radio className="search-radio"
+              id="radio3"
+              label="최신순"
+              name="radioGroup"
+              // checked={inputStatus === "최신순"}
+              // onClick={() => handleClickRadioButton("최신순")}
+            />
+          </Form.Field>
+          <hr />
+        </Form>
         </div>
-      )}
-      {visible && <Filter />}
+      </div>
     </>
   );
 };
