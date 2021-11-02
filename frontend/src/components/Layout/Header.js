@@ -35,6 +35,7 @@ const Header = (props) => {
           <Link to="/searchplace">{address}</Link>
           
           <img className="hd-location-category-img" src={categoryImg} alt="category-image" onClick={onClickCategory}/>
+          {/* <img className="hd-category-img" src={categoryImg} alt="category-image" onClick={onClickCategory}/> */}
         </div>
       ) : (
         <div className="hd-pages">
@@ -48,7 +49,6 @@ const Header = (props) => {
             <CurrentPage url={props.location.pathname} />
           </div>
           
-          <img className="hd-page-category-img" src={categoryImg} alt="category-image" onClick={onClickCategory}/>
         </div>
       )}
     </div>

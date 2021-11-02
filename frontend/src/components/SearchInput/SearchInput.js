@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { Input } from "semantic-ui-react";
 import { useHistory } from "react-router";
+import { useLocation } from "react-router";
+import './SearchInput.css'
+
 const SearchInput = () => {
+  // 카테고리로 필터링 했을 때,
+  const location = useLocation();
+  const historyState = location.state;
+  console.log(historyState);
+
   const history = useHistory();
   const [inputText, setInputText] = useState("");
   const onChange = (e) => {
@@ -14,6 +22,10 @@ const SearchInput = () => {
   };
   return (
     <>
+    <div className="input-tag">
+        <div className="input-tag-text">식기</div>
+        <div className="input-tag-cancel">X</div>
+    </div>
       <form className="inputForm" onSubmit={handleSubmit}>
         <Input
           className="main-search"
