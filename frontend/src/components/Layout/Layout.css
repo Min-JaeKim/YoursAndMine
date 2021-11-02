@@ -8,7 +8,7 @@
   position: relative;
   width: 100%;
   max-width: 420px;
-  height: 100%;
+  /* height: 100%; */
   border: 1px solid rgba(225, 225, 225, 1);
   border-bottom: none;
   border-top: none;
@@ -78,11 +78,14 @@ section {
   display: flex !important;
   flex-direction: column;
   overflow-x: hidden;
+  min-height: calc(100vh-142px);
+  /* min-height: calc(100% - 142px); */
+  min-height: 100%;
   /* overflow-y: scroll;
   -webkit-overflow-scrolling: touch; */
   position: relative;
   border-bottom: none;
-  height: calc(100vh - 142px);
+  /* height: calc(100vh - 142px); */
 }
 
 .footer {

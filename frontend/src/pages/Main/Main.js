@@ -148,7 +148,6 @@ const Main = () => {
           {/* <h3>빌리지하세요</h3> */}
         </div>
       </Slider>
-
       <div className="main-near-product">
         <div className="main-current-rent-header">
           <h4>가까운 위치에 있는 물건 소개 ✌🏻</h4>
@@ -159,7 +158,6 @@ const Main = () => {
 
         <Slider {...responsiveSettings}>{productCarousel(nearProduct)}</Slider>
       </div>
-
       <div className="main-current-rent">
         <div className="main-current-rent-header">
           <h4>최근에 대여했어요 ✌🏻</h4>
@@ -170,6 +168,90 @@ const Main = () => {
 
         <Slider {...responsiveSettings2}>{productCarousel(rentProduct)}</Slider>
       </div>
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
+      <br />
+      줄바꿈
     </div>
   );
 };
