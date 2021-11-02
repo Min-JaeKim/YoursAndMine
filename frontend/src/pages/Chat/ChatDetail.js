@@ -8,7 +8,7 @@ function ChatDetail({ user }) {
   return (
     <Link to={{ pathname: `/chat/` + user.username, state: { profileImg: user.profileImg } }}>
       <div className="user-detail">
-        <div class="profile-img">
+        <div className="profile-img">
           {user.profileImg ? (
             <img src={user.profileImg} alt="profile"></img>
           ) : (

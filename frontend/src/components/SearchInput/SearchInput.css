@@ -1,0 +1,36 @@
+.search-input {
+  display: inline-flex;
+  margin: 0 auto;
+  padding: 5px;
+  width: 400px;
+  border: solid 1px #497c5f;
+  border-radius: 30px;
+  margin: 10px;
+}
+
+.search-input > input {
+  width: 200px;
+  border: none;
+  outline: none;
+}
+
+.input-tag {
+  color: #497c5f;
+  width: 78px;
+  border: solid 1px #497c5f;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 3px;
+  margin-right: 9px;
+}
+
+.input-tag-text {
+  font-size: 17px;
+}
+
+.input-tag-cancel {
+  cursor: pointer;
+}

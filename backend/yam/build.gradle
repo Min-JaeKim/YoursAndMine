@@ -35,19 +35,32 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    runtimeOnly 'mysql:mysql-connector-java'
 
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    // L
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     // JWT
-    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // MailSender
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.0.1.RELEASE'
+
+    // Amazon AWS S3
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.25'
 }
 
 test {
@@ -56,16 +69,16 @@ test {
 
 //리액트 프로젝트 경로
 //$projectDir은 스프링 부트 root 경로
-def webappDir = "$projectDir/../../frontend"
-//def webappDir = "../../frontend"
-
-task appNpmInstall(type: NpmTask) {
-    workingDir = file("${webappDir}")
-    args = ["run", "build"]
-}
-task copyWebApp(type: Copy) {
-    from '../../frontend/build'
-    into "build/resources/main/static"
-}
-copyWebApp.dependsOn(appNpmInstall)
-compileJava.dependsOn(copyWebApp)
+//def webappDir = "$projectDir/../../frontend"
+////def webappDir = "../../frontend"
+//
+//task appNpmInstall(type: NpmTask) {
+//    workingDir = file("${webappDir}")
+//    args = ["run", "build"]
+//}
+//task copyWebApp(type: Copy) {
+//    from '../../frontend/build'
+//    into "build/resources/main"
+//}
+//copyWebApp.dependsOn(appNpmInstall)
+//compileJava.dependsOn(copyWebApp)

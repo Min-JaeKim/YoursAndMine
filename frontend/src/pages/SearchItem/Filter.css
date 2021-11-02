@@ -1,15 +1,27 @@
 .filter hr {
   border-top: 1px solid #c4c4c4;
 }
-.filter {
-  margin: 20px;
+.search-filter {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
 }
+
+.search-filter-icon {
+  margin: 10px;
+}
+.search-radio {
+  margin: 0 6px;
+}
+
 .price-range {
   width: 40%;
 }
 .radio-group {
   display: flex;
   justify-content: space-around;
+  margin-left: 45px;
 }
 
 .inputForm {

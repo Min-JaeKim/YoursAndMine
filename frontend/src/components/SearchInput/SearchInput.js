@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import { Input } from "semantic-ui-react";
 import { useHistory } from "react-router";
+import { useLocation } from "react-router";
+import './SearchInput.css'
+
 const SearchInput = () => {
+  // 카테고리로 필터링 했을 때,
+  const location = useLocation();
+  const historyState = location.state;
+  console.log(historyState);
+
   const history = useHistory();
+
   const [inputText, setInputText] = useState("");
+  
   const onChange = (e) => {
     setInputText(e.target.value);
   };
@@ -12,9 +22,21 @@ const SearchInput = () => {
     history.push(`/searchitem?text=${inputText}`);
     window.location.replace(`/searchitem?text=${inputText}`); //새로고침
   };
+
+  const category = '식기';
+
   return (
     <>
-      <form className="inputForm" onSubmit={handleSubmit}>
+    <div className="search-input">
+      <div className="input-tag">
+          <div className="input-tag-text">식기</div>
+          <div className="input-tag-cancel">X</div>
+      </div>
+      <input 
+      type="text"
+      placeholder="상품명을 입력해주세요" />
+    </div>
+      {/* <form className="inputForm" onSubmit={handleSubmit}>
         <Input
           className="main-search"
           icon="search"
@@ -24,7 +46,7 @@ const SearchInput = () => {
           value={inputText}
         />
         <br />
-      </form>
+      </form> */}
     </>
   );
 };
