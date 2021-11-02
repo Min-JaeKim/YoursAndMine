@@ -68,7 +68,7 @@ test {
 }
 
 //리액트 프로젝트 경로
-$projectDir은 스프링 부트 root 경로
+//$projectDir은 스프링 부트 root 경로
 def webappDir = "$projectDir/../../frontend"
 //def webappDir = "../../frontend"
 
