@@ -3,9 +3,10 @@
   margin: 0 auto;
   padding: 5px;
   width: 400px;
-  border: solid 1px #497c5f;
+  border: solid 2px #497c5f;
   border-radius: 30px;
   margin: 10px;
+  padding: 9px;
 }
 
 .search-input > input {
@@ -16,6 +17,17 @@
 
 .input-tag {
   color: #497c5f;
+  border: solid 1px#497c5f;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 3px 11px;
+  margin-right: 12px;
+  clear: both;
+  float: left;
+  justify-content: space-between;
+  /* color: #497c5f;
   width: 78px;
   border: solid 1px #497c5f;
   border-radius: 30px;
@@ -24,7 +36,7 @@
   align-items: center;
   justify-content: space-evenly;
   padding: 3px;
-  margin-right: 9px;
+  margin-right: 9px; */
 }
 
 .input-tag-text {
@@ -33,4 +45,5 @@
 
 .input-tag-cancel {
   cursor: pointer;
+  margin: 0 3px;
 }

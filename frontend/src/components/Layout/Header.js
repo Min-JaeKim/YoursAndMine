@@ -11,7 +11,13 @@ const Header = (props) => {
   const history = useHistory();
 
   const onClickCategory = () => {
-    history.push('/category');
+    // history.push('/category');
+    history.push({
+      pathname: "/category",
+      state: {
+        flag: 2,
+      },
+    });
   }
 
   const beforePage = () => {

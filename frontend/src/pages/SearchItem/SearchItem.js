@@ -15,14 +15,26 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 import { Form, Radio, Button } from "semantic-ui-react";
 
 const SearchItem = ({ location, match }) => {
-
+  // category 선택 후, 검색하려는 목적
+  const category = useLocation();
+  // const historyState = category.state;
+  
   //Main.js의 SearchInput에서 넘어온 검색어(text)
   const query = queryString.parse(location.search);
   const text = query.text;
-
+  
   //검색 Input tag관련
   const [inputText, setInputText] = useState("");
   const [word, setWord] = useState("");
+  const [historyState, setHistoryState] = useState("");
+  console.log(343444)
+  console.log(historyState)
+  //검색목록
+  const [searchItem, setSearchItem] = useState([]);
+  let [searchList, setSearchList] = useState([]);
+  //검색필터 토글
+  const [visible, setVisible] = useState(false);
+
   const onChange = (e) => {
     setInputText(e.target.value);
   };
@@ -32,9 +44,6 @@ const SearchItem = ({ location, match }) => {
     setInputText(e.target.value);
   };
 
-  //검색목록
-  const [searchItem, setSearchItem] = useState([]);
-  let [searchList, setSearchList] = useState([]);
 
   useEffect(() => {
     axios
@@ -54,15 +63,23 @@ const SearchItem = ({ location, match }) => {
       });
   }, [inputText]);
 
-  //검색필터 토글
-  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (category !== 'null') {
+      setHistoryState(category.state.category);
+    }
+  }, [])
+
   const onClickFilter = () => {
     setVisible(!visible);
   };
 
   return (
     <>
-      <SearchInput />
+      { historyState !== '' && historyState !== undefined ? (
+        <SearchInput category={historyState.category}/>
+      ) : (
+        <SearchInput />
+      )}
       <div className="search-filter">
 
       <FontAwesomeIcon className="search-filter-icon" icon={faFilter} />
