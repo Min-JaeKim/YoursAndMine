@@ -4,6 +4,7 @@ import com.ssafy.yam.domain.deal.dto.response.DealResponse;
 import com.ssafy.yam.domain.deal.dto.response.DealUnavailableResponse;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
+import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.service.ItemService;
@@ -38,12 +39,9 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemDetail);
     }
 
-//    @GetMapping()
-//    public ResponseEntity<?> getItemList(){
-//        List<ItemResponse> items = itemService.findAllBy();
-//        for(int i = 0; i < items.size(); i++){
-//            System.out.println(items.get(i));
-//        }
-//        return null;
-//    }
+    @GetMapping("/page={pageNum}")
+    public ResponseEntity<List<ItemListResponse>> getItemList(@PathVariable int pageNum){
+        List<ItemListResponse> itemList = itemService.getItemList();
+        return ResponseEntity.status(200).body(itemList);
+    }
 }

@@ -1,8 +1,5 @@
 package com.ssafy.yam.domain.item.dto.response;
 
-
-import com.ssafy.yam.domain.item.entity.Item;
-import com.ssafy.yam.domain.user.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
