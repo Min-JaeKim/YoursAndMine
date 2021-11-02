@@ -11,7 +11,9 @@ const SearchInput = () => {
   console.log(historyState);
 
   const history = useHistory();
+
   const [inputText, setInputText] = useState("");
+  
   const onChange = (e) => {
     setInputText(e.target.value);
   };
@@ -20,13 +22,21 @@ const SearchInput = () => {
     history.push(`/searchitem?text=${inputText}`);
     window.location.replace(`/searchitem?text=${inputText}`); //새로고침
   };
+
+  const category = '식기';
+
   return (
     <>
-    <div className="input-tag">
-        <div className="input-tag-text">식기</div>
-        <div className="input-tag-cancel">X</div>
+    <div className="search-input">
+      <div className="input-tag">
+          <div className="input-tag-text">식기</div>
+          <div className="input-tag-cancel">X</div>
+      </div>
+      <input 
+      type="text"
+      placeholder="상품명을 입력해주세요" />
     </div>
-      <form className="inputForm" onSubmit={handleSubmit}>
+      {/* <form className="inputForm" onSubmit={handleSubmit}>
         <Input
           className="main-search"
           icon="search"
@@ -36,7 +46,7 @@ const SearchInput = () => {
           value={inputText}
         />
         <br />
-      </form>
+      </form> */}
     </>
   );
 };
