@@ -73,9 +73,7 @@ function ChatList() {
   return (
     <div>
       {users.map((user) => (
-        <Link to={{ pathname: `/item/` + user.username, state: { profileImg: user.profileImg } }}>
-          <ChatDetatil user={user} key={user.id}></ChatDetatil>
-        </Link>
+        <ChatDetatil user={user} key={user.id}></ChatDetatil>
       ))}
     </div>
   );

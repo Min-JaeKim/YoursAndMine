@@ -40,23 +40,28 @@ const Main = () => {
     axios
       .get(`/user/item/take`)
       .then((response) => {
-        console.log(response);
+        setRentProduct(response.data);
+        if (response.data.length >= 3) {
+          setRentProductCount(3);
+        } else {
+          setRentProduct(response.data.length);
+        }
       })
       .catch((error) => {});
   }, []);
 
-  const NextArrow = (props) => {
-    const { className, style, onClick } = props;
-    return (
-      <img
-        src={arrow}
-        alt="arrow"
-        className={className}
-        style={{ ...style, display: "block" }}
-        onClick={onClick}
-      />
-    );
-  };
+  // const NextArrow = (props) => {
+  //   const { className, style, onClick } = props;
+  //   return (
+  //     <img
+  //       src={arrow}
+  //       alt="arrow"
+  //       className={className}
+  //       style={{ ...style, display: "block" }}
+  //       onClick={onClick}
+  //     />
+  //   );
+  // };
   const settings = {
     dots: true,
     infinite: true,
@@ -72,7 +77,7 @@ const Main = () => {
     slidesToShow: nearProdcutCount,
     slidesToScroll: nearProdcutCount,
     initialSlide: 0,
-    nextArrow: <NextArrow />,
+    // nextArrow: <NextArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -91,7 +96,7 @@ const Main = () => {
     slidesToShow: rentProductCount,
     slidesToScroll: rentProductCount,
     initialSlide: 0,
-    nextArrow: <NextArrow />,
+    // nextArrow: <NextArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -107,7 +112,7 @@ const Main = () => {
   const productCarousel = (productItem) => {
     return productItem.map((product, idx) => {
       return (
-        <div key={idx}>
+        <div className="product-carousel-box" key={idx}>
           <ThumbNail product={product} />
         </div>
       );
@@ -119,19 +124,28 @@ const Main = () => {
       <SearchInput />
       <Slider {...settings}>
         <div className="carousel-page">
-          <h3>한 번 쓰고 말건데</h3>
+          <img alt="thumb-nail" src="https://picsum.photos/1000?random=1" />
+          {/* <h3>한 번 쓰고 말건데</h3> */}
         </div>
         <div className="carousel-page">
-          <h3>사기는 아깝고</h3>
+          <img alt="thumb-nail" src="https://picsum.photos/1000?random=2" />
+
+          {/* <h3>사기는 아깝고</h3> */}
         </div>
         <div className="carousel-page">
-          <h3>안쓰는 물건인데</h3>
+          <img alt="thumb-nail" src="https://picsum.photos/1000?random=3" />
+
+          {/* <h3>안쓰는 물건인데</h3> */}
         </div>
         <div className="carousel-page">
-          <h3>버리기는 아까울 때</h3>
+          <img alt="thumb-nail" src="https://picsum.photos/1000?random=4" />
+
+          {/* <h3>버리기는 아까울 때</h3> */}
         </div>
         <div className="carousel-page">
-          <h3>빌리지하세요</h3>
+          <img alt="thumb-nail" src="https://picsum.photos/1000?random=5" />
+
+          {/* <h3>빌리지하세요</h3> */}
         </div>
       </Slider>
 

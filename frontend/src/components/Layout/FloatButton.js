@@ -3,10 +3,15 @@ import up from "../../assets/icons/arrowUp.png";
 const FloatButton = (props) => {
   // 채팅방 입장 시 Footer 제거
   const [pathname, setPathname] = useState();
+
   useEffect(() => {
     const url = props.location.pathname.split("/");
-    if (url.length >= 2 && url[1] === "chat") {
+    if ((url.length >= 2 && url[1] === "chat") || url[1] === "detail") {
+      // floatButton 안띄울 곳
       setPathname(url[2]);
+    } else {
+      // 나머지는 띄움
+      setPathname();
     }
   }, [props.location.pathname]);
 
