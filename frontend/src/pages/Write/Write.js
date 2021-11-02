@@ -120,7 +120,7 @@ const Write = () => {
       </input>
       </div>
       <div className="write-category">
-        <Category category={category} getCategory={getCategory} />
+        <Category flag="1" category={category} getCategory={getCategory} />
       </div>
       <Grid divided="vertically">
         <Grid.Row columns={2}>
