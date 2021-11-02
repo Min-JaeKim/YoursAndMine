@@ -3,6 +3,7 @@ package com.ssafy.yam.domain.item.service;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
+import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
@@ -10,6 +11,7 @@ import com.ssafy.yam.domain.item.repository.ItemRepository;
 
 import com.ssafy.yam.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,4 +86,5 @@ public class ItemService {
         }
         return response;
     }
+
 }
