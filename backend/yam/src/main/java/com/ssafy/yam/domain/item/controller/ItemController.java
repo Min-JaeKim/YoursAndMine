@@ -49,27 +49,9 @@ public class ItemController {
     @PostMapping()
     public ResponseEntity<?> createItem(@RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImages,
                                         @RequestPart(value = "itemCreateRequest") ItemCreateRequest itemCreateRequest){
-        System.out.println(itemImages.size());
-        System.out.println(itemCreateRequest);
-
         itemCRUDService.saveItem(itemImages, itemCreateRequest);
 
-//        int vaildTokenStatusValue = authService.isValidToken(accessToken);
-
-//        if(vaildTokenStatusValue == 200) {
-//            String[] spitToken = accessToken.split(" ");
-//            UserRes userRes = userService.findUserByAccessToken(spitToken[1]);
-//            videoInsertPostReq.setAccountEmail(userRes.getAccountEmail());
-//            VideoInsertPostRes videoInsertPostRes = videoService.insertVideo(videoInsertPostReq, thumbnailImage);
-//            userVideoService.joinUserVideo(userRes.getAccountEmail(), videoInsertPostRes.getVideoId());
-//            return new ResponseEntity<>(videoInsertPostRes, HttpStatus.CREATED);
-//        } else if(vaildTokenStatusValue == 401) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

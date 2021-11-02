@@ -52,9 +52,9 @@ public class ItemCRUDService {
                 String userSet = itemImage.getOriginalFilename() + "(" + LocalDate.now().toString() + ")";
                 try {
                     imageUrl = s3UploadUtils.upload(itemImage, "item", userSet);
-                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 success");
+//                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 success");
                 } catch (IOException e) {
-                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 fail");
+//                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 fail");
                     e.printStackTrace();
                 }
                 Image image = new Image();
