@@ -1,32 +1,25 @@
 package com.ssafy.yam.domain.chat.controller;
 
-import com.ssafy.yam.domain.chat.dto.ChatRoomDTO;
-import com.ssafy.yam.domain.chat.repository.ChatRoomRepository;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ssafy.yam.domain.chat.dto.ChatMessageDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/chat")
-@Log4j2
+@Controller
+@RequiredArgsConstructor
 public class ChatController {
 
-    @Autowired
-    private ChatRoomRepository repository;
+    private final SimpMessagingTemplate template;
 
-    @GetMapping("/rooms")
-    public ResponseEntity<List<ChatRoomDTO>> rooms() {
+    @MessageMapping("/chat/enter")
+    public void enter(ChatMessageDTO messageDTO){
+        messageDTO.setMessage(messageDTO.getWriter() + "님이 채팅방에 입장하였습니다.");
+        template.convertAndSend("/sub/chat/room/" + messageDTO.getRoomdId(), messageDTO);
+    }
 
-        log.info("# All Chat Rooms");
-
-        List<ChatRoomDTO> allRooms = repository.findAllRooms();
-
-        return new ResponseEntity<List<ChatRoomDTO>>(allRooms, HttpStatus.OK);
+    @MessageMapping("/chat/message")
+    public void message(ChatMessageDTO messageDTO) {
+        template.convertAndSend("/sub/chat/room/" + messageDTO.getRoomdId(), messageDTO);
     }
 }
