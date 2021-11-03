@@ -7,8 +7,9 @@
 .layout {
   position: relative;
   width: 100%;
+  /* height: 100vh; */
   max-width: 420px;
-  /* height: 100%; */
+  height: 100%;
   border: 1px solid rgba(225, 225, 225, 1);
   border-bottom: none;
   border-top: none;
@@ -72,15 +73,6 @@
   margin-right: 15px;
   width: 30px;
   cursor: pointer;
-}
-
-section {
-  display: flex !important;
-  flex-direction: column;
-  overflow-x: hidden;
-  min-height: 100%;
-  position: relative;
-  border-bottom: none;
 }
 
 .footer {
@@ -203,6 +195,15 @@ section {
   .layout {
     margin-right: 40px;
   }
+
+  section {
+    display: flex !important;
+    flex-direction: column;
+    overflow: scroll;
+    position: relative;
+    border-bottom: none;
+    height: calc(100vh - 142px);
+  }
   .sidebar {
     display: flex;
     flex-direction: column;
@@ -225,6 +226,14 @@ section {
     width: 80px;
     font-size: 12px;
   }
+
+  section {
+    display: flex !important;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    border-bottom: none;
+  }
 }
 
 @media only screen and (min-width: 320px) and (max-width: 1079px) {
@@ -232,7 +241,13 @@ section {
     width: 60px;
     font-size: 12px;
   }
-
+  section {
+    display: flex !important;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    border-bottom: none;
+  }
   .footer-desc {
     font-size: 10px;
   }
@@ -246,5 +261,13 @@ section {
   .nav-bottom-items {
     width: 40px;
     font-size: 10px;
+  }
+
+  section {
+    display: flex !important;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    border-bottom: none;
   }
 }

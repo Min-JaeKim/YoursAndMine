@@ -19,7 +19,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import FindPwd from "./pages/FindPwd/FindPwd";
 import UserEdit from "./pages/UserEdit/UserEdit";
 import TradeLog from "./pages/TradeLog/TradeLog";
-import Charge from "./pages/Charge/Charge";
+// import Charge from "./pages/Charge/Charge";
 import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
 import RentUserList from "./pages/RentUserList/RentUserList";
@@ -31,6 +31,7 @@ import Product from "./pages/Product/Product";
 import Category from "./pages/Category/Category";
 import Join from "./pages/Join/Join";
 import ScrollToTop from "./components/Layout/ScrollToTop";
+import Test from "./pages/Product/Test";
 
 function App() {
   return (
@@ -54,7 +55,7 @@ function App() {
             <PrivateRouter path="/useredit" component={UserEdit} exact />
             <PrivateRouter path="/tradelog" component={TradeLog} exact />
             <PrivateRouter path="/myproduct" component={MyProduct} exact />
-            <PrivateRouter path="/charge" component={Charge} exact />
+            {/* <PrivateRouter path="/charge" component={Charge} exact /> */}
             {/* <PrivateRouter path="/wish" component={Wish} exact /> */}
             <PrivateRouter path="/notice" component={Notice} exact />
             <PrivateRouter path="/product" component={Product} exact />
@@ -64,6 +65,8 @@ function App() {
             <PrivateRouter path="/rentuser/:pNo" component={RentUserList} exact />
             <PrivateRouter path="/tradedetail/:cNo" component={TradeDetail} exact />
             <PrivateRouter path="/myschedule" component={MySchedule} exact />
+
+            <PrivateRouter path="/test" component={Test} exact />
           </Layout>
         </Switch>
       </Router>
