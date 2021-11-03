@@ -64,13 +64,17 @@ const NavBottom = (props) => {
             </div>
           </Link>
           <Link to="/notice">
-            <div className="nav-bottom-items">
-              {props.location.pathname === "/notice" ? (
-                <img src={notificationOn} alt="starIconOn" className="nav-bottom-like" />
-              ) : (
-                <img src={notification} alt="starIcon" className="nav-bottom-like" />
-              )}
-              <div>알림</div>
+            <div className="nb-notification-all">
+
+              <div className="nav-bottom-items">
+                {props.location.pathname === "/notice" ? (
+                  <img src={notificationOn} alt="starIconOn" className="nav-bottom-like" />
+                ) : (
+                  <img src={notification} alt="starIcon" className="nav-bottom-like" />
+                )}
+                <div>알림</div>
+              </div>
+              <div className="nb-notification-dot"></div> {/* 새로운 알림 표시 */}
             </div>
           </Link>
           <Link to="/mypage">
