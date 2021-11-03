@@ -2,7 +2,8 @@
   margin: 25px;
 }
 .write-category {
-  padding: 0px 10px 0px 10px;
+  position: relative;
+  bottom: 25px;
 }
 .item-name {
   width: 100%;

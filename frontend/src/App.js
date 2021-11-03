@@ -30,11 +30,13 @@ import MySchedule from "./pages/MySchedule/MySchedule";
 import Product from "./pages/Product/Product";
 import Category from "./pages/Category/Category";
 import Join from "./pages/Join/Join";
+import ScrollToTop from "./components/Layout/ScrollToTop";
 
 function App() {
   return (
     <div className="App">
       <Router>
+        <ScrollToTop />
         <Switch>
           <Layout>
             <PublicRouter path="/" component={Main} exact />
