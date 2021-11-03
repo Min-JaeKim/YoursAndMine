@@ -166,6 +166,20 @@ section {
   margin-bottom: 5px;
 }
 
+.nb-notification-all {
+  display: flex;
+}
+
+.nb-notification-dot {
+  width: 7px;
+  height: 7px;
+  height: 0 auto;
+  background-color: #eb3223;
+  border-radius: 60px;
+  position: absolute;
+  right: 105px;
+}
+
 .sidebar {
   display: none;
 }
