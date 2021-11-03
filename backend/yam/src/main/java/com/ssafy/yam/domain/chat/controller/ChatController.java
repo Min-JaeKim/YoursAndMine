@@ -15,11 +15,11 @@ public class ChatController {
     @MessageMapping("/chat/enter")
     public void enter(ChatMessageDTO messageDTO){
         messageDTO.setMessage(messageDTO.getWriter() + "님이 채팅방에 입장하였습니다.");
-        template.convertAndSend("/sub/chat/room/" + messageDTO.getRoomdId(), messageDTO);
+        template.convertAndSend("/topic/chat/room/" + messageDTO.getRoomdId(), messageDTO);
     }
 
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO messageDTO) {
-        template.convertAndSend("/sub/chat/room/" + messageDTO.getRoomdId(), messageDTO);
+        template.convertAndSend("/topic/chat/room/" + messageDTO.getRoomdId(), messageDTO);
     }
 }
