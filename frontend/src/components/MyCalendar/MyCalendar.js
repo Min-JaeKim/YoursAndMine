@@ -16,8 +16,8 @@ const MyCalendar = () => {
 	const [selectMonth, setSelectMonth] = useState('');
 	const [selectDay, setSelectDay] = useState('');
 
-	const returnDate = "29";
-	const rentDate = ["26", "27", "28"];
+	const returnDate = "3";
+	const rentDate = ["1", "2"];
 	// const returnDate = [11, 23, 29]
 
   const today = getMoment;
@@ -35,16 +35,21 @@ const MyCalendar = () => {
 			setDateStyle(e.target);
 		}
 		if (e.target.firstElementChild !== null) {
-			setDateStyle(e.target.firstElementChild);
-			e.target.firstElementChild.style.backgroundImage = `url(${ selectDate })`;
+			let tmp = e.target.firstElementChild;
+			let childNode;
+			while (tmp !== null){
+				childNode = tmp;
+				tmp = childNode.firstElementChild;
+			}
+			setDateStyle(childNode);
+			childNode.style.backgroundImage = `url(${ selectDate })`;
+			// setDateStyle(e.target.firstElementChild);
+			// e.target.firstElementChild.style.backgroundImage = `url(${ selectDate })`;
 		} else {
 			setDateStyle(e.target);
 			e.target.style.backgroundImage = `url(${ selectDate })`;
 		}
 	}
-
-const tod = moment().format('MMDD');
-console.log(tod);
 
 const calendarArr=()=>{
 
@@ -56,26 +61,56 @@ const calendarArr=()=>{
 				{
 					Array(7).fill(0).map((data, index) => {
 						let days = today.clone().startOf('year').week(week).startOf('week').add(index, 'day'); //d로해도되지만 직관성
-						// 나중에 한자리수 일자 조정할 것.
+						let day = days.format('D');
+						if (day.length == 1){
+							day = '\u00A0' + day;
+						}
 						if(moment().format('YYYYMMDD') === days.format('YYYYMMDD')){
-							return(
-									<td key={index} className="today-box" >
-										<span className="">{days.format('D')}</span>
+							// 대여 중인 날일 때,
+							if (rentDate.includes(days.format('D'))){
+								return(
+									<td key={index} className="today-box" onClick={onClickDate}>
+										<div className="return-date-set">
+											<span >{day}</span>
+											{/* <span className={`${days.format('D')}`}>{days.format('D')}</span> */}
+											<img className="date-check" src={rentDatePic} alt="rent-date"/>
+										</div> 
 									</td>
-							);
+								);
+							} else if (days.format('D') === returnDate) {
+								// 회수 날일 때
+									return(
+										<td key={index} className="today-box" onClick={onClickDate}>
+											<div className="return-date-set">
+												<span>{day}</span>
+												<img className="date-check" src={returnDatePic} alt="retrun-date"/>
+											</div>
+										</td>
+									);
+							} else {
+								// 아무 날도 아닐 때
+									return(
+											<td key={index} className="today-box" onClick={onClickDate}>
+												<span>{day}</span>
+												{/* <span className="">{days.format('D')}</span> */}
+											</td>
+									);
+							}
 						}else if(days.format('MM') !== today.format('MM')){
 							return(
 									<td key={index} >
 										<td key={index} >
-										<span className=""></span>
+										<span ></span>
 									</td>
 									</td>
 							);
 						} else if (rentDate.includes(days.format('D'))){
+						// } else if (rentDate.includes(days.format('D'))){
 							return(
 								<td key={index} className="available-date-box" onClick={onClickDate}>
 										<div className="return-date-set">
-											<span className={`${days.format('D')}`}>{days.format('D')}</span>
+											<span >{day}</span>
+											{/* <span className={`${days.format('D')}`}>{days.format('D')}</span> */}
 											<img className="date-check" src={rentDatePic} alt="rent-date"/>
 										</div> 
 								</td>
@@ -86,11 +121,14 @@ const calendarArr=()=>{
 										
 										{ 
 											days.format('D') === returnDate ?
+											// days.format('D') === returnDate ?
 											<div className="return-date-set">
-												<span className={`${days.format('D')}`} >{days.format('D')}</span>
+												<span className={`${days.format('D')}`} >{day}</span>
+												{/* <span className={`${days.format('D')}`} >{days.format('D')}</span> */}
 												<img className="date-check" src={returnDatePic} alt="retrun-date"/>
 											</div> :
-											<span >{days.format('D')}</span>
+											<span >{day}</span>
+											// <span >{days.format('D')}</span>
 										}
 									</td>
 							);

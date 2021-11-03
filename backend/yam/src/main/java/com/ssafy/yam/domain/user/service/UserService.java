@@ -2,6 +2,11 @@ package com.ssafy.yam.domain.user.service;
 
 //import com.ssafy.yam.auth.Provider.JwtTokenProvider;
 import com.ssafy.yam.auth.Provider.RandomSaltProvider;
+import com.ssafy.yam.domain.deal.entity.Deal;
+import com.ssafy.yam.domain.deal.repository.DealRepository;
+import com.ssafy.yam.domain.image.repository.ImageRepository;
+import com.ssafy.yam.domain.item.entity.Item;
+import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.dto.request.UserRequestDto;
 import com.ssafy.yam.domain.user.dto.response.UserResponseDto;
 import com.ssafy.yam.domain.user.entity.User;
@@ -11,6 +16,7 @@ import com.ssafy.yam.utils.ResponseUtils;
 import com.ssafy.yam.utils.S3UploadUtils;
 import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Collections;
+import java.util.*;
 
 import static com.ssafy.yam.utils.ConstantsUtils.FROM_EMAIL_ADDRESS;
 
@@ -37,20 +43,24 @@ import static com.ssafy.yam.utils.ConstantsUtils.FROM_EMAIL_ADDRESS;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final DealRepository dealRepository;
+    private final ItemRepository itemRepository;
+    private final ImageRepository imageRepository;
     private final ResponseUtils response;
     private final BCryptPasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final ModelMapper modelMapper;
     private RandomSaltProvider randomSaltProvider;
-    //    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    @Transactional
     public ResponseEntity<?> signUp(UserRequestDto.SignUp signUp) {
         if(userRepository.existsByUserEmail(signUp.getUserEmail())) {
             return response.fail("이미 회원가입된 email 입니다.", HttpStatus.BAD_REQUEST);
         }
 
         String salt = randomSaltProvider.getNextSalt().toString();
-        System.out.println("salt : " + salt);
 
         User user = User.builder()
                 .userNickname(signUp.getUserNickname())
@@ -91,12 +101,11 @@ public class UserService {
         return userRepository.existsByUserEmail(userEmail);
     }
 
-    public UserResponseDto.sendEmailResDto sendEmail(String userEmail) {
-        UserResponseDto.sendEmailResDto sendEmailResDto = new UserResponseDto.sendEmailResDto();
+    public UserResponseDto.SendEmailResDto sendEmail(String userEmail) {
+        UserResponseDto.SendEmailResDto sendEmailResDto = new UserResponseDto.SendEmailResDto();
 
         // 인증번호 생성
         String key = certificationNumberGenerator();
-        System.out.println(key);
         // 메일 생성
         UserResponseDto.EmailResDto mail = createEmail(userEmail, key);
         // 메일 전송
@@ -146,8 +155,8 @@ public class UserService {
     private S3UploadUtils s3UploadUtils;
 
     @Transactional
-    public UserResponseDto.modifyProfileResDto modifyProfile(String token, MultipartFile userImage, String userNickname) {
-        UserResponseDto.modifyProfileResDto modifyProfileResDto = new UserResponseDto.modifyProfileResDto(false, false);
+    public UserResponseDto.ModifyProfileResDto modifyProfile(String token, MultipartFile userImage, String userNickname) {
+        UserResponseDto.ModifyProfileResDto modifyProfileResDto = new UserResponseDto.ModifyProfileResDto(false, false);
         String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         String userSet = tokenEmail + "(" + LocalDate.now().toString() + ")";
         String imageUrl = null;
@@ -177,5 +186,116 @@ public class UserService {
         userRepository.save(user);
 
         return modifyProfileResDto;
+    }
+
+    public UserResponseDto.ShowProfileResDto showProfile(String token) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        UserResponseDto.ShowProfileResDto showProfileResDto = modelMapper.map(user, UserResponseDto.ShowProfileResDto.class);
+
+        return showProfileResDto;
+    }
+
+    @Transactional
+    public boolean modifyAddress(String token, UserRequestDto.ModifyAddress modifyAddress) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        user.setUserAddress(modifyAddress.getUserAddress());
+        user.setUserAreaCode(modifyAddress.getUserAreaCode());
+        userRepository.save(user);
+
+        // token 에 주소정보를 담을 경우 토큰 갱신 반환해야 한다.
+        return true;
+    }
+
+    public UserResponseDto.ScheduleResDto getSchedule(String token, String userDate) {
+        LocalDate requestDate = LocalDate.parse(userDate);
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        UserResponseDto.ScheduleResDto scheduleResDto = new UserResponseDto.ScheduleResDto();
+        int currentMonth = requestDate.getMonthValue();
+
+        List<Deal> dealList = dealRepository.findByBuyer_UserIdOrSeller_UserId(user.getUserId(), user.getUserId());
+        List<UserResponseDto.GiveResDto> giveList = new ArrayList<>();
+        List<UserResponseDto.TakeResDto> takeList = new ArrayList<>();
+
+        scheduleResDto.set일정있는날짜(getScheduledDate(dealList, currentMonth));
+
+        for (int i = 0; i < dealList.size(); i++) {
+            // 요청받은 날짜와 같은 달에 거래가 시작/종료되는 경우
+            if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth || dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
+                if(dealList.get(i).getSeller().getUserId() == user.getUserId()) {
+                    // 내가 판매중인 아이템 == take
+                    UserResponseDto.TakeResDto tmpTake = new UserResponseDto.TakeResDto();
+                    Item tmpItem = itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId());
+                    tmpTake.setItemId(tmpItem.getItemId());
+                    tmpTake.setItemName(tmpItem.getItemName());
+                    tmpTake.setItemBuyerNickname(userRepository.findByUserId(dealList.get(i).getBuyer().getUserId()).get().getUserNickname());
+                    tmpTake.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmpItem.getItemId()));
+                    tmpTake.setDealStartDate(dealList.get(i).getDealStartDate());
+                    tmpTake.setDealEndDate(dealList.get(i).getDealEndDate());
+                    takeList.add(tmpTake);
+                } else {
+                    // 내가 대여하고 있는 아이템 == give
+                    UserResponseDto.GiveResDto tmpGive = new UserResponseDto.GiveResDto();
+                    Item tmpItem = itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId());
+                    tmpGive.setItemId(tmpItem.getItemId());
+                    tmpGive.setItemName(tmpItem.getItemName());
+                    tmpGive.setItemSellerNickname(userRepository.findByUserId(dealList.get(i).getSeller().getUserId()).get().getUserNickname());
+                    tmpGive.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmpItem.getItemId()));
+                    tmpGive.setDealStartDate(dealList.get(i).getDealStartDate());
+                    tmpGive.setDealEndDate(dealList.get(i).getDealEndDate());
+                    giveList.add(tmpGive);
+                }
+
+            } else dealList.remove(i);
+        }
+
+        scheduleResDto.set반납일정(giveList);
+        scheduleResDto.set회수일정(takeList);
+
+        return scheduleResDto;
+    }
+
+    public List<LocalDate> getScheduledDate(List<Deal> dealList, int currentMonth) {
+        // 나의 거래 리스트와 현재 월이 주어지면, 해당 월에 일정이 있는 날짜를 모두 리턴
+        List<LocalDate> dateList = new ArrayList<>();
+        HashSet<LocalDate> dateSet = new HashSet<>();
+        for (int i = 0; i < dealList.size(); i++) {
+            if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth && dealList.get(i).getDealEndDate().getMonthValue() ==currentMonth) {
+                // 거래 시작일과 종료일이 같은 월 안에 포함된 경우
+                LocalDate pivotDate = dealList.get(i).getDealStartDate();
+                while(pivotDate.isBefore(dealList.get(i).getDealEndDate().plusDays(1))) {
+                    dateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+            } else if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
+                // 거래 시작일은 해당 월이지만, 거래 종료일이 이번달이 아닌 경우
+                LocalDate pivotDate = dealList.get(i).getDealStartDate();
+                while(pivotDate.getMonthValue() == currentMonth) {
+                    dateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+            } else if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth) {
+                // 거래 종료일은 해당 월이지만, 거래 시작일이 이번달이 아닌 경우
+                LocalDate pivotDate = dealList.get(i).getDealEndDate();
+                while(pivotDate.getMonthValue() == currentMonth){
+                    dateSet.add(pivotDate);
+                    pivotDate = pivotDate.minusDays(1);
+                }
+            } else continue;
+        }
+
+        for(LocalDate date : dateSet) {
+            dateList.add(date);
+        }
+        Collections.sort(dateList);
+        return dateList;
     }
 }
