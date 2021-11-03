@@ -61,24 +61,27 @@ dependencies {
 
     // Amazon AWS S3
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.25'
+
+    // ModelMapper
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 }
 
 test {
     useJUnitPlatform()
 }
 
-//리액트 프로젝트 경로
-//$projectDir은 스프링 부트 root 경로
-def webappDir = "$projectDir/../../frontend"
-//def webappDir = "../../frontend"
-
-task appNpmInstall(type: NpmTask) {
-    workingDir = file("${webappDir}")
-    args = ["run", "build"]
-}
-task copyWebApp(type: Copy) {
-    from '../../frontend/build'
-    into "build/resources/main"
-}
-copyWebApp.dependsOn(appNpmInstall)
-compileJava.dependsOn(copyWebApp)
+////리액트 프로젝트 경로
+////$projectDir은 스프링 부트 root 경로
+//def webappDir = "$projectDir/../../frontend"
+////def webappDir = "../../frontend"
+//
+//task appNpmInstall(type: NpmTask) {
+//    workingDir = file("${webappDir}")
+//    args = ["run", "build"]
+//}
+//task copyWebApp(type: Copy) {
+//    from '../../frontend/build'
+//    into "build/resources/main"
+//}
+//copyWebApp.dependsOn(appNpmInstall)
+//compileJava.dependsOn(copyWebApp)
