@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import userActions from "../../redux/actions/userAction";
 import ProductCard from "./ProductCard";
 import axios from "../../api/axios";
-
+import { useInView } from "react-intersection-observer";
 function ProductList() {
   const [products, setProducts] = useState();
 
@@ -21,7 +21,7 @@ function ProductList() {
   return (
     <div>
       {products
-        ? products.map((product) => (
+        ? products.map((product, idx) => (
             <ProductCard product={product} key={product.itemId}></ProductCard>
           ))
         : null}
