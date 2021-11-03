@@ -61,7 +61,6 @@ public class UserService {
         }
 
         String salt = randomSaltProvider.getNextSalt().toString();
-        System.out.println("salt : " + salt);
 
         User user = User.builder()
                 .userNickname(signUp.getUserNickname())
@@ -107,7 +106,6 @@ public class UserService {
 
         // 인증번호 생성
         String key = certificationNumberGenerator();
-        System.out.println(key);
         // 메일 생성
         UserResponseDto.EmailResDto mail = createEmail(userEmail, key);
         // 메일 전송
@@ -215,7 +213,6 @@ public class UserService {
     }
 
     public UserResponseDto.ScheduleResDto getSchedule(String token, String userDate) {
-        System.out.println("서비스 진입");
         LocalDate requestDate = LocalDate.parse(userDate);
         String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         User user = userRepository.findByUserEmail(tokenEmail)
@@ -231,11 +228,9 @@ public class UserService {
         scheduleResDto.set일정있는날짜(getScheduledDate(dealList, currentMonth));
 
         for (int i = 0; i < dealList.size(); i++) {
-            // 요청받은 날짜가 거래시작일과 거래종료일 사이인 경우
-            if(requestDate.isAfter(dealList.get(i).getDealStartDate().minusDays(1)) && requestDate.isBefore(dealList.get(i).getDealEndDate().plusDays(1))) {
-                System.out.println("233 if 진입");
+            // 요청받은 날짜와 같은 달에 거래가 시작/종료되는 경우
+            if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth || dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
                 if(dealList.get(i).getSeller().getUserId() == user.getUserId()) {
-                    System.out.println("235 if 진입");
                     // 내가 판매중인 아이템 == take
                     UserResponseDto.TakeResDto tmpTake = new UserResponseDto.TakeResDto();
                     Item tmpItem = itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId());
@@ -247,7 +242,6 @@ public class UserService {
                     tmpTake.setDealEndDate(dealList.get(i).getDealEndDate());
                     takeList.add(tmpTake);
                 } else {
-                    System.out.println("247 if 진입");
                     // 내가 대여하고 있는 아이템 == give
                     UserResponseDto.GiveResDto tmpGive = new UserResponseDto.GiveResDto();
                     Item tmpItem = itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId());
@@ -270,7 +264,6 @@ public class UserService {
     }
 
     public List<LocalDate> getScheduledDate(List<Deal> dealList, int currentMonth) {
-        System.out.println("getScheduledDate method 진입");
         // 나의 거래 리스트와 현재 월이 주어지면, 해당 월에 일정이 있는 날짜를 모두 리턴
         List<LocalDate> dateList = new ArrayList<>();
         HashSet<LocalDate> dateSet = new HashSet<>();
@@ -303,9 +296,6 @@ public class UserService {
             dateList.add(date);
         }
         Collections.sort(dateList);
-        for (int i = 0; i < dateList.size(); i++) {
-            System.out.println(dateList.get(i).toString());
-        }
         return dateList;
     }
 }
