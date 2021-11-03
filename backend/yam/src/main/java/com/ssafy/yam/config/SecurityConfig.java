@@ -50,10 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // form 기반의 로그인에 대해 비활성화 한다.
                 .formLogin().disable()
-                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .headers()
+                .frameOptions()
+                .sameOrigin();
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
                 // JwtAuthenticationFilter를 UsernamePasswordAuthentictaionFilter 전에 적용시킨다.
-
     }
 
     @Bean
