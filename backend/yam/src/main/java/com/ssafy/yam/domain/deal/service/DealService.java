@@ -31,13 +31,13 @@ public class DealService {
 
         int currentMonth = LocalDate.now().getMonthValue();
         int afterMonth = currentMonth + 1;
-        DealUnavailableResponse result = new DealUnavailableResponse();
+//        DealUnavailableResponse result = new DealUnavailableResponse();
         List<LocalDate> dayList = new ArrayList<>();
         List<Deal> list = dealRepository.findAllByItem_ItemId(itemId);
 
         for (int i = 0; i < list.size(); i++) {
-//            System.out.println(list.get(i).getDealId());
-            int month = (int) list.get(i).getDealEndDate().getMonthValue();
+            System.out.println(list.get(i).getDealStartDate() + " " + list.get(i).getDealEndDate());
+            int month = list.get(i).getDealEndDate().getMonthValue();
             int day = list.get(i).getDealEndDate().getDayOfMonth();
             if(list.get(i).getDealEndDate().isAfter(LocalDate.now()) && month <= afterMonth){ // 해당 아이템의 거래확정 내역 중 오늘 이후에 끝나면서 종료월이 다음날 이내라면
                 // 그 시작부터 종료까지의 날짜를 담아라
@@ -47,9 +47,16 @@ public class DealService {
                     dayList.add(startValue);
                     startValue = startValue.plusDays(1);
                 }
+            }else{
+                LocalDate startValue = list.get(i).getDealStartDate();
+                LocalDate endValue = list.get(i).getDealEndDate();
+                while(startValue.isBefore(endValue) || startValue.isEqual(endValue)){
+                    dayList.add(startValue);
+                    startValue = startValue.plusDays(1);
+                }
             }
         }
-        result.setUnavailableList(dayList);
+//        result.setUnavailableList(dayList);
 		return dayList;
     }
 

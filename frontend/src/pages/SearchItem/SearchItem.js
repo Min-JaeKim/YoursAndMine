@@ -15,6 +15,9 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 import { Form, Radio, Button } from "semantic-ui-react";
 
 const SearchItem = ({ location, match }) => {
+  // category 선택 후, 검색하려는 목적
+  const category = useLocation();
+  // const historyState = category.state;
 
   //Main.js의 SearchInput에서 넘어온 검색어(text)
   const query = queryString.parse(location.search);
@@ -23,6 +26,15 @@ const SearchItem = ({ location, match }) => {
   //검색 Input tag관련
   const [inputText, setInputText] = useState("");
   const [word, setWord] = useState("");
+  const [historyState, setHistoryState] = useState("");
+  console.log(343444);
+  console.log(historyState);
+  //검색목록
+  const [searchItem, setSearchItem] = useState([]);
+  let [searchList, setSearchList] = useState([]);
+  //검색필터 토글
+  const [visible, setVisible] = useState(false);
+
   const onChange = (e) => {
     setInputText(e.target.value);
   };
@@ -31,10 +43,6 @@ const SearchItem = ({ location, match }) => {
     e.preventDefault();
     setInputText(e.target.value);
   };
-
-  //검색목록
-  const [searchItem, setSearchItem] = useState([]);
-  let [searchList, setSearchList] = useState([]);
 
   useEffect(() => {
     axios
@@ -54,55 +62,64 @@ const SearchItem = ({ location, match }) => {
       });
   }, [inputText]);
 
-  //검색필터 토글
-  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (category !== "null") {
+      setHistoryState(category.state.category);
+    }
+  }, []);
+
   const onClickFilter = () => {
     setVisible(!visible);
   };
 
   return (
     <>
-      <SearchInput />
+      {historyState !== "" && historyState !== undefined ? (
+        <SearchInput category={historyState.category} />
+      ) : (
+        <SearchInput />
+      )}
       <div className="search-filter">
-
-      <FontAwesomeIcon className="search-filter-icon" icon={faFilter} />
-      <h4 className="search-filter-text">정렬</h4>
+        <FontAwesomeIcon className="search-filter-icon" icon={faFilter} />
+        <h4 className="search-filter-text">정렬</h4>
         <div>
-
-        <Form onSubmit={handleSubmit} className="radio-group">
-          {/* <Form.Field>
+          <Form onSubmit={handleSubmit} className="radio-group">
+            {/* <Form.Field>
           Selected value: <b>{inputStatus}</b>
         </Form.Field>
          */}
-          <Form.Field>
-            <Radio className="search-radio"
-              id="radio1"
-              label="대여순"
-              name="radioGroup"
-              // checked={inputStatus === "대여순"}
-              // onClick={() => handleClickRadioButton("대여순")}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Radio className="search-radio"
-              id="radio2"
-              label="북마크순"
-              name="radioGroup"
-              // checked={inputStatus === "북마크순"}
-              // onClick={() => handleClickRadioButton("북마크순")}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Radio className="search-radio"
-              id="radio3"
-              label="최신순"
-              name="radioGroup"
-              // checked={inputStatus === "최신순"}
-              // onClick={() => handleClickRadioButton("최신순")}
-            />
-          </Form.Field>
-          <hr />
-        </Form>
+            <Form.Field>
+              <Radio
+                className="search-radio"
+                id="radio1"
+                label="대여순"
+                name="radioGroup"
+                // checked={inputStatus === "대여순"}
+                // onClick={() => handleClickRadioButton("대여순")}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                className="search-radio"
+                id="radio2"
+                label="북마크순"
+                name="radioGroup"
+                // checked={inputStatus === "북마크순"}
+                // onClick={() => handleClickRadioButton("북마크순")}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                className="search-radio"
+                id="radio3"
+                label="최신순"
+                name="radioGroup"
+                // checked={inputStatus === "최신순"}
+                // onClick={() => handleClickRadioButton("최신순")}
+              />
+            </Form.Field>
+            <hr />
+          </Form>
         </div>
       </div>
     </>
