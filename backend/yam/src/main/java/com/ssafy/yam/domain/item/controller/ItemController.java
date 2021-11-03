@@ -11,6 +11,7 @@ import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.service.ItemCRUDService;
 import com.ssafy.yam.domain.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,15 +41,15 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemDetail);
     }
 
-    @GetMapping("/page={pageNum}")
-    public ResponseEntity<List<ItemListResponse>> getItemList(@PathVariable int pageNum){
-        List<ItemListResponse> itemList = itemService.getItemList();
+    @GetMapping()
+    public ResponseEntity<List<ItemListResponse>> getItemList(Pageable pageable){
+        List<ItemListResponse> itemList = itemService.getItemList(pageable);
         return ResponseEntity.status(200).body(itemList);
     }
 
     @PostMapping()
     public ResponseEntity<?> createItem(@RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImages,
-                                        @RequestPart(value = "itemCreateRequest") ItemCreateRequest itemCreateRequest){
+                                        @RequestPart(value = "itemData") ItemCreateRequest itemCreateRequest){
         itemCRUDService.saveItem(itemImages, itemCreateRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);

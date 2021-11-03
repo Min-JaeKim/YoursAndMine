@@ -12,6 +12,7 @@ import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,8 +67,9 @@ public class ItemService {
         return response;
     }
 
-    public List<ItemListResponse> getItemList(){
-        List<Item> itemList = itemRepository.findAllBy();
+    public List<ItemListResponse> getItemList(Pageable pageable){
+        List<Item> itemList = itemRepository.findAllBy(pageable);
+        System.out.println("item size : " + itemList.size());
         List<ItemListResponse> response = new ArrayList<>();
         for(Item item : itemList){
             ItemListResponse listItem = ItemListResponse.builder()
@@ -80,7 +82,8 @@ public class ItemService {
                     .build();
 
             Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());
-            listItem.setItemImage(image.getImageUrl());
+            if(image != null)
+                listItem.setItemImage(image.getImageUrl());
 
             response.add(listItem);
         }
