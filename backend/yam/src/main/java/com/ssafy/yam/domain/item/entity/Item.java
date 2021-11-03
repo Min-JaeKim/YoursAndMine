@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.item.entity;
 
+import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,4 +59,22 @@ public class Item {
                 ", seller=" + seller +
                 '}';
     }
+
+//    //===CRUD 메소드===//
+//    public void updateItem(ItemUpdateRequest request) {
+//        this.itemName = request.getItemName();
+//        this.itemContent = request.getItemContent();
+//        this.itemContent = request.getItemContent();
+//        this.itemCategory = request.getItemCategory();
+//        this.itemPrice = request.getItemPrice();
+//    }
+
+//    public void activeItem() {
+//        if (ActiveStatus.N.equals(this.isActive)) {
+//            this.isActive = ActiveStatus.Y;
+//        } else {
+//            this.isActive = ActiveStatus.N;
+//        }
+//    }
+
 }

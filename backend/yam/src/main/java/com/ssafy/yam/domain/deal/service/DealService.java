@@ -44,14 +44,16 @@ public class DealService {
                 LocalDate startValue = list.get(i).getDealStartDate();
                 LocalDate endValue = list.get(i).getDealEndDate();
                 while(startValue.isBefore(endValue) || startValue.isEqual(endValue)){
-                    dayList.add(startValue);
+                    if(!dayList.contains(startValue))
+                        dayList.add(startValue);
                     startValue = startValue.plusDays(1);
                 }
             }else{
                 LocalDate startValue = list.get(i).getDealStartDate();
                 LocalDate endValue = list.get(i).getDealEndDate();
                 while(startValue.isBefore(endValue) || startValue.isEqual(endValue)){
-                    dayList.add(startValue);
+                    if(!dayList.contains(startValue))
+                        dayList.add(startValue);
                     startValue = startValue.plusDays(1);
                 }
             }
