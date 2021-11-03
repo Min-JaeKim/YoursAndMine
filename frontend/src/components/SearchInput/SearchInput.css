@@ -1,16 +1,18 @@
+.inputForm {
+  padding: 10px;
+}
+
 .search-input {
   display: inline-flex;
   margin: 0 auto;
-  padding: 5px;
-  width: 400px;
+  width: 100%;
   border: solid 2px #497c5f;
   border-radius: 30px;
-  margin: 10px;
   padding: 9px;
 }
 
 .search-input > input {
-  width: 200px;
+  min-width: 70%;
   border: none;
   outline: none;
 }
@@ -19,14 +21,9 @@
   color: #497c5f;
   border: solid 1px#497c5f;
   border-radius: 30px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   padding: 3px 11px;
   margin-right: 12px;
-  clear: both;
-  float: left;
-  justify-content: space-between;
+  display: inline-flex;
   /* color: #497c5f;
   width: 78px;
   border: solid 1px #497c5f;
@@ -40,10 +37,11 @@
 }
 
 .input-tag-text {
-  font-size: 17px;
+  font-size: 10pt;
 }
 
 .input-tag-cancel {
+  font-weight: bold;
   cursor: pointer;
   margin: 0 3px;
 }

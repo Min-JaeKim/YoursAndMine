@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Input } from "semantic-ui-react";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router";
-import './SearchInput.css'
+import "./SearchInput.css";
 
-const SearchInput = ({category}) => {
-
+const SearchInput = ({ category }) => {
   // 카테고리로 필터링 했을 때,
   const location = useLocation();
   const historyState = location.state;
@@ -18,8 +17,8 @@ const SearchInput = ({category}) => {
     if (historyState?.category) {
       setSearchCategory(historyState.category);
     }
-  }, [])
-  
+  }, []);
+
   const onChange = (e) => {
     setInputText(e.target.value);
   };
@@ -37,26 +36,23 @@ const SearchInput = ({category}) => {
 
   const deleteCategory = () => {
     setSearchCategory(undefined);
-  }
+  };
 
   return (
     <>
-    <form className="inputForm" onSubmit={handleSubmit}>
-      <div className="search-input">
-        {searchCategory ? (
-          <div className="input-tag">
-              <div className="input-tag-text">{searchCategory}</div>
-              <div className="input-tag-cancel" onClick={deleteCategory}>X</div>
-          </div>
-        ) : (
-          null
-        )}
-        <input 
-        type="text"
-        onChange={onChange}
-        placeholder="상품명을 입력해주세요" />
-      </div>
-    </form>
+      <form className="inputForm" onSubmit={handleSubmit}>
+        <div className="search-input">
+          {searchCategory ? (
+            <div className="input-tag">
+              <span className="input-tag-text">{searchCategory}</span>
+              <div className="input-tag-cancel" onClick={deleteCategory}>
+                X
+              </div>
+            </div>
+          ) : null}
+          <input type="text" onChange={onChange} placeholder="상품명을 입력해주세요" />
+        </div>
+      </form>
       {/* <form className="inputForm" onSubmit={handleSubmit}>
         <Input
           className="main-search"

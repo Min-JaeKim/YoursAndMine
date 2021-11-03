@@ -32,8 +32,8 @@
 }
 
 .hd-location-category-img {
-  position: relative;
-  left: 104px;
+  position: absolute;
+  right: 5%;
   width: 6%;
   cursor: pointer;
 }
@@ -78,14 +78,9 @@ section {
   display: flex !important;
   flex-direction: column;
   overflow-x: hidden;
-  min-height: calc(100vh-142px);
-  /* min-height: calc(100% - 142px); */
   min-height: 100%;
-  /* overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; */
   position: relative;
   border-bottom: none;
-  /* height: calc(100vh - 142px); */
 }
 
 .footer {
