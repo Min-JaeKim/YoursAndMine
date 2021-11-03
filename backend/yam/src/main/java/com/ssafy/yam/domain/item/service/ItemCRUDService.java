@@ -46,22 +46,24 @@ public class ItemCRUDService {
 //        item.setUser(userService.getUser(itemCreateRequest.getUid()));
         itemRepository.save(item);
 
-        if (itemImages.size() != 0) {
+        //if (itemImages.size() != 0) {
             for (MultipartFile itemImage : itemImages) {
-                String imageUrl = null;
-                String userSet = itemImage.getOriginalFilename() + "(" + LocalDate.now().toString() + ")";
-                try {
-                    imageUrl = s3UploadUtils.upload(itemImage, "item", userSet);
+                if(!itemImage.isEmpty()) {
+                    String imageUrl = null;
+                    String userSet = itemImage.getOriginalFilename() + "(" + LocalDate.now().toString() + ")";
+                    try {
+                        imageUrl = s3UploadUtils.upload(itemImage, "item", userSet);
 //                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 success");
-                } catch (IOException e) {
+                    } catch (IOException e) {
 //                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 fail");
-                    e.printStackTrace();
+                        e.printStackTrace();
+                    }
+                    Image image = new Image();
+                    image.setImageUrl(imageUrl);
+                    image.setItem(item);
+                    imageRepository.save(image);
                 }
-                Image image = new Image();
-                image.setImageUrl(imageUrl);
-                image.setItem(item);
-                imageRepository.save(image);
             }
-        }
+        //}
     }
 }
