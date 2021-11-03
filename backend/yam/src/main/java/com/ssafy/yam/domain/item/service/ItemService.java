@@ -3,15 +3,20 @@ package com.ssafy.yam.domain.item.service;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
+import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
+import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 
 import com.ssafy.yam.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +67,27 @@ public class ItemService {
         return response;
     }
 
-//    public List<ItemResponse> findAllBy(){
-//        return itemRepository.findAllBy();
-//    }
+    public List<ItemListResponse> getItemList(Pageable pageable){
+        List<Item> itemList = itemRepository.findAllBy(pageable);
+        System.out.println("item size : " + itemList.size());
+        List<ItemListResponse> response = new ArrayList<>();
+        for(Item item : itemList){
+            ItemListResponse listItem = ItemListResponse.builder()
+                    .itemId(item.getItemId())
+                    .itemName(item.getItemName())
+                    .itemPrice(item.getItemPrice())
+                    .itemAddress(item.getItemAddress())
+                    .itemAreaCode(item.getItemAreaCode())
+                    .itemModifiedTime(item.getItemModifiedTime())
+                    .build();
+
+            Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());
+            if(image != null)
+                listItem.setItemImage(image.getImageUrl());
+
+            response.add(listItem);
+        }
+        return response;
+    }
+
 }

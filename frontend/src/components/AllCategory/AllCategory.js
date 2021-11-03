@@ -17,19 +17,26 @@ import study from "../../assets/icons/category/study.png";
 import music from "../../assets/icons/category/music.png";
 import feeding from "../../assets/icons/category/feeding-bottle.png";
 
-const AllCategory = () => {
+const AllCategory = ( props ) => {
+// const AllCategory = ( {flag, writeCategory} ) => {
   const history = useHistory();
 
 	const [inputStatus, setInputStatus] = useState('');
 
 	const onClickCategory = (e) => {
-    const value = e.currentTarget.getAttribute('value');
-		history.push({
-      pathname: "/searchItem",
-      state: {
-        value: value,
-      },
-    });
+    const category = e.currentTarget.getAttribute('value');
+    if (props.flag === "1"){
+      e.preventDefault();
+      // this.props.onCreate(category);
+      props.funcSetCategory(category);
+    } else {
+      history.push({
+        pathname: "/searchItem",
+        state: {
+          category: category,
+        },
+      });
+    }
 	}
 
 	return ( 
