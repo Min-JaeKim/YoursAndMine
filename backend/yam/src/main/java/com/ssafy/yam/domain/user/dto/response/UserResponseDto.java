@@ -110,4 +110,15 @@ public class UserResponseDto {
         private List<String> itemImage = new ArrayList<>();
         private String itemAddress;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetItemHistoryResDto {
+        private String itemBuyerNickname;
+        private String itemBuyerImage;
+        private LocalDate dealStartDate;
+        private LocalDate dealEndDate;
+    }
 }

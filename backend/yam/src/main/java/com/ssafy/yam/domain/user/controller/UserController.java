@@ -72,4 +72,9 @@ public class UserController {
     public ResponseEntity<?> getTakeItem(@RequestHeader(AUTH_HEADER) String token) {
         return ResponseEntity.ok().body(userService.getTakeItem(token));
     }
+
+    @GetMapping("/item/history/{itemId}")
+    public ResponseEntity<?> getItemHistory(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId) {
+        return ResponseEntity.ok().body(userService.getItemHistory(token, itemId));
+    }
 }
