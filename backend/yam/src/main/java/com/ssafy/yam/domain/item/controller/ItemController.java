@@ -47,9 +47,9 @@ public class ItemController {
 
     @PostMapping()
     public ResponseEntity<?> createItem(@RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImages,
-                                        @RequestPart(value = "itemData") ItemCreateRequest itemCreateRequest){
+                                        @RequestPart(value = "itemData") ItemCreateRequest itemCreateRequest, @RequestHeader(AUTH_HEADER) String token){
         try{
-            itemCRUDService.saveItem(itemImages, itemCreateRequest);
+            itemCRUDService.saveItem(itemImages, itemCreateRequest, token);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);
