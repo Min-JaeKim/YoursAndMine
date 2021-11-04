@@ -38,10 +38,12 @@
 
 .mpd-rent-button {
   border-radius: 16px !important;
+  /* border-radius: 16px !important; */
   position: relative;
   bottom: -40px;
   left: -3px;
-  font-size: 13px;
+  font-size: 15px !important;
+  padding: 10px !important;
 }
 
 .mpd-product-name-rent-flag {
@@ -58,9 +60,10 @@
 .mpd-product-rent-falg {
   background-color: #ec3d2f;
   border-radius: 30px;
-  padding: 4%;
+  padding: 0px 8px 20px 8px;
   color: white;
-  font-size: 14px;
+  font-size: 9px;
+  height: 16px;
 }
 
 .mpd-product-date {
@@ -71,4 +74,8 @@
 .mpd-owner-name {
   position: relative;
   top: 10px;
+}
+
+.ui button mpd-rent-button {
+  font-size: 50px;
 }

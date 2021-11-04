@@ -11,10 +11,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+
 import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
+import static com.ssafy.yam.utils.ConstantsUtils.USER;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/user")
+@RequestMapping(value = USER)
 @RestController
 public class UserController {
 
@@ -45,5 +48,20 @@ public class UserController {
     @PutMapping("/profile")
     public ResponseEntity<?> modifyProfile(@RequestHeader(AUTH_HEADER) String token, @RequestParam(required = false, value = "userImage") MultipartFile userImage, @RequestParam(required = false, value = "userNickname") String userNickname) {
         return ResponseEntity.ok().body(userService.modifyProfile(token, userImage, userNickname));
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity<?> showProfile(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.showProfile(token));
+    }
+
+    @PutMapping("/address")
+    public ResponseEntity<?> modifyAddress(@RequestHeader(AUTH_HEADER) String token, @RequestBody UserRequestDto.ModifyAddress modifyAddress) {
+        return ResponseEntity.ok().body(userService.modifyAddress(token, modifyAddress));
+    }
+
+    @GetMapping("/schedule/{userDate}")
+    public ResponseEntity<?> getSchedule(@RequestHeader(AUTH_HEADER) String token, @PathVariable String userDate) {
+        return ResponseEntity.ok().body(userService.getSchedule(token, userDate));
     }
 }
