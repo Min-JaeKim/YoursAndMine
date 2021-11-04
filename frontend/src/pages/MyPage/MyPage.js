@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import "./MyPage.css";
+import axios from "axios";
 import { Link } from "react-router-dom";
-import profile from "../../assets/image/user.png";
+import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import allActions from "../../redux/actions";
 import star from "../../assets/icons/star.png";
+import profile from "../../assets/image/user.png";
 import arrow from "../../assets/icons/arrow-right.png";
 import product from "../../assets/icons/product.png";
 import productlist from "../../assets/icons/productlist.png";
-import "./MyPage.css";
-import axios from "axios";
-import allActions from "../../redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,7 +17,11 @@ import authLevel1 from "../../assets/icons/auth-level1.png";
 import authLevel2 from "../../assets/icons/auth-level2.png";
 import authLevel3 from "../../assets/icons/auth-level3.png";
 
+import Swal from 'sweetalert2'
+
 const MyPage = () => {
+  const history = useHistory();
+
   const [wallet, setWallet] = useState(true);
   const [currentUserWallet, setCurrentUserWallet] = useState("");
   const [bliAmount, setbliAmount] = useState("");
@@ -27,16 +32,50 @@ const MyPage = () => {
 
   const logout = () => {
     dispatch(allActions.userActions.logoutUser());
-    alert("로그아웃 되었습니다");
+    Swal.fire({
+      title: 'Log out!',
+      text: '로그아웃되었습니다.',
+      icon: 'success',
+      confirmButtonText: 'OK!',
+      confirmButtonColor: '#497c5f'
+    }).then((result) => {
+      history.push('/');
+    })
   };
+
+  useEffect(() => {
+    const token = JSON.parse(window.localStorage.getItem("token"));
+    // console.log("Bearer " + token);
+    axios
+      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        setUser(response.data);
+        dispatch(allActions.userActions.loginUser(response.data));
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: '다시 로그인해 주세요',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        }).then((result) => {
+          history.push('/signin');
+        })
+      });
+  }, []);
 
   return (
     <div className="mypage">
       <div className="mypage-profile">
-        <img src={profile} alt="profile-img" className="mypage-user-icon" />
+        <img src={user.userImage} alt="profile-img" className="mypage-user-icon" />
         <div className="mypage-profile-desc">
-          <h4>{user.userName} 님 안녕하세요!</h4>
-          <span>{user.userEmail}</span>
+          <h4>{user.userNickname} 님 안녕하세요!</h4>
+          <span>{user.userAddress}</span>
         </div>
       </div>
       <Link to="/useredit">
@@ -47,7 +86,13 @@ const MyPage = () => {
           사용자 인증단계
           <button>사용자인증 &#62;</button>
         </div>
-        <img alt="auth-level1" src={authLevel1}></img>
+        {user.userAuthLevel === 1 ? (
+          <img alt="auth-level1" src={authLevel1}></img>
+          ) : (user.userAuthLevel === 2 ? (
+            <img alt="auth-level1" src={authLevel2}></img>
+            ) : (
+          <img alt="auth-level1" src={authLevel3}></img>
+        ))}
       </div>
 
       <div className="mypage-user-info">

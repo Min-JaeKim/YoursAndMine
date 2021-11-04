@@ -1,10 +1,10 @@
 import React from "react";
-import backIcon from "../../assets/icons/back.png";
-import categoryImg from "../../assets/icons/category.png";
 import { Link } from "react-router-dom";
-
 import CurrentPage from "./CurrentPage";
 import { useHistory } from "react-router";
+import backIcon from "../../assets/icons/back.png";
+import categoryImg from "../../assets/icons/category.png";
+
 
 import "./Layout.css";
 const Header = (props) => {

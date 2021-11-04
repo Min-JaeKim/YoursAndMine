@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Layout.css";
+import { useSelector } from "react-redux";
 import homeIcon from "../../assets/icons/home.png";
 import homeIconOn from "../../assets/icons/home-on.png";
 
@@ -17,7 +18,13 @@ import notification from "../../assets/icons/notification.png";
 import ChatInput from "../../pages/ChatRoom/ChatInput";
 import { Link } from "react-router-dom";
 const NavBottom = (props) => {
+  
+  let { loginFlag } = useSelector(({ user }) => ({
+    loginFlag: user.login,
+  }));
+
   const [pathname, setPathname] = useState();
+
   useEffect(() => {
     const url = props.location.pathname.split("/");
     if (url.length >= 2 && url[1] === "chat") setPathname(url[2]);
@@ -77,16 +84,30 @@ const NavBottom = (props) => {
               <div className="nb-notification-dot"></div> {/* 새로운 알림 표시 */}
             </div>
           </Link>
-          <Link to="/mypage">
-            <div className="nav-bottom-items">
-              {props.location.pathname === "/mypage" ? (
-                <img src={myPageOn} alt="myPageIconOn" className="nav-bottom-mypage" />
-              ) : (
-                <img src={myPage} alt="myPageIcon" className="nav-bottom-mypage" />
-              )}
-              <div>마이페이지</div>
-            </div>
-          </Link>
+          {loginFlag ? (
+            <Link to="/mypage">
+              <div className="nav-bottom-items">
+                {props.location.pathname === "/mypage" ? (
+                  <img src={myPageOn} alt="myPageIconOn" className="nav-bottom-mypage" />
+                ) : (
+                    <img src={myPage} alt="myPageIcon" className="nav-bottom-mypage" />
+                    )}
+                <div>마이페이지</div>
+              </div>
+            </Link>
+
+          ) : (
+            <Link to="/signin">
+              <div className="nav-bottom-items">
+                {props.location.pathname === "/mypage" ? (
+                  <img src={myPageOn} alt="myPageIconOn" className="nav-bottom-mypage" />
+                ) : (
+                    <img src={myPage} alt="myPageIcon" className="nav-bottom-mypage" />
+                )}
+               <div>로그인</div>
+              </div>
+            </Link>
+          )}
         </div>
       )}
     </>
