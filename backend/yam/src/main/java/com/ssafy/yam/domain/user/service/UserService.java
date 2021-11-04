@@ -349,4 +349,20 @@ public class UserService {
 
         return historyList;
     }
+
+    public UserResponseDto.Receipt getReceipt(String token, int dealId) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        Deal deal = dealRepository.findByDealId(dealId).get();
+        UserResponseDto.Receipt receipt = modelMapper.map(deal, UserResponseDto.Receipt.class);
+        receipt.setItemName(deal.getItem().getItemName());
+        receipt.setItemBuyerNickname(deal.getBuyer().getUserNickname());
+        receipt.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(deal.getItem().getItemId()));
+        receipt.setItemAddress(deal.getItem().getItemAddress());
+        receipt.setItemPrice(deal.getItem().getItemPrice());
+
+        return receipt;
+    }
 }

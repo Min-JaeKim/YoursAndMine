@@ -121,4 +121,20 @@ public class UserResponseDto {
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Receipt {
+        private int dealId;
+        private LocalDate dealStartDate;
+        private LocalDate dealEndDate;
+        private int dealTotalPrice;
+        private String itemName;
+        private String itemBuyerNickname;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+        private int itemPrice;
+    }
 }

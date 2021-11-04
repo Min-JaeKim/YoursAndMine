@@ -77,4 +77,9 @@ public class UserController {
     public ResponseEntity<?> getItemHistory(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId) {
         return ResponseEntity.ok().body(userService.getItemHistory(token, itemId));
     }
+
+    @GetMapping("/item/receipt/{dealId}")
+    public ResponseEntity<?> getReceipt(@RequestHeader(AUTH_HEADER) String token, @PathVariable int dealId) {
+        return ResponseEntity.ok().body(userService.getReceipt(token, dealId));
+    }
 }
