@@ -84,4 +84,69 @@ public class UserResponseDto {
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetGiveItemResDto {
+        private int itemId;
+        private String itemName;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+        private int itemPrice;
+        private String itemActive;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetTakeItemResDto {
+        private int dealId;
+        private int dealTotalPrice;
+        private String dealStatus;
+        private String itemName;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetItemHistoryResDto {
+        private String itemBuyerNickname;
+        private String itemBuyerImage;
+        private LocalDate dealStartDate;
+        private LocalDate dealEndDate;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Receipt {
+        private int dealId;
+        private LocalDate dealStartDate;
+        private LocalDate dealEndDate;
+        private int dealTotalPrice;
+        private String itemName;
+        private String itemBuyerNickname;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+        private int itemPrice;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class WishList {
+        private int itemId;
+        private String itemName;
+        private int itemPrice;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+    }
 }

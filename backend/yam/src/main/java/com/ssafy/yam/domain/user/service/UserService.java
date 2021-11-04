@@ -2,6 +2,8 @@ package com.ssafy.yam.domain.user.service;
 
 //import com.ssafy.yam.auth.Provider.JwtTokenProvider;
 import com.ssafy.yam.auth.Provider.RandomSaltProvider;
+import com.ssafy.yam.domain.bookmark.entity.Bookmark;
+import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.deal.entity.Deal;
 import com.ssafy.yam.domain.deal.repository.DealRepository;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
@@ -46,6 +48,7 @@ public class UserService {
     private final DealRepository dealRepository;
     private final ItemRepository itemRepository;
     private final ImageRepository imageRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final ResponseUtils response;
     private final BCryptPasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -297,5 +300,89 @@ public class UserService {
         }
         Collections.sort(dateList);
         return dateList;
+    }
+
+    public List<UserResponseDto.GetGiveItemResDto> getGiveItem(String token) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        List<UserResponseDto.GetGiveItemResDto> giveItemList = new ArrayList<>();
+        List<Item> itemList = itemRepository.findAllBySeller_UserIdOrderByItemModifiedTime(user.getUserId());
+        for (int i = 0; i < itemList.size(); i++) {
+            UserResponseDto.GetGiveItemResDto tmp = modelMapper.map(itemList.get(i), UserResponseDto.GetGiveItemResDto.class);
+            tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmp.getItemId()));
+            giveItemList.add(tmp);
+        }
+
+        return giveItemList;
+    }
+
+    public List<UserResponseDto.GetTakeItemResDto> getTakeItem(String token) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        List<UserResponseDto.GetTakeItemResDto> takeItemList = new ArrayList<>();
+        List<Deal> dealList = dealRepository.findByBuyer_UserIdOrderByDealStartDate(user.getUserId());
+        for (int i = 0; i < dealList.size(); i++) {
+            UserResponseDto.GetTakeItemResDto tmp = modelMapper.map(dealList.get(i), UserResponseDto.GetTakeItemResDto.class);
+            tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(dealList.get(i).getItem().getItemId()));
+            tmp.setItemAddress(itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId()).getItemAddress());
+            tmp.setItemName(itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId()).getItemName());
+            takeItemList.add(tmp);
+        }
+
+        return takeItemList;
+    }
+
+    public List<UserResponseDto.GetItemHistoryResDto> getItemHistory(String token, int itemid) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        List<UserResponseDto.GetItemHistoryResDto> historyList = new ArrayList<>();
+        List<Deal> dealList = dealRepository.findAllByItem_ItemId(itemid);
+        for (int i = 0; i < dealList.size(); i++) {
+            UserResponseDto.GetItemHistoryResDto tmp = modelMapper.map(dealList.get(i), UserResponseDto.GetItemHistoryResDto.class);
+            tmp.setItemBuyerImage(userRepository.findByUserId(dealList.get(i).getBuyer().getUserId()).get().getUserImageUrl());
+            tmp.setItemBuyerNickname(userRepository.findByUserId(dealList.get(i).getBuyer().getUserId()).get().getUserNickname());
+            historyList.add(tmp);
+        }
+
+        return historyList;
+    }
+
+    public UserResponseDto.Receipt getReceipt(String token, int dealId) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        Deal deal = dealRepository.findByDealId(dealId).get();
+        UserResponseDto.Receipt receipt = modelMapper.map(deal, UserResponseDto.Receipt.class);
+        receipt.setItemName(deal.getItem().getItemName());
+        receipt.setItemBuyerNickname(deal.getBuyer().getUserNickname());
+        receipt.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(deal.getItem().getItemId()));
+        receipt.setItemAddress(deal.getItem().getItemAddress());
+        receipt.setItemPrice(deal.getItem().getItemPrice());
+
+        return receipt;
+    }
+
+    public List<UserResponseDto.WishList> getWishList(String token) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        List<UserResponseDto.WishList> wishList = new ArrayList<>();
+        List<Bookmark> bookmarkList = bookmarkRepository.findAllByBookmarkId_UserId(user.getUserId());
+        for (int i = 0; i < bookmarkList.size(); i++) {
+            Item item = itemRepository.findItemByItemId(bookmarkList.get(i).getBookmarkId().getItemId());
+            UserResponseDto.WishList tmp = modelMapper.map(item, UserResponseDto.WishList.class);
+            tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmp.getItemId()));
+            wishList.add(tmp);
+        }
+
+        return wishList;
     }
 }
