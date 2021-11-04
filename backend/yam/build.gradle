@@ -67,6 +67,9 @@ dependencies {
 
     // ModelMapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
 }
 
 test {

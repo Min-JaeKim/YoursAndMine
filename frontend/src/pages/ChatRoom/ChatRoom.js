@@ -1,8 +1,68 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import CalendarModal from "./CalendarModal";
+import * as StompJs from "@stomp/stompjs";
+import * as SockJS from "sockjs-client";
 
 function ChatRoom({ location }) {
+  const client = useRef({});
+  const [chatMessages, setChatMessages] = useState([]);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    connect();
+
+    return () => disconnect();
+  }, []);
+
+  const connect = () => {
+    client.current = new StompJs.Client({
+      // brokerURL: "ws://localhost:8080/ws-stomp/websocket", // 웹소켓 서버로 직접 접속
+      webSocketFactory: () => new SockJS("/ws-stomp"), // proxy를 통한 접속
+      connectHeaders: {
+        "auth-token": "spring-chat-auth-token",
+      },
+      debug: function (str) {
+        console.log(str);
+      },
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      onConnect: () => {
+        console.log("연결완료");
+        // subscribe();
+      },
+      onStompError: (frame) => {
+        console.error(frame);
+      },
+    });
+
+    client.current.activate();
+  };
+
+  const disconnect = () => {
+    client.current.deactivate();
+  };
+
+  // const subscribe = () => {
+  //   client.current.subscribe(`/sub/chat/1`, ({ body }) => {
+  //     setChatMessages((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
+  //   });
+  // };
+
+  // const publish = (message) => {
+  //   if (!client.current.connected) {
+  //     return;
+  //   }
+
+  //   client.current.publish({
+  //     destination: "/pub/chat",
+  //     body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
+  //   });
+
+  //   setMessage("");
+  // };
+
   const msgList = [
     {
       id: 1,
