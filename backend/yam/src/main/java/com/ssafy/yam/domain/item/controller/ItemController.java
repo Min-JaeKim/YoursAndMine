@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.item.controller;
 
+import com.ssafy.yam.domain.bookmark.service.BookmarkService;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
@@ -27,7 +28,7 @@ import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 public class ItemController {
 
     private final ItemService itemService;
-    private final DealService dealService;
+    private final BookmarkService bookmarkService;
     private final ItemCRUDService itemCRUDService;
 
     @GetMapping("/{itemId}")
@@ -80,5 +81,17 @@ public class ItemController {
                                                           @RequestPart(value = "itemId") int itemId,
                                                           @RequestPart(value = "itemImage", required = false) List<String> itemImage){
         return ResponseEntity.status(200).body(itemCRUDService.deleteItemImage(token, itemId, itemImage));
+    }
+
+    @PostMapping("/bookmark/{itemId}")
+    public ResponseEntity<?> addBookmark(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
+        bookmarkService.addBookmark(token, itemId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/bookmark/{itemId}")
+    public ResponseEntity<?> deleteBookmark(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
+        bookmarkService.deleteBookmark(token, itemId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

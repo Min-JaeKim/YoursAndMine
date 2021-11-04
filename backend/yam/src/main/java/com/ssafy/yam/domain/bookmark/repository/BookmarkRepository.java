@@ -11,4 +11,5 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, BookmarkId> 
     @Query(value = "select count(*) from bookmark where item_id = :itemId", nativeQuery = true)
     int countByItemId(@Param("itemId") int itemId);
 
+    Bookmark findBookmarkByBookmarkId_UserIdAndBookmarkId_ItemId(int userId, int itemId);
 }
