@@ -1,9 +1,14 @@
 package com.ssafy.yam.domain.item.service;
 
+import com.ssafy.yam.domain.deal.entity.Deal;
+import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
+import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
+import com.ssafy.yam.domain.item.dto.response.ItemImageResponse;
+import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.entity.User;
@@ -20,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +38,8 @@ public class ItemCRUDService {
     private final ImageRepository imageRepository;
     private final ModelMapper modelMapper = new ModelMapper();
     private final UserRepository userRepository;
+    private final DealService dealService;
+    private final ItemService itemService;
 
     public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest, String token) {
         Item item = modelMapper.map(itemCreateRequest, Item.class);
@@ -64,7 +72,7 @@ public class ItemCRUDService {
         itemRepository.deleteById(itemId);
     }
 
-    public void updateItem(String token, ItemUpdateRequest itemUpdateRequest){
+    public ItemDetailResponse updateItem(String token, ItemUpdateRequest itemUpdateRequest){
         Item item = getItem(itemUpdateRequest.getItemId());
         String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -77,9 +85,11 @@ public class ItemCRUDService {
         item.setItemPrice(itemUpdateRequest.getItemPrice());
         item.setItemModifiedTime(LocalDateTime.now());
         itemRepository.save(item);
+
+        return itemService.getItemByItemId(item.getItemId());
     }
 
-    public void addItemImage(String token, int itemId, List<MultipartFile> itemImages){
+    public ItemImageResponse addItemImage(String token, int itemId, List<MultipartFile> itemImages){
         Item item = getItem(itemId);
         String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -87,9 +97,14 @@ public class ItemCRUDService {
         }
 
         uploadImage(itemImages, item);
+
+        List<String> itemImageList = imageRepository.findAllImageUrlByItem_ItemId(item.getItemId());
+        ItemImageResponse response = new ItemImageResponse(item.getItemId(), itemImageList);
+
+        return response;
     }
 
-    public void deleteItemImage(String token, int itemId, List<String> itemImages) {
+    public ItemImageResponse deleteItemImage(String token, int itemId, List<String> itemImages) {
         Item item = getItem(itemId);
         String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -101,6 +116,11 @@ public class ItemCRUDService {
                 imageRepository.deleteByImageUrl(itemImage);
             }
         }
+
+        List<String> itemImageList = imageRepository.findAllImageUrlByItem_ItemId(item.getItemId());
+        ItemImageResponse response = new ItemImageResponse(item.getItemId(), itemImageList);
+
+        return response;
     }
 
     private void uploadImage(List<MultipartFile> itemImages, Item item) {

@@ -32,18 +32,12 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public ResponseEntity<ItemDetailResponse> getItemByItemId(@PathVariable int itemId){
-        ItemResponse item = itemService.getItemByItemId(itemId);
-        List<LocalDate> deal = dealService.getUnavailableDate(itemId);
-
-        ItemDetailResponse itemDetail = new ItemDetailResponse(item, deal);
-
-        return ResponseEntity.status(200).body(itemDetail);
+        return ResponseEntity.status(200).body(itemService.getItemByItemId(itemId));
     }
 
     @GetMapping()
     public ResponseEntity<List<ItemListResponse>> getItemList(@RequestHeader(AUTH_HEADER) String token, Pageable pageable){
-        List<ItemListResponse> itemList = itemService.getItemList(token, pageable);
-        return ResponseEntity.status(200).body(itemList);
+        return ResponseEntity.status(200).body(itemService.getItemList(token, pageable));
     }
 
     @PostMapping()
@@ -71,32 +65,20 @@ public class ItemController {
 
     @PutMapping()
     public ResponseEntity<ItemDetailResponse> updateItem(@RequestHeader(AUTH_HEADER) String token, @RequestBody ItemUpdateRequest itemUpdateRequest){
-        int itemId = itemUpdateRequest.getItemId();
-        itemCRUDService.updateItem(token, itemUpdateRequest);
-        ItemResponse item = itemService.getItemByItemId(itemId);
-        List<LocalDate> deal = dealService.getUnavailableDate(itemId);
-
-        ItemDetailResponse itemDetail = new ItemDetailResponse(item, deal);
-        return ResponseEntity.status(200).body(itemDetail);
+        return ResponseEntity.status(200).body(itemCRUDService.updateItem(token, itemUpdateRequest));
     }
 
     @PostMapping("/image")
     public ResponseEntity<ItemImageResponse> addItemImage(@RequestHeader(AUTH_HEADER) String token,
                                                           @RequestPart(value = "itemId") int itemId,
                                                           @RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImage){
-        itemCRUDService.addItemImage(token, itemId, itemImage);
-        ItemResponse item = itemService.getItemByItemId(itemId);
-        ItemImageResponse response = new ItemImageResponse(item.getItemId(), item.getItemImage());
-        return ResponseEntity.status(200).body(response);
+        return ResponseEntity.status(200).body(itemCRUDService.addItemImage(token, itemId, itemImage));
     }
 
     @DeleteMapping("/image")
     public ResponseEntity<ItemImageResponse> deleteItemImage(@RequestHeader(AUTH_HEADER) String token,
                                                           @RequestPart(value = "itemId") int itemId,
                                                           @RequestPart(value = "itemImage", required = false) List<String> itemImage){
-        itemCRUDService.deleteItemImage(token, itemId, itemImage);
-        ItemResponse item = itemService.getItemByItemId(itemId);
-        ItemImageResponse response = new ItemImageResponse(item.getItemId(), item.getItemImage());
-        return ResponseEntity.status(200).body(response);
+        return ResponseEntity.status(200).body(itemCRUDService.deleteItemImage(token, itemId, itemImage));
     }
 }
