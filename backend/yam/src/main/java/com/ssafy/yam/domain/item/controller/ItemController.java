@@ -2,13 +2,11 @@ package com.ssafy.yam.domain.item.controller;
 
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
-import com.ssafy.yam.domain.item.dto.request.ItemImageRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemImageResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
-import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.service.ItemCRUDService;
 import com.ssafy.yam.domain.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -87,6 +85,16 @@ public class ItemController {
                                                           @RequestPart(value = "itemId") int itemId,
                                                           @RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImage){
         itemCRUDService.addItemImage(token, itemId, itemImage);
+        ItemResponse item = itemService.getItemByItemId(itemId);
+        ItemImageResponse response = new ItemImageResponse(item.getItemId(), item.getItemImage());
+        return ResponseEntity.status(200).body(response);
+    }
+
+    @DeleteMapping("/image")
+    public ResponseEntity<ItemImageResponse> deleteItemImage(@RequestHeader(AUTH_HEADER) String token,
+                                                          @RequestPart(value = "itemId") int itemId,
+                                                          @RequestPart(value = "itemImage", required = false) List<String> itemImage){
+        itemCRUDService.deleteItemImage(token, itemId, itemImage);
         ItemResponse item = itemService.getItemByItemId(itemId);
         ItemImageResponse response = new ItemImageResponse(item.getItemId(), item.getItemImage());
         return ResponseEntity.status(200).body(response);

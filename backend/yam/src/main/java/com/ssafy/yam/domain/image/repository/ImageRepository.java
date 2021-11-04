@@ -17,4 +17,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query(value = "select * from image where item_id = :itemId limit 1", nativeQuery = true)
     Image findAllByItem_ItemIdLimit1(@Param("itemId") int itemId);
 
+
+    void deleteByImageUrl(String imageUrl);
 }

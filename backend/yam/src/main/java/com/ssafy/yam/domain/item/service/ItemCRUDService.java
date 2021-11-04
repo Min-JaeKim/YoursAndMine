@@ -3,7 +3,6 @@ package com.ssafy.yam.domain.item.service;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
-import com.ssafy.yam.domain.item.dto.request.ItemImageRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
@@ -12,7 +11,6 @@ import com.ssafy.yam.domain.user.repository.UserRepository;
 import com.ssafy.yam.utils.S3UploadUtils;
 import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +87,20 @@ public class ItemCRUDService {
         }
 
         uploadImage(itemImages, item);
+    }
+
+    public void deleteItemImage(String token, int itemId, List<String> itemImages) {
+        Item item = getItem(itemId);
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
+            throw new IllegalArgumentException("물품을 수정할 권한이 없습니다.");
+        }
+
+        for (String itemImage : itemImages) {
+            if (!itemImage.isEmpty()) {
+                imageRepository.deleteByImageUrl(itemImage);
+            }
+        }
     }
 
     private void uploadImage(List<MultipartFile> itemImages, Item item) {
