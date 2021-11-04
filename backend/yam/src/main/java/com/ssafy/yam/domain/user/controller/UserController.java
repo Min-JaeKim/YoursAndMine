@@ -67,4 +67,9 @@ public class UserController {
     public ResponseEntity<?> getGiveItem(@RequestHeader(AUTH_HEADER) String token) {
         return ResponseEntity.ok().body(userService.getGiveItem(token));
     }
+
+    @GetMapping("/item/take")
+    public ResponseEntity<?> getTakeItem(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getTakeItem(token));
+    }
 }
