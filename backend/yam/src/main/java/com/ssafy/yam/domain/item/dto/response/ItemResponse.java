@@ -1,8 +1,5 @@
 package com.ssafy.yam.domain.item.dto.response;
 
-
-import com.ssafy.yam.domain.item.entity.Item;
-import com.ssafy.yam.domain.user.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,7 +20,7 @@ public class ItemResponse {
     private String itemAddress;
     private Owner owner;
     private List<String> itemImage = new ArrayList<>();
-    private int itemAreaCode;
+    private String itemAreaCode;
     private LocalDateTime itemModifiedTime;
     private int bookmarkCount;
     private String bookmark;

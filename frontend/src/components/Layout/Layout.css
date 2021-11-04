@@ -35,7 +35,6 @@
   position: relative;
   left: 104px;
   width: 6%;
-  cursor: pointer;
 }
 
 /* .header-location img {
@@ -58,13 +57,11 @@
   height: 100%;
 }
 
-.hd-category-img {
-  width: 30px;
-  height: 30px;
+.hd-page-category-img {
+  width: 6%;
   position: relative;
-  bottom: 45px;
-  left: 370px;
-  cursor: pointer;
+  right: 18px;
+  top: 1px;
 }
 
 .header-icon {
@@ -78,8 +75,7 @@ section {
   display: flex !important;
   flex-direction: column;
   overflow-x: hidden;
-  /* overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; */
+  overflow-y: scroll;
   position: relative;
   border-bottom: none;
   height: calc(100vh - 142px);
@@ -180,7 +176,7 @@ section {
 }
 
 .floatbutton {
-  background-color: #c5d3ccc9;
+  background-color: #c5d3cc;
   padding: 10px;
   border-radius: 40px;
   position: absolute;

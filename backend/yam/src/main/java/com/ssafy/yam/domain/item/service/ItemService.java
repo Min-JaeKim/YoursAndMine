@@ -3,15 +3,22 @@ package com.ssafy.yam.domain.item.service;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
+import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
+import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 
 import com.ssafy.yam.domain.user.entity.User;
+import com.ssafy.yam.domain.user.repository.UserRepository;
+import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +30,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final BookmarkRepository bookmarkRepository;
     private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
 
     public ItemResponse getItemByItemId(int itemId){
         Item item = itemRepository.findItemByItemId(itemId);
@@ -62,7 +70,39 @@ public class ItemService {
         return response;
     }
 
-//    public List<ItemResponse> findAllBy(){
-//        return itemRepository.findAllBy();
-//    }
+    public List<ItemListResponse> getItemList(String token, Pageable pageable){
+        List<ItemListResponse> response = new ArrayList<>();
+
+        if(token.equals("")) {
+            List<Item> itemList = itemRepository.findAllBy(pageable);
+            addItemList(response, itemList);
+        }else{
+            String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+            User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+            String areaCode = user.getUserAreaCode();
+            List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);
+            addItemList(response, itemList);
+        }
+        return response;
+    }
+
+    private void addItemList(List<ItemListResponse> response, List<Item> itemList) {
+        for (Item item : itemList) {
+            ItemListResponse listItem = ItemListResponse.builder()
+                    .itemId(item.getItemId())
+                    .itemName(item.getItemName())
+                    .itemPrice(item.getItemPrice())
+                    .itemAddress(item.getItemAddress())
+                    .itemAreaCode(item.getItemAreaCode())
+                    .itemModifiedTime(item.getItemModifiedTime())
+                    .build();
+
+            Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());
+            if (image != null)
+                listItem.setItemImage(image.getImageUrl());
+
+            response.add(listItem);
+        }
+    }
+
 }

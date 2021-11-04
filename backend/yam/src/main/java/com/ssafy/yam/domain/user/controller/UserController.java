@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
+import static com.ssafy.yam.utils.ConstantsUtils.USER;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/user")
+@RequestMapping(value = USER)
 @RestController
 public class UserController {
 
@@ -45,5 +46,40 @@ public class UserController {
     @PutMapping("/profile")
     public ResponseEntity<?> modifyProfile(@RequestHeader(AUTH_HEADER) String token, @RequestParam(required = false, value = "userImage") MultipartFile userImage, @RequestParam(required = false, value = "userNickname") String userNickname) {
         return ResponseEntity.ok().body(userService.modifyProfile(token, userImage, userNickname));
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity<?> showProfile(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.showProfile(token));
+    }
+
+    @PutMapping("/address")
+    public ResponseEntity<?> modifyAddress(@RequestHeader(AUTH_HEADER) String token, @RequestBody UserRequestDto.ModifyAddress modifyAddress) {
+        return ResponseEntity.ok().body(userService.modifyAddress(token, modifyAddress));
+    }
+
+    @GetMapping("/schedule/{userDate}")
+    public ResponseEntity<?> getSchedule(@RequestHeader(AUTH_HEADER) String token, @PathVariable String userDate) {
+        return ResponseEntity.ok().body(userService.getSchedule(token, userDate));
+    }
+
+    @GetMapping("/item/give")
+    public ResponseEntity<?> getGiveItem(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getGiveItem(token));
+    }
+
+    @GetMapping("/item/take")
+    public ResponseEntity<?> getTakeItem(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getTakeItem(token));
+    }
+
+    @GetMapping("/item/history/{itemId}")
+    public ResponseEntity<?> getItemHistory(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId) {
+        return ResponseEntity.ok().body(userService.getItemHistory(token, itemId));
+    }
+
+    @GetMapping("/item/receipt/{dealId}")
+    public ResponseEntity<?> getReceipt(@RequestHeader(AUTH_HEADER) String token, @PathVariable int dealId) {
+        return ResponseEntity.ok().body(userService.getReceipt(token, dealId));
     }
 }

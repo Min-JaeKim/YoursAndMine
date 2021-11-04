@@ -1,8 +1,9 @@
 .App {
   width: 100vw;
-  height: 100vh;
-  /* overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; */
+  /* touch-action: none; */
+  /* overflow-y: scroll; */
+  /* -webkit-overflow-scrolling: touch; */
+  overscroll-behavior-y: none;
 }
 
 a {

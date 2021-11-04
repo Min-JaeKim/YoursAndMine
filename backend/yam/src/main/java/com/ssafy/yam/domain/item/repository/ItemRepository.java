@@ -1,14 +1,15 @@
 package com.ssafy.yam.domain.item.repository;
 
-import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
-import com.ssafy.yam.domain.user.entity.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Integer> {
     Item findItemByItemId(int itemId);
-
-//    List<ItemResponse> findAllBy();
+    List<Item> findAllBy(Pageable pageable);
+    List<Item> findAllBySeller_UserIdOrderByItemModifiedTime(int userId);
+    List<Item> findAllByItemAreaCode(@Param("areaCode") String areaCode, Pageable pageable);
 }
