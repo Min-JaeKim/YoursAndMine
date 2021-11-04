@@ -9,5 +9,5 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     Item findItemByItemId(int itemId);
     List<Item> findAllBy(Pageable pageable);
-//    List<Item> findAllBy();
+    List<Item> findAllBySeller_UserIdOrderByItemModifiedTime(int userId);
 }

@@ -298,4 +298,20 @@ public class UserService {
         Collections.sort(dateList);
         return dateList;
     }
+
+    public List<UserResponseDto.GetGiveItemResDto> getGiveItem(String token) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        List<UserResponseDto.GetGiveItemResDto> giveItemList = new ArrayList<>();
+        List<Item> itemList = itemRepository.findAllBySeller_UserIdOrderByItemModifiedTime(user.getUserId());
+        for (int i = 0; i < itemList.size(); i++) {
+            UserResponseDto.GetGiveItemResDto tmp = modelMapper.map(itemList.get(i), UserResponseDto.GetGiveItemResDto.class);
+            tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmp.getItemId()));
+            giveItemList.add(tmp);
+        }
+
+        return giveItemList;
+    }
 }

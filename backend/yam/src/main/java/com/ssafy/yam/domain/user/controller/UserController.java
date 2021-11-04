@@ -11,8 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-
 import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 import static com.ssafy.yam.utils.ConstantsUtils.USER;
 
@@ -63,5 +61,10 @@ public class UserController {
     @GetMapping("/schedule/{userDate}")
     public ResponseEntity<?> getSchedule(@RequestHeader(AUTH_HEADER) String token, @PathVariable String userDate) {
         return ResponseEntity.ok().body(userService.getSchedule(token, userDate));
+    }
+
+    @GetMapping("/item/give")
+    public ResponseEntity<?> getGiveItem(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getGiveItem(token));
     }
 }
