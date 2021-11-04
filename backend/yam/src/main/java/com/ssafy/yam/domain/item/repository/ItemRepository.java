@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Integer> {
     Item findItemByItemId(int itemId);
     List<Item> findAllBy(Pageable pageable);
     List<Item> findAllBySeller_UserIdOrderByItemModifiedTime(int userId);
