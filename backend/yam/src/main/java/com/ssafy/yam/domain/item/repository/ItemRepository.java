@@ -7,8 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Integer> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
     Item findItemByItemId(int itemId);
     List<Item> findAllBy(Pageable pageable);
+    List<Item> findAllBySeller_UserIdOrderByItemModifiedTime(int userId);
     List<Item> findAllByItemAreaCode(@Param("areaCode") String areaCode, Pageable pageable);
 }

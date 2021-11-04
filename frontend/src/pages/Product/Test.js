@@ -3,18 +3,6 @@ import styled, { createGlobalStyle } from "styled-components";
 import Item from "./Item";
 import Loader from "./Loader";
 
-const GlobalStyle = createGlobalStyle`
-  *, *::before, *::after {
-    box-sizing: border-box;
-    padding: 0px;
-    margin: 0px;
-  }
-
-  body {
-    background-color: #f2f5f7;
-  }
-`;
-
 const AppWrap = styled.div`
   width: 100%;
   height: 100%;
@@ -76,9 +64,7 @@ const Test = () => {
         {itemLists.map((v, i) => {
           return <Item number={i + 1} key={i} />;
         })}
-        <div ref={setTarget} className="Target-Element">
-          {isLoaded && <Loader />}
-        </div>
+        <div ref={setTarget}>{isLoaded && <Loader />}</div>
       </AppWrap>
     </>
   );

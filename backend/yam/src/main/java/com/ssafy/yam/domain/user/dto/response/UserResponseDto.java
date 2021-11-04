@@ -84,4 +84,17 @@ public class UserResponseDto {
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetGiveItemResDto {
+        private int itemId;
+        private String itemName;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+        private int itemPrice;
+        private String itemActive;
+    }
 }
