@@ -19,6 +19,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import FindPwd from "./pages/FindPwd/FindPwd";
 import UserEdit from "./pages/UserEdit/UserEdit";
 import TradeLog from "./pages/TradeLog/TradeLog";
+import WebSocketTest from "./pages/ChatRoom/WebSocketTest";
 // import Charge from "./pages/Charge/Charge";
 import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
@@ -67,6 +68,7 @@ function App() {
             <PrivateRouter path="/myschedule" component={MySchedule} exact />
 
             <PrivateRouter path="/test" component={Test} exact />
+            <PrivateRouter path="/test2" component={WebSocketTest} exact />
           </Layout>
         </Switch>
       </Router>
