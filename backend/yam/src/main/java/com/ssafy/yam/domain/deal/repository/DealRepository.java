@@ -8,4 +8,5 @@ import java.util.List;
 public interface DealRepository extends JpaRepository<Deal, Long> {
     List<Deal> findAllByItem_ItemId(int itemId);
     List<Deal> findByBuyer_UserIdOrSeller_UserId(int buyerId, int sellerId);
+    List<Deal> findByBuyer_UserIdOrderByDealStartDate(int userId);
 }

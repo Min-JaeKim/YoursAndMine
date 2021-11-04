@@ -97,4 +97,17 @@ public class UserResponseDto {
         private int itemPrice;
         private String itemActive;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetTakeItemResDto {
+        private int dealId;
+        private int dealTotalPrice;
+        private String dealStatus;
+        private String itemName;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+    }
 }
