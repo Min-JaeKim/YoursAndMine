@@ -82,4 +82,9 @@ public class UserController {
     public ResponseEntity<?> getReceipt(@RequestHeader(AUTH_HEADER) String token, @PathVariable int dealId) {
         return ResponseEntity.ok().body(userService.getReceipt(token, dealId));
     }
+
+    @GetMapping("/wishlist")
+    public ResponseEntity<?> getWishList(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getWishList(token));
+    }
 }

@@ -2,6 +2,8 @@ package com.ssafy.yam.domain.user.service;
 
 //import com.ssafy.yam.auth.Provider.JwtTokenProvider;
 import com.ssafy.yam.auth.Provider.RandomSaltProvider;
+import com.ssafy.yam.domain.bookmark.entity.Bookmark;
+import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.deal.entity.Deal;
 import com.ssafy.yam.domain.deal.repository.DealRepository;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
@@ -46,6 +48,7 @@ public class UserService {
     private final DealRepository dealRepository;
     private final ItemRepository itemRepository;
     private final ImageRepository imageRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final ResponseUtils response;
     private final BCryptPasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -364,5 +367,22 @@ public class UserService {
         receipt.setItemPrice(deal.getItem().getItemPrice());
 
         return receipt;
+    }
+
+    public List<UserResponseDto.WishList> getWishList(String token) {
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        List<UserResponseDto.WishList> wishList = new ArrayList<>();
+        List<Bookmark> bookmarkList = bookmarkRepository.findAllByBookmarkId_UserId(user.getUserId());
+        for (int i = 0; i < bookmarkList.size(); i++) {
+            Item item = itemRepository.findItemByItemId(bookmarkList.get(i).getBookmarkId().getItemId());
+            UserResponseDto.WishList tmp = modelMapper.map(item, UserResponseDto.WishList.class);
+            tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmp.getItemId()));
+            wishList.add(tmp);
+        }
+
+        return wishList;
     }
 }
