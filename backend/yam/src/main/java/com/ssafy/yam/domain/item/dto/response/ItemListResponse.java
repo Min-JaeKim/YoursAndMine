@@ -15,7 +15,7 @@ public class ItemListResponse {
     private int itemPrice;
     private String itemAddress;
     private String itemImage;
-    private int itemAreaCode;
+    private String itemAreaCode;
     private LocalDateTime itemModifiedTime;
     private int bookmarkCount;
 }
