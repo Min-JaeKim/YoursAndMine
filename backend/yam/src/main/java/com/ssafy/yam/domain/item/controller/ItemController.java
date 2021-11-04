@@ -1,13 +1,11 @@
 package com.ssafy.yam.domain.item.controller;
 
-import com.ssafy.yam.domain.deal.dto.response.DealResponse;
-import com.ssafy.yam.domain.deal.dto.response.DealUnavailableResponse;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
+import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
-import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.service.ItemCRUDService;
 import com.ssafy.yam.domain.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 
 @RestController
 @RequestMapping("/item")
@@ -42,17 +40,42 @@ public class ItemController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ItemListResponse>> getItemList(Pageable pageable){
-        List<ItemListResponse> itemList = itemService.getItemList(pageable);
+    public ResponseEntity<List<ItemListResponse>> getItemList(@RequestHeader(AUTH_HEADER) String token, Pageable pageable){
+        List<ItemListResponse> itemList = itemService.getItemList(token, pageable);
         return ResponseEntity.status(200).body(itemList);
     }
 
     @PostMapping()
     public ResponseEntity<?> createItem(@RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImages,
                                         @RequestPart(value = "itemData") ItemCreateRequest itemCreateRequest){
-        itemCRUDService.saveItem(itemImages, itemCreateRequest);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        try{
+            itemCRUDService.saveItem(itemImages, itemCreateRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<?> deleteItem(@PathVariable int itemId){
+        try{
+            itemCRUDService.deleteItem(itemId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PutMapping()
+    public ResponseEntity<ItemDetailResponse> updateItem(@RequestBody ItemUpdateRequest itemUpdateRequest){
+        int itemId = itemUpdateRequest.getItemId();
+        itemCRUDService.updateItem(itemUpdateRequest);
+        ItemResponse item = itemService.getItemByItemId(itemId);
+        List<LocalDate> deal = dealService.getUnavailableDate(itemId);
+
+        ItemDetailResponse itemDetail = new ItemDetailResponse(item, deal);
+        return ResponseEntity.status(200).body(itemDetail);
+    }
 }

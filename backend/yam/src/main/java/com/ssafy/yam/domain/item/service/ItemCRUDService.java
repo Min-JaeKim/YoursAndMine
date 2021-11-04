@@ -3,6 +3,7 @@ package com.ssafy.yam.domain.item.service;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
+import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.entity.User;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class ItemCRUDService {
         User tmp = new User();
         tmp.setUserId(1);
         item.setSeller(tmp);
-        item.setItemAreaCode(11100);
+        item.setItemAreaCode("11100");
         item.setItemAddress("서울시 관악구 신림동");
         item.setItemCreatedTime(LocalDateTime.now());
         item.setItemModifiedTime(LocalDateTime.now());
@@ -65,5 +67,33 @@ public class ItemCRUDService {
                 }
             }
         //}
+    }
+
+    private Item getItem(int itemId) {
+        return itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다."));
+    }
+
+    public void deleteItem(int itemId){
+//        Item item = getItem(itemId);
+//        if (!item.getItem.getUid().equals(uid)) {
+//            throw new IllegalArgumentException("물품을 삭제할 권한이 없습니다.");
+//        }
+        itemRepository.deleteById(itemId);
+    }
+
+    public void updateItem(ItemUpdateRequest itemUpdateRequest){
+        Item item = modelMapper.map(itemUpdateRequest, Item.class);
+//        item.updateItem(itemUpdateRequest);
+
+        Optional<Item> updateItem = itemRepository.findById(item.getItemId());
+        updateItem.ifPresent(selectItem ->{
+            selectItem.setItemName(item.getItemName());
+            selectItem.setItemContent(item.getItemContent());
+            selectItem.setItemCategory(item.getItemCategory());
+            selectItem.setItemPrice(item.getItemPrice());
+            selectItem.setItemModifiedTime(LocalDateTime.now());
+            itemRepository.save(selectItem);
+        });
     }
 }

@@ -10,6 +10,8 @@ import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 
 import com.ssafy.yam.domain.user.entity.User;
+import com.ssafy.yam.domain.user.repository.UserRepository;
+import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final BookmarkRepository bookmarkRepository;
     private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
 
     public ItemResponse getItemByItemId(int itemId){
         Item item = itemRepository.findItemByItemId(itemId);
@@ -67,11 +70,24 @@ public class ItemService {
         return response;
     }
 
-    public List<ItemListResponse> getItemList(Pageable pageable){
-        List<Item> itemList = itemRepository.findAllBy(pageable);
-        System.out.println("item size : " + itemList.size());
+    public List<ItemListResponse> getItemList(String token, Pageable pageable){
         List<ItemListResponse> response = new ArrayList<>();
-        for(Item item : itemList){
+
+        if(token.equals("")) {
+            List<Item> itemList = itemRepository.findAllBy(pageable);
+            addItemList(response, itemList);
+        }else{
+            String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+            User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+            String areaCode = user.getUserAreaCode();
+            List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);
+            addItemList(response, itemList);
+        }
+        return response;
+    }
+
+    private void addItemList(List<ItemListResponse> response, List<Item> itemList) {
+        for (Item item : itemList) {
             ItemListResponse listItem = ItemListResponse.builder()
                     .itemId(item.getItemId())
                     .itemName(item.getItemName())
@@ -82,12 +98,11 @@ public class ItemService {
                     .build();
 
             Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());
-            if(image != null)
+            if (image != null)
                 listItem.setItemImage(image.getImageUrl());
 
             response.add(listItem);
         }
-        return response;
     }
 
 }
