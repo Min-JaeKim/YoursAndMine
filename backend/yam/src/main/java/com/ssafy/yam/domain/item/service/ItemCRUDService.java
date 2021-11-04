@@ -7,7 +7,9 @@ import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.entity.User;
+import com.ssafy.yam.domain.user.repository.UserRepository;
 import com.ssafy.yam.utils.S3UploadUtils;
+import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
@@ -31,16 +33,16 @@ public class ItemCRUDService {
     private final ItemRepository itemRepository;
     private final ImageRepository imageRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+    private final UserRepository userRepository;
 
-    public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest) {
+    public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest, String token) {
         Item item = modelMapper.map(itemCreateRequest, Item.class);
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
-        // jwt 수정할 부분
-        User tmp = new User();
-        tmp.setUserId(1);
-        item.setSeller(tmp);
-        item.setItemAreaCode("11100");
-        item.setItemAddress("서울시 관악구 신림동");
+        item.setSeller(user);
+        item.setItemAreaCode(user.getUserAreaCode());
+        item.setItemAddress(user.getUserAddress());
         item.setItemCreatedTime(LocalDateTime.now());
         item.setItemModifiedTime(LocalDateTime.now());
         item.setItemIsActive("Y");
