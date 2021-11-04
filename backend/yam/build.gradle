@@ -34,7 +34,6 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -61,6 +60,10 @@ dependencies {
 
     // Amazon AWS S3
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.25'
+
+    // Websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
 
     // ModelMapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'

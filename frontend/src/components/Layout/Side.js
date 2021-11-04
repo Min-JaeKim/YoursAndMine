@@ -6,13 +6,15 @@ import "./Layout.css";
 const Side = () => {
   return (
     <div className="sidebar">
-      <img className="logo" src={yam} alt="yam" width="300px" />
-      <br />
-      <img className="eventimage" src={eventImage} alt="event" width="300px" />
-      <br />
+      <div className="sidebar-contents">
+        <img className="logo" src={yam} alt="yam" width="300px" />
+        <br />
+        <img className="eventimage" src={eventImage} alt="event" width="300px" />
+        <br />
 
-      <div className="mock">
-      <img className="mock-image" src={mock} alt="event" width="300px" />
+        <div className="mock">
+          <img className="mock-image" src={mock} alt="event" width="300px" />
+        </div>
       </div>
     </div>
   );

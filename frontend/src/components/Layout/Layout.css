@@ -7,7 +7,6 @@
 .layout {
   position: relative;
   width: 100%;
-  /* height: 100vh; */
   max-width: 420px;
   height: 100%;
   border: 1px solid rgba(225, 225, 225, 1);
@@ -33,10 +32,9 @@
 }
 
 .hd-location-category-img {
-  position: absolute;
-  right: 5%;
+  position: relative;
+  left: 104px;
   width: 6%;
-  cursor: pointer;
 }
 
 /* .header-location img {
@@ -59,13 +57,11 @@
   height: 100%;
 }
 
-.hd-category-img {
-  width: 30px;
-  height: 30px;
+.hd-page-category-img {
+  width: 6%;
   position: relative;
-  bottom: 45px;
-  left: 370px;
-  cursor: pointer;
+  right: 18px;
+  top: 1px;
 }
 
 .header-icon {
@@ -73,6 +69,16 @@
   margin-right: 15px;
   width: 30px;
   cursor: pointer;
+}
+
+section {
+  display: flex !important;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: relative;
+  border-bottom: none;
+  height: calc(100vh - 142px);
 }
 
 .footer {
@@ -153,20 +159,6 @@
   margin-bottom: 5px;
 }
 
-.nb-notification-all {
-  display: flex;
-}
-
-.nb-notification-dot {
-  width: 7px;
-  height: 7px;
-  height: 0 auto;
-  background-color: #eb3223;
-  border-radius: 60px;
-  position: absolute;
-  right: 105px;
-}
-
 .sidebar {
   display: none;
 }
@@ -184,7 +176,7 @@
 }
 
 .floatbutton {
-  background-color: #c5d3ccc9;
+  background-color: #c5d3cc;
   padding: 10px;
   border-radius: 40px;
   position: absolute;
@@ -194,15 +186,6 @@
 @media only screen and (min-width: 1080px) {
   .layout {
     margin-right: 40px;
-  }
-
-  section {
-    display: flex !important;
-    flex-direction: column;
-    overflow: scroll;
-    position: relative;
-    border-bottom: none;
-    height: calc(100vh - 142px);
   }
   .sidebar {
     display: flex;
@@ -226,14 +209,6 @@
     width: 80px;
     font-size: 12px;
   }
-
-  section {
-    display: flex !important;
-    flex-direction: column;
-    overflow-x: hidden;
-    position: relative;
-    border-bottom: none;
-  }
 }
 
 @media only screen and (min-width: 320px) and (max-width: 1079px) {
@@ -241,13 +216,7 @@
     width: 60px;
     font-size: 12px;
   }
-  section {
-    display: flex !important;
-    flex-direction: column;
-    overflow-x: hidden;
-    position: relative;
-    border-bottom: none;
-  }
+
   .footer-desc {
     font-size: 10px;
   }
@@ -261,13 +230,5 @@
   .nav-bottom-items {
     width: 40px;
     font-size: 10px;
-  }
-
-  section {
-    display: flex !important;
-    flex-direction: column;
-    overflow-x: hidden;
-    position: relative;
-    border-bottom: none;
   }
 }
