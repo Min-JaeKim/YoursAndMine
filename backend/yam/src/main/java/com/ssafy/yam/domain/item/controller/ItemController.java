@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
+
 @RestController
 @RequestMapping("/item")
 @RequiredArgsConstructor
@@ -38,8 +40,8 @@ public class ItemController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ItemListResponse>> getItemList(Pageable pageable){
-        List<ItemListResponse> itemList = itemService.getItemList(pageable);
+    public ResponseEntity<List<ItemListResponse>> getItemList(@RequestHeader(AUTH_HEADER) String token, Pageable pageable){
+        List<ItemListResponse> itemList = itemService.getItemList(token, pageable);
         return ResponseEntity.status(200).body(itemList);
     }
 

@@ -39,7 +39,7 @@ public class ItemCRUDService {
         User tmp = new User();
         tmp.setUserId(1);
         item.setSeller(tmp);
-        item.setItemAreaCode(11100);
+        item.setItemAreaCode("11100");
         item.setItemAddress("서울시 관악구 신림동");
         item.setItemCreatedTime(LocalDateTime.now());
         item.setItemModifiedTime(LocalDateTime.now());
