@@ -12,7 +12,7 @@ public class ConstantsUtils {
 
 	// JWT String
 	public static final String AUTH_HEADER = "Authorization";
-	public static final String TOKEN_TYPE = "BEARER";
+	public static final String TOKEN_TYPE = "Bearer";
 	public static final String AUTHORITIES_KEY = "auth";
 	public static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
