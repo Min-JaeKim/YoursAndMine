@@ -128,11 +128,11 @@ const MyPage = () => {
       <div className="division-bar"></div>
 
       <div className="mypage-options">
-        <Link to="/signin">
+        {/* <Link to="/signin">
           <div className="mypage-option">
             <p>로그인 (임시)</p> <img src={arrow} width="20px" alt="arrow" />
           </div>
-        </Link>
+        </Link> */}
 
         <Link to="/tradelog">
           <div className="mypage-option">

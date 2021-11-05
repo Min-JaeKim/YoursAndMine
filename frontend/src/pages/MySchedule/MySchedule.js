@@ -1,4 +1,6 @@
-import React from 'react'
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+
 import { Button } from "semantic-ui-react";
 import "./MySchedule.css";
 import Calendar from "../../components/MyCalendar/MyCalendar"
@@ -6,17 +8,10 @@ import MyProduct from "../../components/MyProduct/MyProduct"
 
 const MySchedule = () => {
 
-	function checkLeapYear(year) {
-		if(year % 400 === 0){
-			return true;
-		} else if (year % 100 === 0) {
-			return false;
-		} else if (year%4 === 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	useEffect(() => {
+		
+	}, [])
+
 
 	return (
 		<div>
