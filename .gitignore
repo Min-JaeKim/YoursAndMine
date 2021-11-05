@@ -8,6 +8,8 @@
 
 # springboot
 backend/yam/src/main/resources/application.yml
+server/yam/src/main/resources/application.yml
+server/yam_chat/src/main/resources/application.yml
 .yml
 .idea
 .gradle
