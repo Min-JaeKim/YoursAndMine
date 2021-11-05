@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "./Layout.css";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import homeIcon from "../../assets/icons/home.png";
 import homeIconOn from "../../assets/icons/home-on.png";
 
 import star from "../../assets/icons/star.png";
-import starOn from "../../assets/icons/star-on.png";
 import plus from "../../assets/icons/plus.png";
-import plusOn from "../../assets/icons/plus-on.png";
 import chat from "../../assets/icons/chat.png";
-import chatOn from "../../assets/icons/chat-on.png";
 import myPage from "../../assets/icons/my.png";
+import starOn from "../../assets/icons/star-on.png";
+import plusOn from "../../assets/icons/plus-on.png";
+import chatOn from "../../assets/icons/chat-on.png";
 import myPageOn from "../../assets/icons/my-on.png";
-import notificationOn from "../../assets/icons/notification-on.png";
 import notification from "../../assets/icons/notification.png";
+import notificationOn from "../../assets/icons/notification-on.png";
 
 import ChatInput from "../../pages/ChatRoom/ChatInput";
-import { Link } from "react-router-dom";
+
 const NavBottom = (props) => {
   
   let { loginFlag } = useSelector(({ user }) => ({
