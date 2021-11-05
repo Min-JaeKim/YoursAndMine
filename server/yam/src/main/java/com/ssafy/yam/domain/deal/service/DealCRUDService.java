@@ -26,7 +26,7 @@ public class DealCRUDService {
     private final DealService dealService;
     private final DealRepository dealRepository;
 
-    public int createDeal(String token, DealRequest dealRequest){
+    public int createDeal(DealRequest dealRequest){
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         Item item = itemRepository.findItemByItemId(dealRequest.getItemId());
@@ -104,7 +104,7 @@ public class DealCRUDService {
         return dateDiff;
     }
 
-    public void deleteDeal(String token, int dealId) {
+    public void deleteDeal(int dealId) {
         Deal deal = getDeal(dealId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {

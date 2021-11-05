@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
-
 @RestController
 @RequestMapping("/deal")
 @RequiredArgsConstructor
@@ -17,8 +15,8 @@ public class DealController {
     private final DealCRUDService dealCRUDService;
 
     @PostMapping()
-    public ResponseEntity<?> createDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealRequest dealRequest){
-        int res = dealCRUDService.createDeal(token, dealRequest);
+    public ResponseEntity<?> createDeal(@RequestBody DealRequest dealRequest){
+        int res = dealCRUDService.createDeal(dealRequest);
         if(res == 0)
             return new ResponseEntity<>(HttpStatus.OK);
         else if(res == 1)
@@ -32,9 +30,9 @@ public class DealController {
     }
 
     @DeleteMapping("/{dealId}")
-    public ResponseEntity<?> deleteDeal(@RequestHeader(AUTH_HEADER) String token, @PathVariable int dealId){
+    public ResponseEntity<?> deleteDeal(@PathVariable int dealId){
         try{
-            dealCRUDService.deleteDeal(token, dealId);
+            dealCRUDService.deleteDeal(dealId);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);

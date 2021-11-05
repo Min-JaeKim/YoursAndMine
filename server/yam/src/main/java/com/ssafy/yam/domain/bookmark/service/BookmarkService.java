@@ -18,7 +18,7 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
 
-    public void addBookmark(String token, int itemId) {
+    public void addBookmark(int itemId) {
         // 토큰 유효성 검사 필요
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
@@ -29,7 +29,7 @@ public class BookmarkService {
         bookmarkRepository.save(bookmark);
     }
 
-    public void deleteBookmark(String token, int itemId) {
+    public void deleteBookmark(int itemId) {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         int userId = user.getUserId();
