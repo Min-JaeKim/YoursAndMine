@@ -1,101 +1,87 @@
 package com.ssafy.yam.config;
 
-import com.ssafy.yam.auth.Filter.CustomAuthenticationFilter;
-import com.ssafy.yam.auth.Provider.CustomAuthenticationProvider;
-import com.ssafy.yam.auth.handler.CustomLoginSuccessHandler;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ssafy.yam.jwt.JwtAccessDeniedHandler;
+import com.ssafy.yam.jwt.JwtAuthenticationEntryPoint;
+import com.ssafy.yam.jwt.JwtSecurityConfig;
+import com.ssafy.yam.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
-@Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	private final UserDetailsService userDetailsService;
+    private final TokenProvider tokenProvider;
+    private final CorsFilter corsFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    // 정적 자원에 대해서는 Security 설정을 적용하지 않음.
+    public SecurityConfig(
+            TokenProvider tokenProvider,
+            CorsFilter corsFilter,
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            JwtAccessDeniedHandler jwtAccessDeniedHandler
+    ) {
+        this.tokenProvider = tokenProvider;
+        this.corsFilter = corsFilter;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     public void configure(WebSecurity web) {
-//        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring()
+                .antMatchers(
+                        "/h2-console/**"
+                        ,"/favicon.ico"
+                        ,"/error"
+                );
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .httpBasic().disable()
+                // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
-                // 토큰을 활용하면 세션이 필요 없으므로 STATELESS로 설정하여 Session을 사용하지 않는다.
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+                // enable h2-console
                 .and()
-                .authorizeRequests()
-                .antMatchers("/user/sign-up", "/user/login", "/user/authority").permitAll()
-                .antMatchers("/api/v1/users/userTest").hasRole("USER")
-                .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
-                // 토큰을 활용하는 경우 모든 요청에 대해 접근이 가능하도록 함
-//                .anyRequest().permitAll()
-                .and()
-                // form 기반의 로그인에 대해 비활성화 한다.
-                .formLogin().disable()
-                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .headers()
                 .frameOptions()
-                .sameOrigin();
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-                // JwtAuthenticationFilter를 UsernamePasswordAuthentictaionFilter 전에 적용시킨다.
-    }
+                .sameOrigin()
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+                // 세션을 사용하지 않기 때문에 STATELESS로 설정
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-    @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        customAuthenticationFilter.setAuthenticationManager(this.authenticationManagerBean());
-        customAuthenticationFilter.setFilterProcessesUrl("/user/login");
-        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
-//        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/signup").permitAll()
 
-        customAuthenticationFilter.afterPropertiesSet();
-        logger.info("Here is Set Filter");
-        return customAuthenticationFilter;
-    }
+                .anyRequest().authenticated()
 
-    @Bean
-    public CustomLoginSuccessHandler customLoginSuccessHandler() {
-    	CustomLoginSuccessHandler handler = new CustomLoginSuccessHandler();
-//    	handler.setDefaultTargetUrl("/user/login");
-        return handler;
+                .and() // JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig 클래스도 적용
+                .apply(new JwtSecurityConfig(tokenProvider));
     }
-//
-//    @Bean
-//    public CustomLoginFailureHandler customLoginFailureHandler() {
-//        return new CustomLoginFailureHandler();
-//    }
-
-    @Bean
-    public CustomAuthenticationProvider customAuthenticationProvider() {
-        return new CustomAuthenticationProvider(userDetailsService, bCryptPasswordEncoder());
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) {
-        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider());
-    }
-	
 }

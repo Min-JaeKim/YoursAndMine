@@ -11,11 +11,12 @@ public class UserResponseDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class TokenInfo {
-        private String grantType;
+    @NoArgsConstructor
+    public static class LoginResDto {
         private String accessToken;
-        private String refreshToken;
-        private Long accessTokenExpiresIn;
+        //        private String refreshToken;
+        private String userAddress;
+        private String userAreaCode;
     }
 
     @Getter
