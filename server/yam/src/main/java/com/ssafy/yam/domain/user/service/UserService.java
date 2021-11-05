@@ -13,7 +13,6 @@ import com.ssafy.yam.domain.user.dto.response.UserResponseDto;
 import com.ssafy.yam.domain.user.entity.User;
 import com.ssafy.yam.domain.user.repository.UserRepository;
 import com.ssafy.yam.jwt.TokenProvider;
-import com.ssafy.yam.utils.ResponseUtils;
 import com.ssafy.yam.utils.S3UploadUtils;
 import com.ssafy.yam.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -154,7 +153,7 @@ public class UserService {
     private S3UploadUtils s3UploadUtils;
 
     @Transactional
-    public UserResponseDto.ModifyProfileResDto modifyProfile(String token, MultipartFile userImage, String userNickname) {
+    public UserResponseDto.ModifyProfileResDto modifyProfile(MultipartFile userImage, String userNickname) {
         UserResponseDto.ModifyProfileResDto modifyProfileResDto = new UserResponseDto.ModifyProfileResDto(false, false);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         String userSet = tokenEmail + "(" + LocalDate.now().toString() + ")";
@@ -198,7 +197,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean modifyAddress(String token, UserRequestDto.ModifyAddress modifyAddress) {
+    public boolean modifyAddress(UserRequestDto.ModifyAddress modifyAddress) {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
@@ -211,7 +210,7 @@ public class UserService {
         return true;
     }
 
-    public UserResponseDto.ScheduleResDto getSchedule(String token, String userDate) {
+    public UserResponseDto.ScheduleResDto getSchedule(String userDate) {
         LocalDate requestDate = LocalDate.parse(userDate);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
@@ -298,7 +297,7 @@ public class UserService {
         return dateList;
     }
 
-    public List<UserResponseDto.GetGiveItemResDto> getGiveItem(String token) {
+    public List<UserResponseDto.GetGiveItemResDto> getGiveItem() {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
@@ -314,7 +313,7 @@ public class UserService {
         return giveItemList;
     }
 
-    public List<UserResponseDto.GetTakeItemResDto> getTakeItem(String token) {
+    public List<UserResponseDto.GetTakeItemResDto> getTakeItem() {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
@@ -332,7 +331,7 @@ public class UserService {
         return takeItemList;
     }
 
-    public List<UserResponseDto.GetItemHistoryResDto> getItemHistory(String token, int itemid) {
+    public List<UserResponseDto.GetItemHistoryResDto> getItemHistory(int itemid) {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
@@ -349,7 +348,7 @@ public class UserService {
         return historyList;
     }
 
-    public UserResponseDto.Receipt getReceipt(String token, int dealId) {
+    public UserResponseDto.Receipt getReceipt(int dealId) {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
@@ -365,7 +364,7 @@ public class UserService {
         return receipt;
     }
 
-    public List<UserResponseDto.WishList> getWishList(String token) {
+    public List<UserResponseDto.WishList> getWishList() {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));

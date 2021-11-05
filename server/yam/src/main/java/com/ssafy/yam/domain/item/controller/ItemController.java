@@ -1,13 +1,11 @@
 package com.ssafy.yam.domain.item.controller;
 
 import com.ssafy.yam.domain.bookmark.service.BookmarkService;
-import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
-import com.ssafy.yam.domain.item.dto.response.ItemImageResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
-import com.ssafy.yam.domain.item.dto.response.ItemResponse;
+import com.ssafy.yam.domain.item.dto.response.ItemImageResponse;
 import com.ssafy.yam.domain.item.service.ItemCRUDService;
 import com.ssafy.yam.domain.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
-
-import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 
 @RestController
 @RequestMapping("/item")
@@ -37,15 +32,15 @@ public class ItemController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ItemListResponse>> getItemList(@RequestHeader(AUTH_HEADER) String token, Pageable pageable){
-        return ResponseEntity.status(200).body(itemService.getItemList(token, pageable));
+    public ResponseEntity<List<ItemListResponse>> getItemList(Pageable pageable){
+        return ResponseEntity.status(200).body(itemService.getItemList(pageable));
     }
 
     @PostMapping()
     public ResponseEntity<?> createItem(@RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImage,
-                                        @RequestPart(value = "itemData") ItemCreateRequest itemCreateRequest, @RequestHeader(AUTH_HEADER) String token){
+                                        @RequestPart(value = "itemData") ItemCreateRequest itemCreateRequest){
         try{
-            itemCRUDService.saveItem(itemImage, itemCreateRequest, token);
+            itemCRUDService.saveItem(itemImage, itemCreateRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);
@@ -54,9 +49,9 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<?> deleteItem(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
+    public ResponseEntity<?> deleteItem(@PathVariable int itemId){
         try{
-            itemCRUDService.deleteItem(token, itemId);
+            itemCRUDService.deleteItem(itemId);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);
@@ -65,33 +60,31 @@ public class ItemController {
     }
 
     @PutMapping()
-    public ResponseEntity<ItemDetailResponse> updateItem(@RequestHeader(AUTH_HEADER) String token, @RequestBody ItemUpdateRequest itemUpdateRequest){
-        return ResponseEntity.status(200).body(itemCRUDService.updateItem(token, itemUpdateRequest));
+    public ResponseEntity<ItemDetailResponse> updateItem(@RequestBody ItemUpdateRequest itemUpdateRequest){
+        return ResponseEntity.status(200).body(itemCRUDService.updateItem(itemUpdateRequest));
     }
 
     @PostMapping("/image")
-    public ResponseEntity<ItemImageResponse> addItemImage(@RequestHeader(AUTH_HEADER) String token,
-                                                          @RequestPart(value = "itemId") int itemId,
+    public ResponseEntity<ItemImageResponse> addItemImage(@RequestPart(value = "itemId") int itemId,
                                                           @RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImage){
-        return ResponseEntity.status(200).body(itemCRUDService.addItemImage(token, itemId, itemImage));
+        return ResponseEntity.status(200).body(itemCRUDService.addItemImage(itemId, itemImage));
     }
 
     @DeleteMapping("/image")
-    public ResponseEntity<ItemImageResponse> deleteItemImage(@RequestHeader(AUTH_HEADER) String token,
-                                                          @RequestPart(value = "itemId") int itemId,
-                                                          @RequestPart(value = "itemImage", required = false) List<String> itemImage){
-        return ResponseEntity.status(200).body(itemCRUDService.deleteItemImage(token, itemId, itemImage));
+    public ResponseEntity<ItemImageResponse> deleteItemImage(@RequestPart(value = "itemId") int itemId,
+                                                             @RequestPart(value = "itemImage", required = false) List<String> itemImage){
+        return ResponseEntity.status(200).body(itemCRUDService.deleteItemImage(itemId, itemImage));
     }
 
     @PostMapping("/bookmark/{itemId}")
-    public ResponseEntity<?> addBookmark(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
-        bookmarkService.addBookmark(token, itemId);
+    public ResponseEntity<?> addBookmark(@PathVariable int itemId){
+        bookmarkService.addBookmark(itemId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/bookmark/{itemId}")
-    public ResponseEntity<?> deleteBookmark(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
-        bookmarkService.deleteBookmark(token, itemId);
+    public ResponseEntity<?> deleteBookmark(@PathVariable int itemId){
+        bookmarkService.deleteBookmark(itemId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

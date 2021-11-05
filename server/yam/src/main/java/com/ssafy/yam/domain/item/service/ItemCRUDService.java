@@ -38,7 +38,7 @@ public class ItemCRUDService {
     private final DealService dealService;
     private final ItemService itemService;
 
-    public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest, String token) {
+    public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest) {
         Item item = modelMapper.map(itemCreateRequest, Item.class);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
@@ -60,7 +60,7 @@ public class ItemCRUDService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다."));
     }
 
-    public void deleteItem(String token, int itemId){
+    public void deleteItem(int itemId){
         Item item = getItem(itemId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -69,7 +69,7 @@ public class ItemCRUDService {
         itemRepository.deleteById(itemId);
     }
 
-    public ItemDetailResponse updateItem(String token, ItemUpdateRequest itemUpdateRequest){
+    public ItemDetailResponse updateItem(ItemUpdateRequest itemUpdateRequest){
         Item item = getItem(itemUpdateRequest.getItemId());
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -86,7 +86,7 @@ public class ItemCRUDService {
         return itemService.getItemByItemId(item.getItemId());
     }
 
-    public ItemImageResponse addItemImage(String token, int itemId, List<MultipartFile> itemImages){
+    public ItemImageResponse addItemImage(int itemId, List<MultipartFile> itemImages){
         Item item = getItem(itemId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -101,7 +101,7 @@ public class ItemCRUDService {
         return response;
     }
 
-    public ItemImageResponse deleteItemImage(String token, int itemId, List<String> itemImages) {
+    public ItemImageResponse deleteItemImage(int itemId, List<String> itemImages) {
         Item item = getItem(itemId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -127,9 +127,7 @@ public class ItemCRUDService {
                 String userSet = itemImage.getOriginalFilename() + "(" + LocalDate.now().toString() + ")";
                 try {
                     imageUrl = s3UploadUtils.upload(itemImage, "item", userSet);
-//                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 success");
                 } catch (IOException e) {
-//                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 fail");
                     e.printStackTrace();
                 }
                 Image image = new Image();

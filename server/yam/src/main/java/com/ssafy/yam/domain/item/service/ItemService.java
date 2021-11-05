@@ -77,10 +77,10 @@ public class ItemService {
         return itemDetail;
     }
 
-    public List<ItemListResponse> getItemList(String token, Pageable pageable){
+    public List<ItemListResponse> getItemList(Pageable pageable){
         List<ItemListResponse> response = new ArrayList<>();
 
-        if(token.equals("")) {
+        if(SecurityUtils.getCurrentUsername().get() == null) { // 내가 수정한 부분이라 검증필요
             List<Item> itemList = itemRepository.findAllBy(pageable);
             addItemList(response, itemList);
         }else{
