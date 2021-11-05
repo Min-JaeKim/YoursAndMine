@@ -7,14 +7,12 @@ import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.entity.User;
 import com.ssafy.yam.domain.user.repository.UserRepository;
-import com.ssafy.yam.utils.TokenUtils;
+import com.ssafy.yam.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class DealCRUDService {
     private final DealRepository dealRepository;
 
     public int createDeal(String token, DealRequest dealRequest){
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         Item item = itemRepository.findItemByItemId(dealRequest.getItemId());
         if(item == null)
@@ -108,7 +106,7 @@ public class DealCRUDService {
 
     public void deleteDeal(String token, int dealId) {
         Deal deal = getDeal(dealId);
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("예약을 취소할 권한이 없습니다.");
         }

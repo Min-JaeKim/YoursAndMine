@@ -5,13 +5,10 @@ import com.ssafy.yam.domain.bookmark.entity.BookmarkId;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.user.entity.User;
 import com.ssafy.yam.domain.user.repository.UserRepository;
-import com.ssafy.yam.utils.TokenUtils;
+import com.ssafy.yam.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.print.Book;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +20,7 @@ public class BookmarkService {
 
     public void addBookmark(String token, int itemId) {
         // 토큰 유효성 검사 필요
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         int userId = user.getUserId();
 
@@ -33,7 +30,7 @@ public class BookmarkService {
     }
 
     public void deleteBookmark(String token, int itemId) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         int userId = user.getUserId();
 

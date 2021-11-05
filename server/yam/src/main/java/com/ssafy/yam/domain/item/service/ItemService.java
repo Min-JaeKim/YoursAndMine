@@ -1,12 +1,9 @@
 package com.ssafy.yam.domain.item.service;
 
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
-import com.ssafy.yam.domain.deal.dto.response.DealResponse;
-import com.ssafy.yam.domain.deal.repository.DealRepository;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
-import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
@@ -15,9 +12,8 @@ import com.ssafy.yam.domain.item.repository.ItemRepository;
 
 import com.ssafy.yam.domain.user.entity.User;
 import com.ssafy.yam.domain.user.repository.UserRepository;
-import com.ssafy.yam.utils.TokenUtils;
+import com.ssafy.yam.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,7 +84,7 @@ public class ItemService {
             List<Item> itemList = itemRepository.findAllBy(pageable);
             addItemList(response, itemList);
         }else{
-            String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+            String tokenEmail = SecurityUtils.getCurrentUsername().get();
             User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
             String areaCode = user.getUserAreaCode();
             List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);
