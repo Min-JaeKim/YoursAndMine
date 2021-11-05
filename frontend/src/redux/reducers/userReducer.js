@@ -1,6 +1,7 @@
 const user = (state = {}, action) => {
   switch (action.type) {
     case "LOGIN":
+      // window.sessionStorage.setItem("user", JSON.stringify(action.user));
       window.localStorage.setItem("user", JSON.stringify(action.user));
 
       return { ...state, user: action.user, login: true };

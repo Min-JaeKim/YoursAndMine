@@ -14,4 +14,5 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, BookmarkId> 
     int countByItemId(@Param("itemId") int itemId);
 
     List<Bookmark> findAllByBookmarkId_UserId(int userId);
+    Bookmark findBookmarkByBookmarkId_UserIdAndBookmarkId_ItemId(int userId, int itemId);
 }
