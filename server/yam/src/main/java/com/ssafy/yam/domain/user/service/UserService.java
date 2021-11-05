@@ -1,7 +1,6 @@
 package com.ssafy.yam.domain.user.service;
 
-//import com.ssafy.yam.auth.Provider.JwtTokenProvider;
-import com.ssafy.yam.auth.Provider.RandomSaltProvider;
+import com.ssafy.yam.domain.user.entity.Authority;
 import com.ssafy.yam.domain.bookmark.entity.Bookmark;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.deal.entity.Deal;
@@ -12,24 +11,24 @@ import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.dto.request.UserRequestDto;
 import com.ssafy.yam.domain.user.dto.response.UserResponseDto;
 import com.ssafy.yam.domain.user.entity.User;
-import com.ssafy.yam.domain.user.enums.Role;
 import com.ssafy.yam.domain.user.repository.UserRepository;
+import com.ssafy.yam.jwt.TokenProvider;
 import com.ssafy.yam.utils.ResponseUtils;
 import com.ssafy.yam.utils.S3UploadUtils;
-import com.ssafy.yam.utils.TokenUtils;
+import com.ssafy.yam.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +37,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.ssafy.yam.utils.ConstantsUtils.FROM_EMAIL_ADDRESS;
+import static com.ssafy.yam.utils.ConstantsUtils.*;
 
 @RequiredArgsConstructor
 @Service
@@ -49,56 +48,53 @@ public class UserService {
     private final ItemRepository itemRepository;
     private final ImageRepository imageRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final ResponseUtils response;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final ModelMapper modelMapper;
-    private RandomSaltProvider randomSaltProvider;
-//    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Transactional
-    public ResponseEntity<?> signUp(UserRequestDto.SignUp signUp) {
+    public boolean signup(UserRequestDto.SignUp signUp) {
         if(userRepository.existsByUserEmail(signUp.getUserEmail())) {
-            return response.fail("이미 회원가입된 email 입니다.", HttpStatus.BAD_REQUEST);
+            return false;
         }
 
-        String salt = randomSaltProvider.getNextSalt().toString();
+        Authority authority = Authority.builder()
+                .authorityName("ROLE_USER")
+                .build();
 
         User user = User.builder()
                 .userNickname(signUp.getUserNickname())
                 .userEmail(signUp.getUserEmail())
-                .userPassword(passwordEncoder.encode(signUp.getUserPassword() + salt))
-//                .userPassword(passwordEncoder.encode(signUp.getUserPassword()))
-                .userSalt(salt)
+                .userPassword(passwordEncoder.encode(signUp.getUserPassword()))
                 .userImageUrl("https://yam-s3.s3.ap-northeast-2.amazonaws.com/profile/defaultImage.png")
                 .userAuthLevel(1)
+                .authorities(Collections.singleton(authority))
                 .build();
         userRepository.save(user);
 
-        return response.success("회원가입에 성공했습니다.");
+        return true;
     }
 
-//    public ResponseEntity<?> login(UserRequestDto.Login login) {
-//        if(!userRepository.existsByUserEmail(login.getUserEmail())) {
-//            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
-//        }
-//
-//        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
-//        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-//        UsernamePasswordAuthenticationToken authenticationToken = login.toAuthentication();
-//
-//        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
-//        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//
-//        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-//        UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-//
-//        // TODO:: RefreshToken Redis 저장
-//
-//        return response.success(tokenInfo, "로그인에 성공했습니다.", HttpStatus.OK);
-//    }
+    public UserResponseDto.LoginResDto login(UserRequestDto.Login Login) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(Login.getUserEmail(), Login.getUserPassword());
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(AUTH_HEADER, TOKEN_TYPE + jwt);
+
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        String userAddress = userRepository.findByUserEmail(tokenEmail).get().getUserAddress();
+        String userAreaCode = userRepository.findByUserEmail(tokenEmail).get().getUserAreaCode();
+
+        return new UserResponseDto.LoginResDto(jwt, userAddress, userAreaCode);
+    }
 
     public boolean emailCheck(String userEmail) {
         return userRepository.existsByUserEmail(userEmail);
@@ -160,7 +156,7 @@ public class UserService {
     @Transactional
     public UserResponseDto.ModifyProfileResDto modifyProfile(String token, MultipartFile userImage, String userNickname) {
         UserResponseDto.ModifyProfileResDto modifyProfileResDto = new UserResponseDto.ModifyProfileResDto(false, false);
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         String userSet = tokenEmail + "(" + LocalDate.now().toString() + ")";
         String imageUrl = null;
 
@@ -191,8 +187,8 @@ public class UserService {
         return modifyProfileResDto;
     }
 
-    public UserResponseDto.ShowProfileResDto showProfile(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public UserResponseDto.ShowProfileResDto showProfile() {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -203,7 +199,7 @@ public class UserService {
 
     @Transactional
     public boolean modifyAddress(String token, UserRequestDto.ModifyAddress modifyAddress) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -217,7 +213,7 @@ public class UserService {
 
     public UserResponseDto.ScheduleResDto getSchedule(String token, String userDate) {
         LocalDate requestDate = LocalDate.parse(userDate);
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -303,7 +299,7 @@ public class UserService {
     }
 
     public List<UserResponseDto.GetGiveItemResDto> getGiveItem(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -319,7 +315,7 @@ public class UserService {
     }
 
     public List<UserResponseDto.GetTakeItemResDto> getTakeItem(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -337,7 +333,7 @@ public class UserService {
     }
 
     public List<UserResponseDto.GetItemHistoryResDto> getItemHistory(String token, int itemid) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -354,7 +350,7 @@ public class UserService {
     }
 
     public UserResponseDto.Receipt getReceipt(String token, int dealId) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -370,7 +366,7 @@ public class UserService {
     }
 
     public List<UserResponseDto.WishList> getWishList(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
