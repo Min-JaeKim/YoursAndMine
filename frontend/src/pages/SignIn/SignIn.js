@@ -23,7 +23,7 @@ const SignIn = ({ history }) => {
         userPassword: password,
       })
       .then((response) => {
-        const token = response.headers.authorization.split(" ")[1]
+        const token = response.headers.authorization.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
         .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {

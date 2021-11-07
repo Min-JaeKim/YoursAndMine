@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import moment from 'moment';
 import "./MyCalendar.css";
+import { useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react'
+
+import moment from 'moment';
+
 import selectDate from '../../assets/image/selectDate.png'
 import returnDatePic from '../../assets/image/returnDate.png'
 import rentDatePic from '../../assets/image/rentDate.png'
@@ -8,22 +11,26 @@ import today from '../../assets/image/today.png'
 import arrowRight from '../../assets/icons/arrow-right.png'
 import arrowLeft from '../../assets/icons/back.png'
 
-const MyCalendar = () => {
+const MyCalendar = (props) => {
 
+	let flag = props.flag;
+
+	
+	
   const [getMoment, setMoment]=useState(moment());
 	const [dateStyle, setDateStyle] = useState("");
 	const [selectDateFlag, setSelectDateFlag] = useState(false);
 	const [selectMonth, setSelectMonth] = useState('');
 	const [selectDay, setSelectDay] = useState('');
-
+	
 	const returnDate = "3";
 	const rentDate = ["1", "2"];
 	// const returnDate = [11, 23, 29]
-
+	
   const today = getMoment;
   const firstWeek = today.clone().startOf('month').week();
   const lastWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
-
+	
 	useEffect(() => {
 		setSelectMonth(moment().format('MM'));
 		setSelectDay(moment().format('DD'));

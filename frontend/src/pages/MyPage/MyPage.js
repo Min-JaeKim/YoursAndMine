@@ -22,35 +22,19 @@ import Swal from 'sweetalert2'
 const MyPage = () => {
   const history = useHistory();
 
-  const [wallet, setWallet] = useState(true);
-  const [currentUserWallet, setCurrentUserWallet] = useState("");
-  const [bliAmount, setbliAmount] = useState("");
   const [open, setOpen] = React.useState(false);
   const [user, setUser] = useState({});
   const btn = useRef();
   const dispatch = useDispatch();
-
-  const logout = () => {
-    dispatch(allActions.userActions.logoutUser());
-    Swal.fire({
-      title: 'Log out!',
-      text: '로그아웃되었습니다.',
-      icon: 'success',
-      confirmButtonText: 'OK!',
-      confirmButtonColor: '#497c5f'
-    }).then((result) => {
-      history.push('/');
-    })
-  };
-
+  
   useEffect(() => {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    // console.log("Bearer " + token);
+
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
+    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
       })
       .then((response) => {
         setUser(response.data);
@@ -67,7 +51,20 @@ const MyPage = () => {
           history.push('/signin');
         })
       });
-  }, []);
+    }, []);
+    
+  const logout = () => {
+    dispatch(allActions.userActions.logoutUser());
+    Swal.fire({
+      title: 'Log out!',
+      text: '로그아웃되었습니다.',
+      icon: 'success',
+      confirmButtonText: 'OK!',
+      confirmButtonColor: '#497c5f'
+    }).then((result) => {
+      history.push('/');
+    })
+  };
 
   return (
     <div className="mypage">
