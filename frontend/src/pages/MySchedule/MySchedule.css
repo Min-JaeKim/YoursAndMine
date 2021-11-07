@@ -4,7 +4,7 @@
   margin-top: 5%;
 }
 
-.rent-button {
+.active-button {
   /* .rent-button { */
   /* Rectangle 143 */
 
@@ -19,7 +19,7 @@
   color: white !important;
 }
 
-.return-button {
+.deactive-button {
   /* Rectangle 143 */
   /* position: absolute !important;
   left: 56.8% !important;

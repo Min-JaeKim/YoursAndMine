@@ -10,6 +10,7 @@ const user = (state = {}, action) => {
       window.localStorage.removeItem('token');
       window.localStorage.removeItem("login");
       return { ...state, user: {}, login: false };
+
     default:
       return state;
   }
