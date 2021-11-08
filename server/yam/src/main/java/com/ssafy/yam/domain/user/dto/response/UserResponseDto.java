@@ -53,11 +53,16 @@ public class UserResponseDto {
 
     @Getter
     @Setter
-    public static class ScheduleResDto {
+    public static class MonthScheduleResDto {
         private List<LocalDate> 일정있는날짜 = new ArrayList<>();
+        private List<LocalDate> 마감날짜 = new ArrayList<>();
+    }
+
+    @Getter
+    @Setter
+    public static class DayScheduleResDto {
         private List<GiveResDto> 반납일정 = new ArrayList<>();
         private List<TakeResDto> 회수일정 = new ArrayList<>();
-
     }
 
     @Getter

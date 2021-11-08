@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import CurrentPage from "./CurrentPage";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+
+import "./Layout.css";
+import CurrentPage from "./CurrentPage";
 import backIcon from "../../assets/icons/back.png";
 import categoryImg from "../../assets/icons/category.png";
 
+import axios from "axios";
+import Swal from 'sweetalert2'
 
-import "./Layout.css";
 const Header = (props) => {
   const history = useHistory();
 
@@ -19,9 +22,34 @@ const Header = (props) => {
   const [userAddress, setUserAddress] = useState(null);
 
   useEffect(() => {
+    const token = JSON.parse(window.localStorage.getItem("token"));
+
+    axios
+    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+      })
+      .then((response) => {
+        setUserAddress(response.data.userAddress.split(' '))
+      })
+      .catch((error) => {
+        setUserAddress(null);
+        Swal.fire({
+          title: 'Error!',
+          text: '다시 로그인해 주세요',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        }).then((result) => {
+          history.push('/signin');
+        })
+      });
+    }, []);
+    
+  useEffect(() => {
     if (user?.userAddress) {
-      let rawUserAddress = user.userAddress.split(' ');
-      setUserAddress(rawUserAddress);
+      setUserAddress(user.userAddress.split(' '));
     } else {
       setUserAddress(null);
     }
@@ -49,7 +77,7 @@ const Header = (props) => {
         )
       } else {
         return (
-          <Link to="/signin">로그인 시 주소 지정이 가능합니다</Link>
+          <Link to="/signin">주소를 지정해 주세요</Link>
         )
       }
     } else {

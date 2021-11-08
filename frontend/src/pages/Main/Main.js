@@ -148,26 +148,38 @@ const Main = () => {
           {/* <h3>빌리지하세요</h3> */}
         </div>
       </Slider>
-      <div className="main-near-product">
-        <div className="main-current-rent-header">
-          <h4>가까운 위치에 있는 물건 소개 ✌🏻</h4>
-          <Link to="/product" className="rent-header-link">
-            {"전체 상품보기 >"}
-          </Link>
-        </div>
 
-        <Slider {...responsiveSettings}>{productCarousel(nearProduct)}</Slider>
-      </div>
-      <div className="main-current-rent">
-        <div className="main-current-rent-header">
-          <h4>최근에 대여했어요 ✌🏻</h4>
-          <Link to="/tradelog" className="rent-header-link">
-            {"대여내역 보기 >"}
-          </Link>
-        </div>
+      {token ?
+        <>
+        <div className="main-near-product">
+          <div className="main-current-rent-header">
+            <h4>가까운 위치에 있는 물건 소개 ✌🏻</h4>
+            <Link to="/product" className="rent-header-link">
+              {"전체 상품보기 >"}
+            </Link>
+          </div>
 
-        <Slider {...responsiveSettings2}>{productCarousel(rentProduct)}</Slider>
-      </div>
+          <Slider {...responsiveSettings}>{productCarousel(nearProduct)}</Slider>
+        </div>
+        <div className="main-current-rent">
+          <div className="main-current-rent-header">
+            <h4>최근에 대여했어요 ✌🏻</h4>
+            <Link to="/tradelog" className="rent-header-link">
+              {"대여내역 보기 >"}
+            </Link>
+          </div>
+
+          <Slider {...responsiveSettings2}>{productCarousel(rentProduct)}</Slider>
+        </div> </> : 
+          <div className="main-current-rent">
+            <div className="main-current-rent-header">
+              <h4>최근 등록된 물건 ✌🏻</h4>
+              <Link to="/tradelog" className="rent-header-link">
+                {"대여내역 보기 >"}
+              </Link>
+            </div>
+          </div>
+    }
     </div>
   );
 };

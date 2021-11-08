@@ -18,6 +18,7 @@ const MySchedule = () => {
   const dispatch = useDispatch();
 
 	const [flag, setFlag] = useState(true); // true는 반납일정, false는 회수일정
+	const [loading, setLoading] = useState(true);
 
 	let { scheduleDates, giveProductDates, getProductDates } = useSelector(({ schedule }) => ({
     scheduleDates: schedule.scheduleDates,
@@ -37,6 +38,8 @@ const MySchedule = () => {
       .then((response) => {
 				// console.log(response.data.반납일정)
 				dispatch(allActions.scheduleActions.setSchedule(response.data));
+				console.log(78979)
+				console.log(scheduleDates)
       })
       .catch((error) => {
         Swal.fire({
@@ -52,17 +55,19 @@ const MySchedule = () => {
 	}, [])
 
 	useEffect(() => {
-		
-	console.log(333)
-	console.log(4573984753498)
-	console.log(giveProductDates)
-	console.log(getProductDates)
-	}, [giveProductDates])
-
+		if (scheduleDates !== undefined) {
+			console.log(111)
+			setLoading(false);
+		}
+	}, [scheduleDates])
 
 	return (
 		<>
-			{flag ? (
+		{loading ? 
+				<p>loading...</p>
+		 : (
+
+			flag ? (
 				<>
 					<div className="select-button">
 						<Button className="active-button" onClick={()=>setFlag(true)}>
@@ -97,7 +102,8 @@ const MySchedule = () => {
 						<MyProduct flag={false}/>
 					</div>
 				</>
-			)}
+			)
+		)}
 		</>
 	)
 }
