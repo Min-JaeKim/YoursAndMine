@@ -1,6 +1,6 @@
 package com.ssafy.yam.domain.deal.service;
 
-import com.ssafy.yam.domain.deal.dto.request.DealRequest;
+import com.ssafy.yam.domain.deal.dto.request.DealCreateRequest;
 import com.ssafy.yam.domain.deal.entity.Deal;
 import com.ssafy.yam.domain.deal.repository.DealRepository;
 import com.ssafy.yam.domain.item.entity.Item;
@@ -9,12 +9,10 @@ import com.ssafy.yam.domain.user.entity.User;
 import com.ssafy.yam.domain.user.repository.UserRepository;
 import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -28,10 +26,10 @@ public class DealCRUDService {
     private final DealService dealService;
     private final DealRepository dealRepository;
 
-    public int createDeal(String token, DealRequest dealRequest){
+    public int createDeal(String token, DealCreateRequest dealCreateRequest){
         String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-        Item item = itemRepository.findItemByItemId(dealRequest.getItemId());
+        Item item = itemRepository.findItemByItemId(dealCreateRequest.getItemId());
         if(item == null)
             return 3;
         User seller = item.getSeller();
@@ -51,8 +49,8 @@ public class DealCRUDService {
         }
 
         // 대여가능한 날짜인지 검사
-        LocalDate start = dealRequest.getDealStartDate();
-        LocalDate end = dealRequest.getDealEndDate();
+        LocalDate start = dealCreateRequest.getDealStartDate();
+        LocalDate end = dealCreateRequest.getDealEndDate();
         List<LocalDate> unAvail = dealService.getUnavailableDate(item.getItemId());
         boolean isAvail = true;
         for(LocalDate checkDate = start; checkDate.isBefore(end); checkDate = checkDate.plusDays(1)){
@@ -68,11 +66,11 @@ public class DealCRUDService {
         if(!isAvail)
             return 2;
 
-        int period = calcDate(dealRequest.getDealStartDate(), dealRequest.getDealEndDate());
+        int period = calcDate(dealCreateRequest.getDealStartDate(), dealCreateRequest.getDealEndDate());
         int totalPrice = item.getItemPrice() * period;
         Deal deal = new Deal();
-        deal.setDealStartDate(dealRequest.getDealStartDate());
-        deal.setDealEndDate(dealRequest.getDealEndDate());
+        deal.setDealStartDate(dealCreateRequest.getDealStartDate());
+        deal.setDealEndDate(dealCreateRequest.getDealEndDate());
         deal.setDealTotalPrice(totalPrice);
         deal.setDealStatus("예약완료");
         deal.setBuyer(user);
@@ -95,7 +93,7 @@ public class DealCRUDService {
         int endDate = end.getDayOfMonth();
 
         int monthDiff = endMonth - startMonth;
-        int dateDiff = 0;
+        int dateDiff;
 
         if(monthDiff == 0){
             dateDiff = endDate - startDate + 1;
@@ -118,5 +116,27 @@ public class DealCRUDService {
     private Deal getDeal(int dealId) {
         return dealRepository.findById(dealId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약이 존재하지 않습니다."));
+    }
+
+    public void returnDeal(String token, int dealId){
+        Deal deal = getDeal(dealId);
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
+            throw new IllegalArgumentException("반납을 완료할 권한이 없습니다.");
+        }
+
+        deal.setDealStatus("반납완료");
+        dealRepository.save(deal);
+    }
+
+    public void borrowDeal(String token, int dealId){
+        Deal deal = getDeal(dealId);
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
+            throw new IllegalArgumentException("대여를 수정할 권한이 없습니다.");
+        }
+
+        deal.setDealStatus("대여중");
+        dealRepository.save(deal);
     }
 }
