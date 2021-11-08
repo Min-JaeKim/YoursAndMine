@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
-import logo from "../../assets/image/billige.PNG";
+import logo from "../../assets/image/yam.png";
 import { Button, Input } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import kakao from "../../assets/icons/kakao-talk.png";
 
 import "./SignIn.css";
 import axios from 'axios';
+// import axios from "../../api/axios";
 import allActions from '../../redux/actions';
 
 const SignIn = ({ history }) => {
@@ -17,26 +18,25 @@ const SignIn = ({ history }) => {
   const signin = (e) => {
     e.preventDefault();
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/login`, {
+      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/user/login`, {
         userEmail: email,
         userPassword: password,
       })
       .then((response) => {
-        const token = response.headers.authentication.split(" ")[1]
+        const token = response.headers.authorization.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
-          .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
-            headers: {
-              Authentication:
-                "Bearer " + token,
-            },
+        .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
+          headers: {
+            Authorization:
+            "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          dispatch(allActions.userActions.loginUser(response.data));
+          window.localStorage.setItem("login", JSON.stringify(true));
 
-          })
-          .then((response) => {
-            dispatch(allActions.userActions.loginUser(response.data));
-            window.localStorage.setItem("login", JSON.stringify(true));
-
-            console.log(response);
+        //     console.log(response);
           })
           .catch((error) => {
             console.log(error)

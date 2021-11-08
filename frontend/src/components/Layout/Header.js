@@ -1,14 +1,31 @@
-import React from "react";
-import backIcon from "../../assets/icons/back.png";
-import categoryImg from "../../assets/icons/category.png";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import CurrentPage from "./CurrentPage";
 import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
+import backIcon from "../../assets/icons/back.png";
+import categoryImg from "../../assets/icons/category.png";
+
 
 import "./Layout.css";
 const Header = (props) => {
   const history = useHistory();
+
+  let { user, loginFlag } = useSelector(({ user }) => ({
+    user: user.user,
+    loginFlag: user.login,
+  }));
+
+  const [userAddress, setUserAddress] = useState(null);
+
+  useEffect(() => {
+    if (user?.userAddress) {
+      let rawUserAddress = user.userAddress.split(' ');
+      setUserAddress(rawUserAddress);
+    } else {
+      setUserAddress(null);
+    }
+  }, [user])
 
   const onClickCategory = () => {
     // history.push('/category');
@@ -23,22 +40,30 @@ const Header = (props) => {
   const beforePage = () => {
     props.history.goBack();
   };
-  const userdata = JSON.parse(window.localStorage.getItem("user"));
-  let address;
 
-  address = userdata ? userdata.userAddress : "서울시 강남구";
-  if (address !== "서울시 강남구") {
-    let addressArray = address.split(" ");
-    address = addressArray[0] + " " + addressArray[1] + " " + addressArray[2];
-    // console.log(address)
+  const checkUserAddress = () => {
+    if (userAddress === null){
+      if (loginFlag) {
+        return (
+          <Link to="/searchplace">주소를 지정해 주세요</Link>
+        )
+      } else {
+        return (
+          <Link to="/signin">로그인 시 주소 지정이 가능합니다</Link>
+        )
+      }
+    } else {
+      return (
+        <Link to="/searchplace">{userAddress[0] + ' ' + userAddress[1] + ' ' + userAddress[2]}</Link>
+      )
+    }
   }
 
   return (
     <div className="header">
       {props.location.pathname === "/" ? (
         <div className="header-location">
-          <Link to="/searchplace">{address}</Link>
-
+          {checkUserAddress()}
           <img
             className="hd-location-category-img"
             src={categoryImg}

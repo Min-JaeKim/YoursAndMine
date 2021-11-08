@@ -1,9 +1,11 @@
 package com.ssafy.yam.domain.item.controller;
 
+import com.ssafy.yam.domain.bookmark.service.BookmarkService;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
+import com.ssafy.yam.domain.item.dto.response.ItemImageResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.service.ItemCRUDService;
@@ -26,30 +28,24 @@ import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 public class ItemController {
 
     private final ItemService itemService;
-    private final DealService dealService;
+    private final BookmarkService bookmarkService;
     private final ItemCRUDService itemCRUDService;
 
     @GetMapping("/{itemId}")
     public ResponseEntity<ItemDetailResponse> getItemByItemId(@PathVariable int itemId){
-        ItemResponse item = itemService.getItemByItemId(itemId);
-        List<LocalDate> deal = dealService.getUnavailableDate(itemId);
-
-        ItemDetailResponse itemDetail = new ItemDetailResponse(item, deal);
-
-        return ResponseEntity.status(200).body(itemDetail);
+        return ResponseEntity.status(200).body(itemService.getItemByItemId(itemId));
     }
 
     @GetMapping()
     public ResponseEntity<List<ItemListResponse>> getItemList(@RequestHeader(AUTH_HEADER) String token, Pageable pageable){
-        List<ItemListResponse> itemList = itemService.getItemList(token, pageable);
-        return ResponseEntity.status(200).body(itemList);
+        return ResponseEntity.status(200).body(itemService.getItemList(token, pageable));
     }
 
     @PostMapping()
-    public ResponseEntity<?> createItem(@RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImages,
+    public ResponseEntity<?> createItem(@RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImage,
                                         @RequestPart(value = "itemData") ItemCreateRequest itemCreateRequest, @RequestHeader(AUTH_HEADER) String token){
         try{
-            itemCRUDService.saveItem(itemImages, itemCreateRequest, token);
+            itemCRUDService.saveItem(itemImage, itemCreateRequest, token);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);
@@ -58,9 +54,9 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<?> deleteItem(@PathVariable int itemId){
+    public ResponseEntity<?> deleteItem(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
         try{
-            itemCRUDService.deleteItem(itemId);
+            itemCRUDService.deleteItem(token, itemId);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);
@@ -69,13 +65,33 @@ public class ItemController {
     }
 
     @PutMapping()
-    public ResponseEntity<ItemDetailResponse> updateItem(@RequestBody ItemUpdateRequest itemUpdateRequest){
-        int itemId = itemUpdateRequest.getItemId();
-        itemCRUDService.updateItem(itemUpdateRequest);
-        ItemResponse item = itemService.getItemByItemId(itemId);
-        List<LocalDate> deal = dealService.getUnavailableDate(itemId);
+    public ResponseEntity<ItemDetailResponse> updateItem(@RequestHeader(AUTH_HEADER) String token, @RequestBody ItemUpdateRequest itemUpdateRequest){
+        return ResponseEntity.status(200).body(itemCRUDService.updateItem(token, itemUpdateRequest));
+    }
 
-        ItemDetailResponse itemDetail = new ItemDetailResponse(item, deal);
-        return ResponseEntity.status(200).body(itemDetail);
+    @PostMapping("/image")
+    public ResponseEntity<ItemImageResponse> addItemImage(@RequestHeader(AUTH_HEADER) String token,
+                                                          @RequestPart(value = "itemId") int itemId,
+                                                          @RequestPart(value = "itemImage", required = false) List<MultipartFile> itemImage){
+        return ResponseEntity.status(200).body(itemCRUDService.addItemImage(token, itemId, itemImage));
+    }
+
+    @DeleteMapping("/image")
+    public ResponseEntity<ItemImageResponse> deleteItemImage(@RequestHeader(AUTH_HEADER) String token,
+                                                          @RequestPart(value = "itemId") int itemId,
+                                                          @RequestPart(value = "itemImage", required = false) List<String> itemImage){
+        return ResponseEntity.status(200).body(itemCRUDService.deleteItemImage(token, itemId, itemImage));
+    }
+
+    @PostMapping("/bookmark/{itemId}")
+    public ResponseEntity<?> addBookmark(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
+        bookmarkService.addBookmark(token, itemId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/bookmark/{itemId}")
+    public ResponseEntity<?> deleteBookmark(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId){
+        bookmarkService.deleteBookmark(token, itemId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

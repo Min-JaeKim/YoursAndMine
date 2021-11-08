@@ -137,4 +137,16 @@ public class UserResponseDto {
         private String itemAddress;
         private int itemPrice;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class WishList {
+        private int itemId;
+        private String itemName;
+        private int itemPrice;
+        private List<String> itemImage = new ArrayList<>();
+        private String itemAddress;
+    }
 }
