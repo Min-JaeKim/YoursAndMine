@@ -92,7 +92,7 @@ public class UserService {
         String userAddress = userRepository.findByUserEmail(tokenEmail).get().getUserAddress();
         String userAreaCode = userRepository.findByUserEmail(tokenEmail).get().getUserAreaCode();
 
-        return new UserResponseDto.LoginResDto(TOKEN_TYPE + jwt, userAddress, userAreaCode);
+        return new UserResponseDto.LoginResDto(jwt, userAddress, userAreaCode);
     }
 
     public boolean emailCheck(String userEmail) {
