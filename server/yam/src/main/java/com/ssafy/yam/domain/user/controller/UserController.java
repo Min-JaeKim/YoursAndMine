@@ -44,9 +44,14 @@ public class UserController {
         return ResponseEntity.ok().body(userService.modifyAddress(modifyAddress));
     }
 
-    @GetMapping("/schedule/{userDate}")
+    @GetMapping("/month-schedule/{userDate}")
+    public ResponseEntity<?> getMonthlySchedule(@PathVariable String userDate) {
+        return ResponseEntity.ok().body(userService.getMonthSchedule(userDate));
+    }
+
+    @GetMapping("/day-schedule/{userDate}")
     public ResponseEntity<?> getSchedule(@PathVariable String userDate) {
-        return ResponseEntity.ok().body(userService.getSchedule(userDate));
+        return ResponseEntity.ok().body(userService.getDaySchedule(userDate));
     }
 
     @GetMapping("/item/give")
