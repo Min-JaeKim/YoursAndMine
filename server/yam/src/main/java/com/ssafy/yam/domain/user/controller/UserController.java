@@ -2,13 +2,16 @@ package com.ssafy.yam.domain.user.controller;
 
 import com.ssafy.yam.domain.user.dto.request.UserRequestDto;
 import com.ssafy.yam.domain.user.service.UserService;
+import com.ssafy.yam.utils.ResponseUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 import static com.ssafy.yam.utils.ConstantsUtils.USER;
 
 @RequiredArgsConstructor
@@ -18,6 +21,17 @@ public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserService userService;
+    private final ResponseUtils response;
+
+    @PostMapping()
+    public ResponseEntity<?> signUp(@Validated @RequestBody UserRequestDto.SignUp signUp) {
+        return userService.signUp(signUp);
+    }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@Validated @RequestBody UserRequestDto.Login login) {
+//        return userService.login(login);
+//    }
 
     @GetMapping("/email/{userEmail}")
     public ResponseEntity<?> emailCheck(@PathVariable String userEmail) {
@@ -30,52 +44,47 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<?> modifyProfile(@RequestParam(required = false, value = "userImage") MultipartFile userImage, @RequestParam(required = false, value = "userNickname") String userNickname) {
-        return ResponseEntity.ok().body(userService.modifyProfile(userImage, userNickname));
+    public ResponseEntity<?> modifyProfile(@RequestHeader(AUTH_HEADER) String token, @RequestParam(required = false, value = "userImage") MultipartFile userImage, @RequestParam(required = false, value = "userNickname") String userNickname) {
+        return ResponseEntity.ok().body(userService.modifyProfile(token, userImage, userNickname));
     }
 
     @GetMapping("/mypage")
-    public ResponseEntity<?> showProfile() {
-        return ResponseEntity.ok().body(userService.showProfile());
+    public ResponseEntity<?> showProfile(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.showProfile(token));
     }
 
     @PutMapping("/address")
-    public ResponseEntity<?> modifyAddress(@RequestBody UserRequestDto.ModifyAddress modifyAddress) {
-        return ResponseEntity.ok().body(userService.modifyAddress(modifyAddress));
+    public ResponseEntity<?> modifyAddress(@RequestHeader(AUTH_HEADER) String token, @RequestBody UserRequestDto.ModifyAddress modifyAddress) {
+        return ResponseEntity.ok().body(userService.modifyAddress(token, modifyAddress));
     }
 
-    @GetMapping("/month-schedule/{userDate}")
-    public ResponseEntity<?> getMonthlySchedule(@PathVariable String userDate) {
-        return ResponseEntity.ok().body(userService.getMonthSchedule(userDate));
-    }
-
-    @GetMapping("/day-schedule/{userDate}")
-    public ResponseEntity<?> getSchedule(@PathVariable String userDate) {
-        return ResponseEntity.ok().body(userService.getDaySchedule(userDate));
+    @GetMapping("/schedule/{userDate}")
+    public ResponseEntity<?> getSchedule(@RequestHeader(AUTH_HEADER) String token, @PathVariable String userDate) {
+        return ResponseEntity.ok().body(userService.getSchedule(token, userDate));
     }
 
     @GetMapping("/item/give")
-    public ResponseEntity<?> getGiveItem() {
-        return ResponseEntity.ok().body(userService.getGiveItem());
+    public ResponseEntity<?> getGiveItem(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getGiveItem(token));
     }
 
     @GetMapping("/item/take")
-    public ResponseEntity<?> getTakeItem() {
-        return ResponseEntity.ok().body(userService.getTakeItem());
+    public ResponseEntity<?> getTakeItem(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getTakeItem(token));
     }
 
     @GetMapping("/item/history/{itemId}")
-    public ResponseEntity<?> getItemHistory(@PathVariable int itemId) {
-        return ResponseEntity.ok().body(userService.getItemHistory(itemId));
+    public ResponseEntity<?> getItemHistory(@RequestHeader(AUTH_HEADER) String token, @PathVariable int itemId) {
+        return ResponseEntity.ok().body(userService.getItemHistory(token, itemId));
     }
 
     @GetMapping("/item/receipt/{dealId}")
-    public ResponseEntity<?> getReceipt(@PathVariable int dealId) {
-        return ResponseEntity.ok().body(userService.getReceipt(dealId));
+    public ResponseEntity<?> getReceipt(@RequestHeader(AUTH_HEADER) String token, @PathVariable int dealId) {
+        return ResponseEntity.ok().body(userService.getReceipt(token, dealId));
     }
 
     @GetMapping("/wishlist")
-    public ResponseEntity<?> getWishList() {
-        return ResponseEntity.ok().body(userService.getWishList());
+    public ResponseEntity<?> getWishList(@RequestHeader(AUTH_HEADER) String token) {
+        return ResponseEntity.ok().body(userService.getWishList(token));
     }
 }

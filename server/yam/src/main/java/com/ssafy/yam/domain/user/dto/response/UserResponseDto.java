@@ -11,12 +11,11 @@ public class UserResponseDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    @NoArgsConstructor
-    public static class LoginResDto {
+    public static class TokenInfo {
+        private String grantType;
         private String accessToken;
-        //        private String refreshToken;
-        private String userAddress;
-        private String userAreaCode;
+        private String refreshToken;
+        private Long accessTokenExpiresIn;
     }
 
     @Getter
@@ -53,16 +52,11 @@ public class UserResponseDto {
 
     @Getter
     @Setter
-    public static class MonthScheduleResDto {
+    public static class ScheduleResDto {
         private List<LocalDate> 일정있는날짜 = new ArrayList<>();
-        private List<LocalDate> 마감날짜 = new ArrayList<>();
-    }
-
-    @Getter
-    @Setter
-    public static class DayScheduleResDto {
         private List<GiveResDto> 반납일정 = new ArrayList<>();
         private List<TakeResDto> 회수일정 = new ArrayList<>();
+
     }
 
     @Getter

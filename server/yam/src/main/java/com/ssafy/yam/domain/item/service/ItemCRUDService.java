@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.item.service;
 
+import com.ssafy.yam.domain.deal.entity.Deal;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
@@ -7,12 +8,13 @@ import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemImageResponse;
+import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
 import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.entity.User;
 import com.ssafy.yam.domain.user.repository.UserRepository;
 import com.ssafy.yam.utils.S3UploadUtils;
-import com.ssafy.yam.utils.SecurityUtils;
+import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,9 +41,9 @@ public class ItemCRUDService {
     private final DealService dealService;
     private final ItemService itemService;
 
-    public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest) {
+    public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest, String token) {
         Item item = modelMapper.map(itemCreateRequest, Item.class);
-        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
         item.setSeller(user);
@@ -60,18 +63,18 @@ public class ItemCRUDService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다."));
     }
 
-    public void deleteItem(int itemId){
+    public void deleteItem(String token, int itemId){
         Item item = getItem(itemId);
-        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("물품을 삭제할 권한이 없습니다.");
         }
         itemRepository.deleteById(itemId);
     }
 
-    public ItemDetailResponse updateItem(ItemUpdateRequest itemUpdateRequest){
+    public ItemDetailResponse updateItem(String token, ItemUpdateRequest itemUpdateRequest){
         Item item = getItem(itemUpdateRequest.getItemId());
-        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("물품을 수정할 권한이 없습니다.");
         }
@@ -86,9 +89,9 @@ public class ItemCRUDService {
         return itemService.getItemByItemId(item.getItemId());
     }
 
-    public ItemImageResponse addItemImage(int itemId, List<MultipartFile> itemImages){
+    public ItemImageResponse addItemImage(String token, int itemId, List<MultipartFile> itemImages){
         Item item = getItem(itemId);
-        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("물품을 수정할 권한이 없습니다.");
         }
@@ -101,9 +104,9 @@ public class ItemCRUDService {
         return response;
     }
 
-    public ItemImageResponse deleteItemImage(int itemId, List<String> itemImages) {
+    public ItemImageResponse deleteItemImage(String token, int itemId, List<String> itemImages) {
         Item item = getItem(itemId);
-        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("물품을 수정할 권한이 없습니다.");
         }
@@ -127,7 +130,9 @@ public class ItemCRUDService {
                 String userSet = itemImage.getOriginalFilename() + "(" + LocalDate.now().toString() + ")";
                 try {
                     imageUrl = s3UploadUtils.upload(itemImage, "item", userSet);
+//                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 success");
                 } catch (IOException e) {
+//                    System.out.println(itemImage.getOriginalFilename() + " : profile image upload s3 fail");
                     e.printStackTrace();
                 }
                 Image image = new Image();
