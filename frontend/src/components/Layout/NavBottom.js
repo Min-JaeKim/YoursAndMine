@@ -85,7 +85,7 @@ const NavBottom = (props) => {
               <div className="nb-notification-dot"></div> {/* 새로운 알림 표시 */}
             </div>
           </Link>
-          {loginFlag ? (
+          {localStorage.getItem('token') ? (
             <Link to="/mypage">
               <div className="nav-bottom-items">
                 {props.location.pathname === "/mypage" ? (

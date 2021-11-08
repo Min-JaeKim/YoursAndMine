@@ -14,6 +14,7 @@ import arrowLeft from '../../assets/icons/back.png'
 const MyCalendar = (props) => {
 
 	let flag = props.flag;
+	console.log(flag)
 
 	
 	
