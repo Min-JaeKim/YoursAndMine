@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.deal.service;
 
+import com.ssafy.yam.domain.deal.dto.request.DealCreateRequest;
 import com.ssafy.yam.domain.deal.dto.request.DealRequest;
 import com.ssafy.yam.domain.deal.entity.Deal;
 import com.ssafy.yam.domain.deal.repository.DealRepository;
@@ -26,7 +27,7 @@ public class DealCRUDService {
     private final DealService dealService;
     private final DealRepository dealRepository;
 
-    public int createDeal(DealRequest dealRequest){
+    public int createDeal(DealCreateRequest dealRequest){
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         Item item = itemRepository.findItemByItemId(dealRequest.getItemId());
@@ -116,5 +117,27 @@ public class DealCRUDService {
     private Deal getDeal(int dealId) {
         return dealRepository.findById(dealId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약이 존재하지 않습니다."));
+    }
+
+    public void returnDeal(String token, int dealId){
+        Deal deal = getDeal(dealId);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
+            throw new IllegalArgumentException("반납을 완료할 권한이 없습니다.");
+        }
+
+        deal.setDealStatus("반납완료");
+        dealRepository.save(deal);
+    }
+
+    public void borrowDeal(String token, int dealId){
+        Deal deal = getDeal(dealId);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
+            throw new IllegalArgumentException("대여를 수정할 권한이 없습니다.");
+        }
+
+        deal.setDealStatus("대여중");
+        dealRepository.save(deal);
     }
 }
