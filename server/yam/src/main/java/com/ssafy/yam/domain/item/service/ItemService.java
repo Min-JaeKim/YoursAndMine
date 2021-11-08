@@ -1,9 +1,12 @@
 package com.ssafy.yam.domain.item.service;
 
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
+import com.ssafy.yam.domain.deal.dto.response.DealResponse;
+import com.ssafy.yam.domain.deal.repository.DealRepository;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
+import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
@@ -12,8 +15,9 @@ import com.ssafy.yam.domain.item.repository.ItemRepository;
 
 import com.ssafy.yam.domain.user.entity.User;
 import com.ssafy.yam.domain.user.repository.UserRepository;
-import com.ssafy.yam.utils.SecurityUtils;
+import com.ssafy.yam.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,14 +81,14 @@ public class ItemService {
         return itemDetail;
     }
 
-    public List<ItemListResponse> getItemList(Pageable pageable){
+    public List<ItemListResponse> getItemList(String token, Pageable pageable){
         List<ItemListResponse> response = new ArrayList<>();
 
-        if(SecurityUtils.getCurrentUsername().get() == null) { // 내가 수정한 부분이라 검증필요
+        if(token.equals("")) {
             List<Item> itemList = itemRepository.findAllBy(pageable);
             addItemList(response, itemList);
         }else{
-            String tokenEmail = SecurityUtils.getCurrentUsername().get();
+            String tokenEmail = TokenUtils.getUserEmailFromToken(token);
             User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
             String areaCode = user.getUserAreaCode();
             List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);
