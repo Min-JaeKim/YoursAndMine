@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
-import static com.ssafy.yam.utils.ConstantsUtils.TOKEN_TYPE;
 
 @RestController
 @RequestMapping("/api")
