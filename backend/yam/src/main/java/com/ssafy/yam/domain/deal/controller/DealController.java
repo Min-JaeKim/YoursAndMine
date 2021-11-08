@@ -1,6 +1,7 @@
 package com.ssafy.yam.domain.deal.controller;
 
-import com.ssafy.yam.domain.deal.dto.request.DealRequest;
+import com.ssafy.yam.domain.deal.dto.request.DealCreateRequest;
+import com.ssafy.yam.domain.deal.dto.request.DealUpdateRequest;
 import com.ssafy.yam.domain.deal.service.DealCRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,8 @@ public class DealController {
     private final DealCRUDService dealCRUDService;
 
     @PostMapping()
-    public ResponseEntity<?> createDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealRequest dealRequest){
-        int res = dealCRUDService.createDeal(token, dealRequest);
+    public ResponseEntity<?> createDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealCreateRequest dealCreateRequest){
+        int res = dealCRUDService.createDeal(token, dealCreateRequest);
         if(res == 0)
             return new ResponseEntity<>(HttpStatus.OK);
         else if(res == 1)
@@ -40,5 +41,17 @@ public class DealController {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PutMapping()
+    public ResponseEntity<?> returnDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealUpdateRequest dealUpdateRequest){
+        dealCRUDService.returnDeal(token, dealUpdateRequest.getDealId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/borrow")
+    public ResponseEntity<?> borrowDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealUpdateRequest dealUpdateRequest){
+        dealCRUDService.borrowDeal(token, dealUpdateRequest.getDealId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
