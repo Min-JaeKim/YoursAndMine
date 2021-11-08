@@ -1,11 +1,14 @@
 package com.ssafy.yam.domain.deal.controller;
 
-import com.ssafy.yam.domain.deal.dto.request.DealRequest;
+import com.ssafy.yam.domain.deal.dto.request.DealCreateRequest;
+import com.ssafy.yam.domain.deal.dto.request.DealUpdateRequest;
 import com.ssafy.yam.domain.deal.service.DealCRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 
 @RestController
 @RequestMapping("/deal")
@@ -15,8 +18,8 @@ public class DealController {
     private final DealCRUDService dealCRUDService;
 
     @PostMapping()
-    public ResponseEntity<?> createDeal(@RequestBody DealRequest dealRequest){
-        int res = dealCRUDService.createDeal(dealRequest);
+    public ResponseEntity<?> createDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealCreateRequest dealCreateRequest){
+        int res = dealCRUDService.createDeal(dealCreateRequest);
         if(res == 0)
             return new ResponseEntity<>(HttpStatus.OK);
         else if(res == 1)
@@ -30,7 +33,7 @@ public class DealController {
     }
 
     @DeleteMapping("/{dealId}")
-    public ResponseEntity<?> deleteDeal(@PathVariable int dealId){
+    public ResponseEntity<?> deleteDeal(@RequestHeader(AUTH_HEADER) String token, @PathVariable int dealId){
         try{
             dealCRUDService.deleteDeal(dealId);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -38,5 +41,17 @@ public class DealController {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PutMapping()
+    public ResponseEntity<?> returnDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealUpdateRequest dealUpdateRequest){
+        dealCRUDService.returnDeal(token, dealUpdateRequest.getDealId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/borrow")
+    public ResponseEntity<?> borrowDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealUpdateRequest dealUpdateRequest){
+        dealCRUDService.borrowDeal(token, dealUpdateRequest.getDealId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
