@@ -7,6 +7,7 @@ import kakao from "../../assets/icons/kakao-talk.png";
 
 import "./SignIn.css";
 import axios from 'axios';
+import Swal from 'sweetalert2'
 // import axios from "../../api/axios";
 import allActions from '../../redux/actions';
 
@@ -18,11 +19,13 @@ const SignIn = ({ history }) => {
   const signin = (e) => {
     e.preventDefault();
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/user/login`, {
+      // .post(`/api/login`, {
+      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/login`, {
         userEmail: email,
         userPassword: password,
       })
       .then((response) => {
+        console.log('login success')
         const token = response.headers.authorization.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
@@ -44,7 +47,13 @@ const SignIn = ({ history }) => {
         history.push('/')
       })
       .catch(() => {
-        alert("아이디 혹은 비밀번호를 확인해주세요")
+        Swal.fire({
+          title: 'Error!',
+          text: '로그인에 실패하였습니다.',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        })
       })
   }
 

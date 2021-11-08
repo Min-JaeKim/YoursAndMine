@@ -38,7 +38,7 @@ const SignUp = ({ history }) => {
     }
 
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/user`, formData)
+      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/signup`, formData)
       .then((response) => {
         console.log(response);
         Swal.fire({

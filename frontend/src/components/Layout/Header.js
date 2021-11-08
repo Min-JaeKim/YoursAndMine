@@ -21,31 +21,31 @@ const Header = (props) => {
 
   const [userAddress, setUserAddress] = useState(null);
 
-  useEffect(() => {
-    const token = JSON.parse(window.localStorage.getItem("token"));
+  // useEffect(() => {
+  //   const token = JSON.parse(window.localStorage.getItem("token"));
 
-    axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      })
-      .then((response) => {
-        setUserAddress(response.data.userAddress.split(' '))
-      })
-      .catch((error) => {
-        setUserAddress(null);
-        Swal.fire({
-          title: 'Error!',
-          text: '다시 로그인해 주세요',
-          icon: 'error',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
-        }).then((result) => {
-          history.push('/signin');
-        })
-      });
-    }, []);
+  //   axios
+  //   .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
+  //     headers: {
+  //       Authorization: "Bearer " + token,
+  //     },
+  //     })
+  //     .then((response) => {
+  //       setUserAddress(response.data.userAddress.split(' '))
+  //     })
+  //     .catch((error) => {
+  //       setUserAddress(null);
+  //       Swal.fire({
+  //         title: 'Error!',
+  //         text: '다시 로그인해 주세요',
+  //         icon: 'error',
+  //         confirmButtonText: 'OK!',
+  //         confirmButtonColor: '#497c5f'
+  //       }).then((result) => {
+  //         history.push('/signin');
+  //       })
+  //     });
+  //   }, []);
     
   useEffect(() => {
     if (user?.userAddress) {

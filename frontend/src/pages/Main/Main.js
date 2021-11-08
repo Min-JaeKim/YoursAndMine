@@ -16,6 +16,8 @@ const Main = () => {
   const [nearProdcutCount, setNearProdcutCount] = useState([]);
   const [rentProductCount, setRentProductCount] = useState([]);
   const token = JSON.parse(window.localStorage.getItem("token"));
+  console.log(233232)
+  console.log(token)
 
   useEffect(() => {
     axios
