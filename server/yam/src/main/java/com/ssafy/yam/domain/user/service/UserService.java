@@ -1,7 +1,6 @@
 package com.ssafy.yam.domain.user.service;
 
-//import com.ssafy.yam.auth.Provider.JwtTokenProvider;
-import com.ssafy.yam.auth.Provider.RandomSaltProvider;
+import com.ssafy.yam.domain.user.entity.Authority;
 import com.ssafy.yam.domain.bookmark.entity.Bookmark;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.deal.entity.Deal;
@@ -12,24 +11,23 @@ import com.ssafy.yam.domain.item.repository.ItemRepository;
 import com.ssafy.yam.domain.user.dto.request.UserRequestDto;
 import com.ssafy.yam.domain.user.dto.response.UserResponseDto;
 import com.ssafy.yam.domain.user.entity.User;
-import com.ssafy.yam.domain.user.enums.Role;
 import com.ssafy.yam.domain.user.repository.UserRepository;
-import com.ssafy.yam.utils.ResponseUtils;
+import com.ssafy.yam.jwt.TokenProvider;
 import com.ssafy.yam.utils.S3UploadUtils;
-import com.ssafy.yam.utils.TokenUtils;
+import com.ssafy.yam.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +36,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.ssafy.yam.utils.ConstantsUtils.FROM_EMAIL_ADDRESS;
+import static com.ssafy.yam.utils.ConstantsUtils.*;
 
 @RequiredArgsConstructor
 @Service
@@ -49,56 +47,53 @@ public class UserService {
     private final ItemRepository itemRepository;
     private final ImageRepository imageRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final ResponseUtils response;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final ModelMapper modelMapper;
-    private RandomSaltProvider randomSaltProvider;
-//    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Transactional
-    public ResponseEntity<?> signUp(UserRequestDto.SignUp signUp) {
+    public boolean signup(UserRequestDto.SignUp signUp) {
         if(userRepository.existsByUserEmail(signUp.getUserEmail())) {
-            return response.fail("이미 회원가입된 email 입니다.", HttpStatus.BAD_REQUEST);
+            return false;
         }
 
-        String salt = randomSaltProvider.getNextSalt().toString();
+        Authority authority = Authority.builder()
+                .authorityName("ROLE_USER")
+                .build();
 
         User user = User.builder()
                 .userNickname(signUp.getUserNickname())
                 .userEmail(signUp.getUserEmail())
-                .userPassword(passwordEncoder.encode(signUp.getUserPassword() + salt))
-//                .userPassword(passwordEncoder.encode(signUp.getUserPassword()))
-                .userSalt(salt)
+                .userPassword(passwordEncoder.encode(signUp.getUserPassword()))
                 .userImageUrl("https://yam-s3.s3.ap-northeast-2.amazonaws.com/profile/defaultImage.png")
                 .userAuthLevel(1)
+                .authorities(Collections.singleton(authority))
                 .build();
         userRepository.save(user);
 
-        return response.success("회원가입에 성공했습니다.");
+        return true;
     }
 
-//    public ResponseEntity<?> login(UserRequestDto.Login login) {
-//        if(!userRepository.existsByUserEmail(login.getUserEmail())) {
-//            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
-//        }
-//
-//        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
-//        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-//        UsernamePasswordAuthenticationToken authenticationToken = login.toAuthentication();
-//
-//        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
-//        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//
-//        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-//        UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-//
-//        // TODO:: RefreshToken Redis 저장
-//
-//        return response.success(tokenInfo, "로그인에 성공했습니다.", HttpStatus.OK);
-//    }
+    public UserResponseDto.LoginResDto login(UserRequestDto.Login Login) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(Login.getUserEmail(), Login.getUserPassword());
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(AUTH_HEADER, TOKEN_TYPE + jwt);
+
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        String userAddress = userRepository.findByUserEmail(tokenEmail).get().getUserAddress();
+        String userAreaCode = userRepository.findByUserEmail(tokenEmail).get().getUserAreaCode();
+
+        return new UserResponseDto.LoginResDto(jwt, userAddress, userAreaCode);
+    }
 
     public boolean emailCheck(String userEmail) {
         return userRepository.existsByUserEmail(userEmail);
@@ -158,9 +153,9 @@ public class UserService {
     private S3UploadUtils s3UploadUtils;
 
     @Transactional
-    public UserResponseDto.ModifyProfileResDto modifyProfile(String token, MultipartFile userImage, String userNickname) {
+    public UserResponseDto.ModifyProfileResDto modifyProfile(MultipartFile userImage, String userNickname) {
         UserResponseDto.ModifyProfileResDto modifyProfileResDto = new UserResponseDto.ModifyProfileResDto(false, false);
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         String userSet = tokenEmail + "(" + LocalDate.now().toString() + ")";
         String imageUrl = null;
 
@@ -191,8 +186,8 @@ public class UserService {
         return modifyProfileResDto;
     }
 
-    public UserResponseDto.ShowProfileResDto showProfile(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public UserResponseDto.ShowProfileResDto showProfile() {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -202,8 +197,8 @@ public class UserService {
     }
 
     @Transactional
-    public boolean modifyAddress(String token, UserRequestDto.ModifyAddress modifyAddress) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public boolean modifyAddress(UserRequestDto.ModifyAddress modifyAddress) {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -215,24 +210,77 @@ public class UserService {
         return true;
     }
 
-    public UserResponseDto.ScheduleResDto getSchedule(String token, String userDate) {
+    public UserResponseDto.MonthScheduleResDto getMonthSchedule(String userDate) {
         LocalDate requestDate = LocalDate.parse(userDate);
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
-        UserResponseDto.ScheduleResDto scheduleResDto = new UserResponseDto.ScheduleResDto();
+        UserResponseDto.MonthScheduleResDto monthScheduleResDto = new UserResponseDto.MonthScheduleResDto();
         int currentMonth = requestDate.getMonthValue();
+
+        List<Deal> dealList = dealRepository.findByBuyer_UserIdOrSeller_UserId(user.getUserId(), user.getUserId());
+
+        // 나의 거래 리스트와 현재 월이 주어지면, 해당 월에 일정이 있는 날짜를 모두 리턴
+        List<LocalDate> dateList = new ArrayList<>();
+        List<LocalDate> endDateList = new ArrayList<>();
+        HashSet<LocalDate> dateSet = new HashSet<>();
+        HashSet<LocalDate> endDateSet = new HashSet<>();
+        for (int i = 0; i < dealList.size(); i++) {
+            if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth && dealList.get(i).getDealEndDate().getMonthValue() ==currentMonth) {
+                // 거래 시작일과 종료일이 같은 월 안에 포함된 경우
+                LocalDate pivotDate = dealList.get(i).getDealStartDate();
+                while(pivotDate.isBefore(dealList.get(i).getDealEndDate().plusDays(1))) {
+                    dateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+                // 마감날짜 추가
+                endDateSet.add(dealList.get(i).getDealEndDate());
+            } else if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
+                // 거래 시작일은 해당 월이지만, 거래 종료일이 이번달이 아닌 경우
+                LocalDate pivotDate = dealList.get(i).getDealStartDate();
+                while(pivotDate.getMonthValue() == currentMonth) {
+                    dateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+            } else if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth) {
+                // 거래 종료일은 해당 월이지만, 거래 시작일이 이번달이 아닌 경우
+                LocalDate pivotDate = dealList.get(i).getDealEndDate();
+                while(pivotDate.getMonthValue() == currentMonth){
+                    dateSet.add(pivotDate);
+                    pivotDate = pivotDate.minusDays(1);
+                }
+                // 마감날짜 추가
+                endDateSet.add(dealList.get(i).getDealEndDate());
+            } else continue;
+        }
+
+        for(LocalDate date : dateSet) dateList.add(date);
+        Collections.sort(dateList);
+        monthScheduleResDto.set일정있는날짜(dateList);
+
+        for(LocalDate date : endDateSet) endDateList.add(date);
+        Collections.sort(endDateList);
+        monthScheduleResDto.set마감날짜(endDateList);
+
+        return monthScheduleResDto;
+    }
+
+    public UserResponseDto.DayScheduleResDto getDaySchedule(String userDate) {
+        LocalDate requestDate = LocalDate.parse(userDate);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        UserResponseDto.DayScheduleResDto dayScheduleResDto = new UserResponseDto.DayScheduleResDto();
 
         List<Deal> dealList = dealRepository.findByBuyer_UserIdOrSeller_UserId(user.getUserId(), user.getUserId());
         List<UserResponseDto.GiveResDto> giveList = new ArrayList<>();
         List<UserResponseDto.TakeResDto> takeList = new ArrayList<>();
 
-        scheduleResDto.set일정있는날짜(getScheduledDate(dealList, currentMonth));
-
         for (int i = 0; i < dealList.size(); i++) {
-            // 요청받은 날짜와 같은 달에 거래가 시작/종료되는 경우
-            if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth || dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
+            // 요청받은 날짜가 자신이 연관된 거래의 시작일과 종료일 사이에 있는 경우
+            if(requestDate.isAfter(dealList.get(i).getDealStartDate().minusDays(1)) && requestDate.isBefore(dealList.get(i).getDealEndDate().plusDays(1))) {
                 if(dealList.get(i).getSeller().getUserId() == user.getUserId()) {
                     // 내가 판매중인 아이템 == take
                     UserResponseDto.TakeResDto tmpTake = new UserResponseDto.TakeResDto();
@@ -257,53 +305,17 @@ public class UserService {
                     giveList.add(tmpGive);
                 }
 
-            } else dealList.remove(i);
-        }
-
-        scheduleResDto.set반납일정(giveList);
-        scheduleResDto.set회수일정(takeList);
-
-        return scheduleResDto;
-    }
-
-    public List<LocalDate> getScheduledDate(List<Deal> dealList, int currentMonth) {
-        // 나의 거래 리스트와 현재 월이 주어지면, 해당 월에 일정이 있는 날짜를 모두 리턴
-        List<LocalDate> dateList = new ArrayList<>();
-        HashSet<LocalDate> dateSet = new HashSet<>();
-        for (int i = 0; i < dealList.size(); i++) {
-            if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth && dealList.get(i).getDealEndDate().getMonthValue() ==currentMonth) {
-                // 거래 시작일과 종료일이 같은 월 안에 포함된 경우
-                LocalDate pivotDate = dealList.get(i).getDealStartDate();
-                while(pivotDate.isBefore(dealList.get(i).getDealEndDate().plusDays(1))) {
-                    dateSet.add(pivotDate);
-                    pivotDate = pivotDate.plusDays(1);
-                }
-            } else if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
-                // 거래 시작일은 해당 월이지만, 거래 종료일이 이번달이 아닌 경우
-                LocalDate pivotDate = dealList.get(i).getDealStartDate();
-                while(pivotDate.getMonthValue() == currentMonth) {
-                    dateSet.add(pivotDate);
-                    pivotDate = pivotDate.plusDays(1);
-                }
-            } else if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth) {
-                // 거래 종료일은 해당 월이지만, 거래 시작일이 이번달이 아닌 경우
-                LocalDate pivotDate = dealList.get(i).getDealEndDate();
-                while(pivotDate.getMonthValue() == currentMonth){
-                    dateSet.add(pivotDate);
-                    pivotDate = pivotDate.minusDays(1);
-                }
             } else continue;
         }
 
-        for(LocalDate date : dateSet) {
-            dateList.add(date);
-        }
-        Collections.sort(dateList);
-        return dateList;
+        dayScheduleResDto.set반납일정(giveList);
+        dayScheduleResDto.set회수일정(takeList);
+
+        return dayScheduleResDto;
     }
 
-    public List<UserResponseDto.GetGiveItemResDto> getGiveItem(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public List<UserResponseDto.GetGiveItemResDto> getGiveItem() {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -318,8 +330,8 @@ public class UserService {
         return giveItemList;
     }
 
-    public List<UserResponseDto.GetTakeItemResDto> getTakeItem(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public List<UserResponseDto.GetTakeItemResDto> getTakeItem() {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -336,8 +348,8 @@ public class UserService {
         return takeItemList;
     }
 
-    public List<UserResponseDto.GetItemHistoryResDto> getItemHistory(String token, int itemid) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public List<UserResponseDto.GetItemHistoryResDto> getItemHistory(int itemid) {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -353,8 +365,8 @@ public class UserService {
         return historyList;
     }
 
-    public UserResponseDto.Receipt getReceipt(String token, int dealId) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public UserResponseDto.Receipt getReceipt(int dealId) {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
@@ -369,8 +381,8 @@ public class UserService {
         return receipt;
     }
 
-    public List<UserResponseDto.WishList> getWishList(String token) {
-        String tokenEmail = TokenUtils.getUserEmailFromToken(token);
+    public List<UserResponseDto.WishList> getWishList() {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 

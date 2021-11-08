@@ -39,7 +39,7 @@ public class DealService {
 //            System.out.println(list.get(i).getDealStartDate() + " " + list.get(i).getDealEndDate());
             int month = list.get(i).getDealEndDate().getMonthValue();
             int day = list.get(i).getDealEndDate().getDayOfMonth();
-            if(list.get(i).getDealEndDate().isAfter(LocalDate.now()) && month <= afterMonth && !list.get(i).getDealStatus().equals("반납완료")){ // 해당 아이템의 거래확정 내역 중 오늘 이후에 끝나면서 종료월이 다음날 이내라면
+            if(list.get(i).getDealEndDate().isAfter(LocalDate.now()) && month <= afterMonth){ // 해당 아이템의 거래확정 내역 중 오늘 이후에 끝나면서 종료월이 다음날 이내라면
                 // 그 시작부터 종료까지의 날짜를 담아라
                 makeList(dayList, list, i);
             }else{
