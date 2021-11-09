@@ -26,7 +26,6 @@ export const Detail = () => {
 
   useEffect(() => {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    console.log("hi");
     axios
       .get(`/item/${pNo}`, {
         headers: {
@@ -62,7 +61,7 @@ export const Detail = () => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/api/bookmark/${detail.itemId}`,
+        `/bookmark/${detail.itemId}`,
         {},
         {
           headers: {
@@ -80,7 +79,7 @@ export const Detail = () => {
     setLike(false);
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
-      .delete(`${process.env.REACT_APP_SERVER_BASE_URL}/api/bookmark/${detail.itemId}`, {
+      .delete(`/bookmark/${detail.itemId}`, {
         headers: {
           Authentication: "Bearer " + token,
         },

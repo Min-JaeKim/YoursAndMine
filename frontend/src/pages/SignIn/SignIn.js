@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 import kakao from "../../assets/icons/kakao-talk.png";
 
 import "./SignIn.css";
-import axios from 'axios';
 import Swal from 'sweetalert2'
-// import axios from "../../api/axios";
+import axios from "../../api/axios";
 import allActions from '../../redux/actions';
 
 const SignIn = ({ history }) => {
@@ -19,18 +18,15 @@ const SignIn = ({ history }) => {
   const signin = (e) => {
     e.preventDefault();
     axios
-      // .post(`/api/login`, {
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/login`, {
+      .post(`/login`, {
         userEmail: email,
         userPassword: password,
       })
       .then((response) => {
-        console.log('login success')
-        console.log(response)
         const token = response.data.accessToken.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
-        .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
+        .get(`/user/mypage`, {
           headers: {
             Authorization:
             "Bearer " + token,

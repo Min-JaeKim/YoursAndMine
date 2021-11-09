@@ -6,7 +6,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import "./index.css";
 import App from "./App";
 import rootReducer from "./redux/reducers";
-import axios from "axios";
 import "semantic-ui-css/semantic.min.css";
 import ScrollToTop from "./components/Layout/ScrollToTop";
 

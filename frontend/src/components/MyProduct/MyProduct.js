@@ -18,32 +18,32 @@ const MyProduct = (props) => {
     getProductDates: schedule.getProductDates,
   }));
 
-	// const datas = [
-	// 	{
-	// 		id: 1,
-	// 		itemName: '비모 피규어',
-	// 		itemBuyerNickname: "민재민잼",
-	// 		itemImage: "s3.file~~~.com",
-	// 		dealStartDate: "2020-10-16",
-	// 		dealEndDate: "2020-10-20",
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		itemName: '비모 피규어',
-	// 		itemBuyerNickname: "민재민잼",
-	// 		itemImage: "s3.file~~~.com",
-	// 		dealStartDate: "2020-10-16",
-	// 		dealEndDate: "2020-10-20",
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		itemName: '비모 피규어',
-	// 		itemBuyerNickname: "민재민잼",
-	// 		itemImage: "s3.file~~~.com",
-	// 		dealStartDate: "2020-10-16",
-	// 		dealEndDate: "2020-10-20",
-	// 	},
-	// ]
+	const datas = [
+		{
+			id: 1,
+			itemName: '비모 피규어',
+			itemBuyerNickname: "민재민잼",
+			itemImage: "s3.file~~~.com",
+			dealStartDate: "2020-10-16",
+			dealEndDate: "2020-10-20",
+		},
+		{
+			id: 2,
+			itemName: '비모 피규어',
+			itemBuyerNickname: "민재민잼",
+			itemImage: "s3.file~~~.com",
+			dealStartDate: "2020-10-16",
+			dealEndDate: "2020-10-20",
+		},
+		{
+			id: 3,
+			itemName: '비모 피규어',
+			itemBuyerNickname: "민재민잼",
+			itemImage: "s3.file~~~.com",
+			dealStartDate: "2020-10-16",
+			dealEndDate: "2020-10-20",
+		},
+	]
 
 	useEffect(() => {
 		setSelectMonth(moment().format('MM'));
@@ -67,10 +67,12 @@ const MyProduct = (props) => {
 					{selectMonth}월 {selectDay}일
 			</div>
 			{flag
-			? myProducts.map((data) => (
+			? datas.map((data) => (
+			// ? myProducts.map((data) => (
 				<MyProductDetail flag={true} data={data} key={data.id}></MyProductDetail>
 			)) : (
-				myProducts.map((data) => (
+				datas.map((data) => (
+				// myProducts.map((data) => (
 					<MyProductDetail flag={false} data={data} key={data.id}></MyProductDetail>
 			)))}
 			

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import profile from "../../assets/image/user.png";
 import "./UserEdit.css";
-import axios from "axios";
+import axios from "../../api/axios";
 import { useHistory } from 'react-router';
 
 const UserEdit = () => {

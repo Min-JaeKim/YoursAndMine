@@ -10,7 +10,7 @@ import selectDate from '../../assets/image/selectDate.png'
 import arrowRight from '../../assets/icons/arrow-right.png'
 import returnDatePic from '../../assets/image/returnDate.png'
 
-import axios from "axios";
+import axios from "../../api/axios";
 import moment from 'moment';
 import Swal from 'sweetalert2'
 
@@ -24,6 +24,14 @@ const MyCalendar = (props) => {
 	const [selectDateFlag, setSelectDateFlag] = useState(false);
 	const [selectMonth, setSelectMonth] = useState('');
 	const [selectDay, setSelectDay] = useState('');
+
+	const [redDay, setRedDay] = useState([]);
+	const [grayDay, setGrayDay] = useState([]);
+	const [giveDay, setGiveDay] = useState([]);
+	const [giveDays, setGiveDays] = useState([]);
+	const [getDay, setGetDay] = useState([]);
+	const [getDays, setGetDays] = useState([]);
+	const [changeMonth, setChangeMonth] = useState(false);
 	
 	const returnDate = "3";
 	const rentDate = ["1", "2"];
@@ -36,18 +44,21 @@ const MyCalendar = (props) => {
 	useEffect(() => {
 		setSelectMonth(moment().format('MM'));
 		setSelectDay(moment().format('DD'));
-		
+
 		const token = JSON.parse(window.localStorage.getItem("token"));
     
     axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/schedule/${moment().format('YYYY-MM-DD')}`, {
+    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/month-schedule/${today.format('YYYY-MM-DD')}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
       })
       .then((response) => {
-				// console.log(response.data.반납일정)
-				// dispatch(allActions.scheduleActions.setSchedule(response.data));
+				console.log(response)
+				setGiveDay(response.data.반납날짜);
+				setGiveDays(response.data.반납일정);
+				setGetDay(response.data.회수날짜);
+				setGetDays(response.data.회수일정);
       })
       .catch((error) => {
         Swal.fire({
@@ -60,7 +71,57 @@ const MyCalendar = (props) => {
           history.push('/signin');
         })
       });
+			setChangeMonth(true);
   }, []);
+
+	useEffect(() => {
+		const token = JSON.parse(window.localStorage.getItem("token"));
+    
+    axios
+    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/month-schedule/${today.format('YYYY-MM-DD')}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+      })
+      .then((response) => {
+				console.log(response)
+				setGiveDay(response.data.반납날짜);
+				setGiveDays(response.data.반납일정);
+				setGetDay(response.data.회수날짜);
+				setGetDays(response.data.회수일정);
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: '일정 불러오기 실패!',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        }).then((result) => {
+          history.push('/signin');
+        })
+      });
+			console.log(1212122121)
+			setChangeMonth(true);
+			// calendarArr();
+	}, [getMoment])
+
+	useEffect(() => {
+		if (changeMonth) {
+			// calendarArr();
+			// setChangeMonth(false);
+		}
+	}, [changeMonth])
+
+	useEffect(() => {
+		if (flag) {
+			setRedDay(giveDay);
+			setGrayDay(giveDays);
+		} else {
+			setRedDay(getDay);
+			setGrayDay(getDays);
+		}
+	}, [flag])
 
 	const onClickDate = (e) => {
 		if (dateStyle !== ""){
@@ -98,9 +159,21 @@ const calendarArr=()=>{
 						if (day.length == 1){
 							day = '\u00A0' + day;
 						}
+						// 오늘
 						if(moment().format('YYYYMMDD') === days.format('YYYYMMDD')){
-							// 대여 중인 날일 때,
-							if (rentDate.includes(days.format('D'))){
+							// 날짜
+							if (redDay.includes(days.format('YYYY-MM-DD'))){
+							// if (days.format('D') === returnDate){
+								return(
+									<td key={index} className="today-box" onClick={onClickDate}>
+										<div className="return-date-set">
+											<span>{day}</span>
+											<img className="date-check" src={returnDatePic} alt="retrun-date"/>
+										</div>
+									</td>
+								);
+							} else if (grayDay.includes(days.format('YYYY-MM-DD'))) {
+								// 일정
 								return(
 									<td key={index} className="today-box" onClick={onClickDate}>
 										<div className="return-date-set">
@@ -110,16 +183,6 @@ const calendarArr=()=>{
 										</div> 
 									</td>
 								);
-							} else if (days.format('D') === returnDate) {
-								// 회수 날일 때
-									return(
-										<td key={index} className="today-box" onClick={onClickDate}>
-											<div className="return-date-set">
-												<span>{day}</span>
-												<img className="date-check" src={returnDatePic} alt="retrun-date"/>
-											</div>
-										</td>
-									);
 							} else {
 								// 아무 날도 아닐 때
 									return(
@@ -129,7 +192,7 @@ const calendarArr=()=>{
 											</td>
 									);
 							}
-						}else if(days.format('MM') !== today.format('MM')){
+						} else if(days.format('MM') !== today.format('MM')){
 							return(
 									<td key={index} >
 										<td key={index} >
@@ -137,15 +200,15 @@ const calendarArr=()=>{
 									</td>
 									</td>
 							);
-						} else if (rentDate.includes(days.format('D'))){
+						} else if (redDay.includes(days.format('YYYY-MM-DD'))){
 						// } else if (rentDate.includes(days.format('D'))){
 							return(
 								<td key={index} className="available-date-box" onClick={onClickDate}>
-										<div className="return-date-set">
-											<span >{day}</span>
-											{/* <span className={`${days.format('D')}`}>{days.format('D')}</span> */}
-											<img className="date-check" src={rentDatePic} alt="rent-date"/>
-										</div> 
+									<div className="return-date-set">
+										<span className={`${days.format('D')}`} >{day}</span>
+										{/* <span className={`${days.format('D')}`} >{days.format('D')}</span> */}
+										<img className="date-check" src={returnDatePic} alt="retrun-date"/>
+									</div> 
 								</td>
 						);
 						} else{
@@ -153,13 +216,14 @@ const calendarArr=()=>{
 									<td key={index} className="available-date-box" onClick={onClickDate}>
 										
 										{ 
-											days.format('D') === returnDate ?
+											grayDay.includes(days.format('YYYY-MM-DD')) ?
 											// days.format('D') === returnDate ?
 											<div className="return-date-set">
-												<span className={`${days.format('D')}`} >{day}</span>
-												{/* <span className={`${days.format('D')}`} >{days.format('D')}</span> */}
-												<img className="date-check" src={returnDatePic} alt="retrun-date"/>
-											</div> :
+												<span >{day}</span>
+												{/* <span className={`${days.format('D')}`}>{days.format('D')}</span> */}
+												<img className="date-check" src={rentDatePic} alt="rent-date"/>
+											</div> 
+											:
 											<span >{day}</span>
 											// <span >{days.format('D')}</span>
 										}
@@ -173,6 +237,8 @@ const calendarArr=()=>{
 	}
 	return result;
 }
+
+console.log(changeMonth)
 	
 	return (
 		<div className="All">
@@ -195,11 +261,15 @@ const calendarArr=()=>{
 							className="prev-month-button" onClick={()=>{ setMoment(getMoment.clone().add(1, 'month')) }}
 						/>
 					</div>
+					{changeMonth ?
 					<table>
 						<tbody>
 							{calendarArr()}
 						</tbody>
 					</table>
+					:
+					null
+				}
 			</div>
 		</div>
 	);

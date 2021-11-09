@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../api/axios";
 import "./MySchedule.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
@@ -56,18 +56,13 @@ const MySchedule = () => {
 
 	useEffect(() => {
 		if (scheduleDates !== undefined) {
-			console.log(111)
 			setLoading(false);
 		}
 	}, [scheduleDates])
 
 	return (
 		<>
-		{loading ? 
-				<p>loading...</p>
-		 : (
-
-			flag ? (
+		{flag ? (
 				<>
 					<div className="select-button">
 						<Button className="active-button" onClick={()=>setFlag(true)}>
@@ -103,7 +98,7 @@ const MySchedule = () => {
 					</div>
 				</>
 			)
-		)}
+		}
 		</>
 	)
 }
