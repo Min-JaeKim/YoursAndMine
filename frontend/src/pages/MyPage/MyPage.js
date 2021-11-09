@@ -31,7 +31,7 @@ const MyPage = () => {
     const token = JSON.parse(window.localStorage.getItem("token"));
 
     axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
+    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
       headers: {
         Authorization: "Bearer " + token,
       },

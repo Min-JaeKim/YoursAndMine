@@ -26,10 +26,11 @@ const SignIn = ({ history }) => {
       })
       .then((response) => {
         console.log('login success')
-        const token = response.headers.authorization.split(" ")[1];
+        console.log(response)
+        const token = response.data.accessToken.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
-        .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/mypage`, {
+        .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
           headers: {
             Authorization:
             "Bearer " + token,
@@ -38,13 +39,20 @@ const SignIn = ({ history }) => {
         .then((response) => {
           dispatch(allActions.userActions.loginUser(response.data));
           window.localStorage.setItem("login", JSON.stringify(true));
-
-        //     console.log(response);
           })
           .catch((error) => {
-            console.log(error)
+            Swal.fire({
+              title: 'Error!',
+              text: '로그인에 실패하였습니다.',
+              icon: 'error',
+              confirmButtonText: 'OK!',
+              confirmButtonColor: '#497c5f'
+            });
+            window.localStorage.removeItem("user");
+            window.localStorage.removeItem('token');
+            window.localStorage.removeItem("login");
           })
-        history.push('/')
+        history.push('/');
       })
       .catch(() => {
         Swal.fire({
