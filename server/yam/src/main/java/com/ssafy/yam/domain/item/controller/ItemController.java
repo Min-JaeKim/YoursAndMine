@@ -17,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.ssafy.yam.utils.ConstantsUtils.ITEM;
+
 @RestController
-@RequestMapping("/item")
+@RequestMapping(ITEM)
 @RequiredArgsConstructor
 public class ItemController {
 
