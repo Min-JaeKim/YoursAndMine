@@ -1,22 +1,23 @@
 import "./MyCalendar.css";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import React, { useState, useEffect } from 'react'
 
-import moment from 'moment';
-
-import selectDate from '../../assets/image/selectDate.png'
-import returnDatePic from '../../assets/image/returnDate.png'
-import rentDatePic from '../../assets/image/rentDate.png'
 import today from '../../assets/image/today.png'
-import arrowRight from '../../assets/icons/arrow-right.png'
 import arrowLeft from '../../assets/icons/back.png'
+import rentDatePic from '../../assets/image/rentDate.png'
+import selectDate from '../../assets/image/selectDate.png'
+import arrowRight from '../../assets/icons/arrow-right.png'
+import returnDatePic from '../../assets/image/returnDate.png'
+
+import axios from "axios";
+import moment from 'moment';
+import Swal from 'sweetalert2'
 
 const MyCalendar = (props) => {
 
+	const history = useHistory();
 	let flag = props.flag;
-	console.log(flag)
-
-	
 	
   const [getMoment, setMoment]=useState(moment());
 	const [dateStyle, setDateStyle] = useState("");
@@ -35,6 +36,30 @@ const MyCalendar = (props) => {
 	useEffect(() => {
 		setSelectMonth(moment().format('MM'));
 		setSelectDay(moment().format('DD'));
+		
+		const token = JSON.parse(window.localStorage.getItem("token"));
+    
+    axios
+    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/schedule/${moment().format('YYYY-MM-DD')}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+      })
+      .then((response) => {
+				// console.log(response.data.반납일정)
+				// dispatch(allActions.scheduleActions.setSchedule(response.data));
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: '일정 불러오기 실패!',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        }).then((result) => {
+          history.push('/signin');
+        })
+      });
   }, []);
 
 	const onClickDate = (e) => {

@@ -65,7 +65,7 @@ const SignUp = ({ history }) => {
 
   const sendCert = () => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/email/${watch('email', '')}`)
+      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/email/${watch('email', '')}`)
       .then((response) => {
         if (response.data === true) {
           Swal.fire({
@@ -78,7 +78,7 @@ const SignUp = ({ history }) => {
         } else {
           setEmailLoading(true)
           axios
-            .post(`${process.env.REACT_APP_SERVER_BASE_URL}/user/email`, {
+            .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/email`, {
               userEmail: watch('email', ''),
             })
             .then((response) => {
