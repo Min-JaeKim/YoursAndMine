@@ -9,9 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
+import static com.ssafy.yam.utils.ConstantsUtils.DEAL;
 
 @RestController
-@RequestMapping("/deal")
+@RequestMapping(DEAL)
 @RequiredArgsConstructor
 public class DealController {
 

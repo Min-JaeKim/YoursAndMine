@@ -9,6 +9,7 @@ public class ConstantsUtils {
 	public static final String ITEM = "/api/item";
 	public static final String SEARCH = "/api/search";
 	public static final String USER = "/api/user";
+	public static final String DEAL = "/api/deal";
 
 	// JWT String
 	public static final String AUTH_HEADER = "Authorization";
