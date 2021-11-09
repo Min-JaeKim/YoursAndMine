@@ -5,6 +5,7 @@ import com.ssafy.yam.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.yam.jwt.JwtSecurityConfig;
 import com.ssafy.yam.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,25 +14,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
-    private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     public SecurityConfig(
             TokenProvider tokenProvider,
-            CorsFilter corsFilter,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
             JwtAccessDeniedHandler jwtAccessDeniedHandler
     ) {
         this.tokenProvider = tokenProvider;
-        this.corsFilter = corsFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
     }
@@ -57,8 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
 
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
@@ -79,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/signup").permitAll()
                 .antMatchers("/api/item/{itemId}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/item/**").permitAll()
 
                 .anyRequest().authenticated()
 

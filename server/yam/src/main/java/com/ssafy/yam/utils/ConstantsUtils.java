@@ -9,10 +9,11 @@ public class ConstantsUtils {
 	public static final String ITEM = "/api/item";
 	public static final String SEARCH = "/api/search";
 	public static final String USER = "/api/user";
+	public static final String DEAL = "/api/deal";
 
 	// JWT String
 	public static final String AUTH_HEADER = "Authorization";
-	public static final String TOKEN_TYPE = "Bearer";
+	public static final String TOKEN_TYPE = "Bearer ";
 	public static final String AUTHORITIES_KEY = "auth";
 	public static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
 	public static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일

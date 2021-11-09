@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import Category from "../Category/Category";
 import { Form, Radio, Input, Button } from "semantic-ui-react";
 import "./Filter.css";
-import axios from "axios";
+import axios from "../../api/axios";
 import { useHistory } from "react-router";
 const Filter = () => {
   const history = useHistory();
@@ -34,7 +34,7 @@ const Filter = () => {
 
   const setFilter = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/search`, {
+      .post(`/search`, {
         body: {
           category: { category },
           min: { min },

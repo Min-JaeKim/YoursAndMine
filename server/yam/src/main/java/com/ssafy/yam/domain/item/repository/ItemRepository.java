@@ -12,4 +12,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findAllBy(Pageable pageable);
     List<Item> findAllBySeller_UserIdOrderByItemModifiedTime(int userId);
     List<Item> findAllByItemAreaCode(@Param("areaCode") String areaCode, Pageable pageable);
+    List<Item> findAllByItemCategory(String category);
+    List<Item> findAllByItemNameContains(String name);
+    List<Item> findAllByItemContentContains(String content);
 }

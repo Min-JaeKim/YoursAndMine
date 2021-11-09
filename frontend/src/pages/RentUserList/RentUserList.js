@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import profile from "../../assets/image/defaultuser.png";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/axios";
 import "./RentUserList.css";
 
 const RentUserList = ({ history }) => {
@@ -11,7 +11,7 @@ const RentUserList = ({ history }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/contract/my/${pNo}`, {
+      .get(`/contract/my/${pNo}`, {
         headers: {
           Authentication: "Bearer " + token,
         },

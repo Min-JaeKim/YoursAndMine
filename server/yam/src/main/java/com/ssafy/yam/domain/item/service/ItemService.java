@@ -80,11 +80,12 @@ public class ItemService {
     public List<ItemListResponse> getItemList(Pageable pageable){
         List<ItemListResponse> response = new ArrayList<>();
 
-        if(SecurityUtils.getCurrentUsername().get() == null) { // 내가 수정한 부분이라 검증필요
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+
+        if(tokenEmail.equals("anonymousUser") ) {
             List<Item> itemList = itemRepository.findAllBy(pageable);
             addItemList(response, itemList);
         }else{
-            String tokenEmail = SecurityUtils.getCurrentUsername().get();
             User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
             String areaCode = user.getUserAreaCode();
             List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);

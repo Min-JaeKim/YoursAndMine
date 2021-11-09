@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import likeIcon from "../../assets/icons/wish-on.png";
 import unlikeIcon from "../../assets/icons/wish.png";
 import noImage from "../../assets/image/no-image.jpg";
-import axios from "axios";
+import axios from "../../api/axios";
 
 import "./Wish.css";
 const Wish = ({ history }) => {

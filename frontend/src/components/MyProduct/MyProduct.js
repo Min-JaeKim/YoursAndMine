@@ -1,12 +1,22 @@
-import React, { useState, useEffect } from 'react'
 import './MyProduct.css'
 import moment from 'moment';
 import MyProductDetail from "./MyProductDetail";
 
-const MyProduct = () => {
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux';
+
+const MyProduct = (props) => {
+
+	let flag = props.flag;
 
 	const [selectMonth, setSelectMonth] = useState('');
 	const [selectDay, setSelectDay] = useState('');
+	const [myProducts, setMyProducts] = useState([]);
+
+	let {giveProductDates, getProductDates } = useSelector(({ schedule }) => ({
+    giveProductDates: schedule.giveProductDates,
+    getProductDates: schedule.getProductDates,
+  }));
 
 	const datas = [
 		{
@@ -38,16 +48,34 @@ const MyProduct = () => {
 	useEffect(() => {
 		setSelectMonth(moment().format('MM'));
 		setSelectDay(moment().format('DD'));
-  }, []);
+		setMyProducts(giveProductDates);
+	}, [])
+
+	useEffect(() => {
+		setSelectMonth(moment().format('MM'));
+		setSelectDay(moment().format('DD'));
+		if (flag) {
+			setMyProducts(giveProductDates);
+		} else {
+			setMyProducts(getProductDates);
+		}
+  }, [flag]);
 
 	return (
 		<div className="All2">
 			<div className="mp-selected-date-rent-list">
 					{selectMonth}월 {selectDay}일
-				</div>
-			{datas.map((data) => (
-        <MyProductDetail data={data} key={data.id}></MyProductDetail>
-      ))}
+			</div>
+			{flag
+			? datas.map((data) => (
+			// ? myProducts.map((data) => (
+				<MyProductDetail flag={true} data={data} key={data.id}></MyProductDetail>
+			)) : (
+				datas.map((data) => (
+				// myProducts.map((data) => (
+					<MyProductDetail flag={false} data={data} key={data.id}></MyProductDetail>
+			)))}
+			
 		</div>
 	)
 }

@@ -92,7 +92,7 @@ public class UserService {
         String userAddress = userRepository.findByUserEmail(tokenEmail).get().getUserAddress();
         String userAreaCode = userRepository.findByUserEmail(tokenEmail).get().getUserAreaCode();
 
-        return new UserResponseDto.LoginResDto(jwt, userAddress, userAreaCode);
+        return new UserResponseDto.LoginResDto(TOKEN_TYPE + jwt, userAddress, userAreaCode);
     }
 
     public boolean emailCheck(String userEmail) {
@@ -210,24 +210,122 @@ public class UserService {
         return true;
     }
 
-    public UserResponseDto.ScheduleResDto getSchedule(String userDate) {
+    public UserResponseDto.MonthScheduleResDto getMonthSchedule(String userDate) {
         LocalDate requestDate = LocalDate.parse(userDate);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
-        UserResponseDto.ScheduleResDto scheduleResDto = new UserResponseDto.ScheduleResDto();
+        UserResponseDto.MonthScheduleResDto monthScheduleResDto = new UserResponseDto.MonthScheduleResDto();
         int currentMonth = requestDate.getMonthValue();
+
+        List<Deal> giveList = dealRepository.findByBuyer_UserId(user.getUserId()); // 반납 리스트 : 내가 구매자
+        List<Deal> takeList = dealRepository.findBySeller_UserId(user.getUserId()); // 회수 리스트 : 내가 판매자
+
+        // 나의 거래 리스트와 현재 월이 주어지면, 해당 월에 일정이 있는 날짜를 모두 리턴
+        List<LocalDate> takeDateList = new ArrayList<>();
+        List<LocalDate> giveDateList = new ArrayList<>();
+        List<LocalDate> takeEndDateList = new ArrayList<>();
+        List<LocalDate> giveEndDateList = new ArrayList<>();
+        HashSet<LocalDate> takeDateSet = new HashSet<>();
+        HashSet<LocalDate> giveDateSet = new HashSet<>();
+        HashSet<LocalDate> takeEndDateSet = new HashSet<>();
+        HashSet<LocalDate> giveEndDateSet = new HashSet<>();
+
+        // 내가 판매자인 경우 : 회수일정
+        for (int i = 0; i < takeList.size(); i++) {
+            if(takeList.get(i).getDealStartDate().getMonthValue() == currentMonth && takeList.get(i).getDealEndDate().getMonthValue() ==currentMonth) {
+                // 거래 시작일과 종료일이 같은 월 안에 포함된 경우
+                LocalDate pivotDate = takeList.get(i).getDealStartDate();
+                while(pivotDate.isBefore(takeList.get(i).getDealEndDate().plusDays(1))) {
+                    takeDateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+                // 마감날짜 추가
+                takeEndDateSet.add(takeList.get(i).getDealEndDate());
+            } else if(takeList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
+                // 거래 시작일은 해당 월이지만, 거래 종료일이 이번달이 아닌 경우
+                LocalDate pivotDate = takeList.get(i).getDealStartDate();
+                while(pivotDate.getMonthValue() == currentMonth) {
+                    takeDateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+            } else if(takeList.get(i).getDealEndDate().getMonthValue() == currentMonth) {
+                // 거래 종료일은 해당 월이지만, 거래 시작일이 이번달이 아닌 경우
+                LocalDate pivotDate = takeList.get(i).getDealEndDate();
+                while(pivotDate.getMonthValue() == currentMonth){
+                    takeDateSet.add(pivotDate);
+                    pivotDate = pivotDate.minusDays(1);
+                }
+                // 마감날짜 추가
+                takeEndDateSet.add(takeList.get(i).getDealEndDate());
+            } else continue;
+        }
+
+        for(LocalDate date : takeDateSet) takeDateList.add(date);
+        Collections.sort(takeDateList);
+        monthScheduleResDto.set회수일정(takeDateList);
+
+        for(LocalDate date : takeEndDateSet) takeEndDateList.add(date);
+        Collections.sort(takeEndDateList);
+        monthScheduleResDto.set회수날짜(takeEndDateList);
+
+        // 내가 구매자인 경우 : 반납일정
+        for (int i = 0; i < giveList.size(); i++) {
+            if(giveList.get(i).getDealStartDate().getMonthValue() == currentMonth && giveList.get(i).getDealEndDate().getMonthValue() ==currentMonth) {
+                // 거래 시작일과 종료일이 같은 월 안에 포함된 경우
+                LocalDate pivotDate = giveList.get(i).getDealStartDate();
+                while(pivotDate.isBefore(giveList.get(i).getDealEndDate().plusDays(1))) {
+                    giveDateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+                // 마감날짜 추가
+                giveEndDateSet.add(giveList.get(i).getDealEndDate());
+            } else if(giveList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
+                // 거래 시작일은 해당 월이지만, 거래 종료일이 이번달이 아닌 경우
+                LocalDate pivotDate = giveList.get(i).getDealStartDate();
+                while(pivotDate.getMonthValue() == currentMonth) {
+                    giveDateSet.add(pivotDate);
+                    pivotDate = pivotDate.plusDays(1);
+                }
+            } else if(giveList.get(i).getDealEndDate().getMonthValue() == currentMonth) {
+                // 거래 종료일은 해당 월이지만, 거래 시작일이 이번달이 아닌 경우
+                LocalDate pivotDate = giveList.get(i).getDealEndDate();
+                while(pivotDate.getMonthValue() == currentMonth){
+                    giveDateSet.add(pivotDate);
+                    pivotDate = pivotDate.minusDays(1);
+                }
+                // 마감날짜 추가
+                giveEndDateSet.add(giveList.get(i).getDealEndDate());
+            } else continue;
+        }
+
+        for(LocalDate date : giveDateSet) giveDateList.add(date);
+        Collections.sort(giveDateList);
+        monthScheduleResDto.set반납일정(giveDateList);
+
+        for(LocalDate date : giveEndDateSet) giveEndDateList.add(date);
+        Collections.sort(giveEndDateList);
+        monthScheduleResDto.set반납날짜(giveEndDateList);
+
+        return monthScheduleResDto;
+    }
+
+    public UserResponseDto.DayScheduleResDto getDaySchedule(String userDate) {
+        LocalDate requestDate = LocalDate.parse(userDate);
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        UserResponseDto.DayScheduleResDto dayScheduleResDto = new UserResponseDto.DayScheduleResDto();
 
         List<Deal> dealList = dealRepository.findByBuyer_UserIdOrSeller_UserId(user.getUserId(), user.getUserId());
         List<UserResponseDto.GiveResDto> giveList = new ArrayList<>();
         List<UserResponseDto.TakeResDto> takeList = new ArrayList<>();
 
-        scheduleResDto.set일정있는날짜(getScheduledDate(dealList, currentMonth));
-
         for (int i = 0; i < dealList.size(); i++) {
-            // 요청받은 날짜와 같은 달에 거래가 시작/종료되는 경우
-            if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth || dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
+            // 요청받은 날짜가 자신이 연관된 거래의 시작일과 종료일 사이에 있는 경우
+            if(requestDate.isAfter(dealList.get(i).getDealStartDate().minusDays(1)) && requestDate.isBefore(dealList.get(i).getDealEndDate().plusDays(1))) {
                 if(dealList.get(i).getSeller().getUserId() == user.getUserId()) {
                     // 내가 판매중인 아이템 == take
                     UserResponseDto.TakeResDto tmpTake = new UserResponseDto.TakeResDto();
@@ -252,49 +350,13 @@ public class UserService {
                     giveList.add(tmpGive);
                 }
 
-            } else dealList.remove(i);
-        }
-
-        scheduleResDto.set반납일정(giveList);
-        scheduleResDto.set회수일정(takeList);
-
-        return scheduleResDto;
-    }
-
-    public List<LocalDate> getScheduledDate(List<Deal> dealList, int currentMonth) {
-        // 나의 거래 리스트와 현재 월이 주어지면, 해당 월에 일정이 있는 날짜를 모두 리턴
-        List<LocalDate> dateList = new ArrayList<>();
-        HashSet<LocalDate> dateSet = new HashSet<>();
-        for (int i = 0; i < dealList.size(); i++) {
-            if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth && dealList.get(i).getDealEndDate().getMonthValue() ==currentMonth) {
-                // 거래 시작일과 종료일이 같은 월 안에 포함된 경우
-                LocalDate pivotDate = dealList.get(i).getDealStartDate();
-                while(pivotDate.isBefore(dealList.get(i).getDealEndDate().plusDays(1))) {
-                    dateSet.add(pivotDate);
-                    pivotDate = pivotDate.plusDays(1);
-                }
-            } else if(dealList.get(i).getDealStartDate().getMonthValue() == currentMonth) {
-                // 거래 시작일은 해당 월이지만, 거래 종료일이 이번달이 아닌 경우
-                LocalDate pivotDate = dealList.get(i).getDealStartDate();
-                while(pivotDate.getMonthValue() == currentMonth) {
-                    dateSet.add(pivotDate);
-                    pivotDate = pivotDate.plusDays(1);
-                }
-            } else if(dealList.get(i).getDealEndDate().getMonthValue() == currentMonth) {
-                // 거래 종료일은 해당 월이지만, 거래 시작일이 이번달이 아닌 경우
-                LocalDate pivotDate = dealList.get(i).getDealEndDate();
-                while(pivotDate.getMonthValue() == currentMonth){
-                    dateSet.add(pivotDate);
-                    pivotDate = pivotDate.minusDays(1);
-                }
             } else continue;
         }
 
-        for(LocalDate date : dateSet) {
-            dateList.add(date);
-        }
-        Collections.sort(dateList);
-        return dateList;
+        dayScheduleResDto.set반납일정(giveList);
+        dayScheduleResDto.set회수일정(takeList);
+
+        return dayScheduleResDto;
     }
 
     public List<UserResponseDto.GetGiveItemResDto> getGiveItem() {

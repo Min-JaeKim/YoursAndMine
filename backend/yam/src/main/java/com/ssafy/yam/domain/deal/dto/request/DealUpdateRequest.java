@@ -5,16 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DealRequest {
-
-    private int itemId;
-    private LocalDate dealStartDate;
-    private LocalDate dealEndDate;
-
+public class DealUpdateRequest {
+    private int dealId;
 }

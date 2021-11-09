@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
-import static com.ssafy.yam.utils.ConstantsUtils.TOKEN_TYPE;
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +29,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authorize(@Valid @RequestBody UserRequestDto.Login login) {
-        return ResponseEntity.ok().header(AUTH_HEADER, TOKEN_TYPE + userService.login(login).getAccessToken()).body(userService.login(login));
+        return ResponseEntity.ok().body(userService.login(login));
     }
 }
