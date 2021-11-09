@@ -29,6 +29,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authorize(@Valid @RequestBody UserRequestDto.Login login) {
-        return ResponseEntity.ok().header(AUTH_HEADER, userService.login(login).getAccessToken()).body(userService.login(login));
+        return ResponseEntity.ok().body(userService.login(login));
     }
 }
