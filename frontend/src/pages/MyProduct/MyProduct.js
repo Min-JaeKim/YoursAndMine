@@ -3,7 +3,7 @@ import noImage from "../../assets/image/no-image.jpg";
 import { Link } from "react-router-dom";
 import "../Wish/Wish.css";
 import "./MyProduct.css";
-import axios from "axios";
+import axios from "../../api/axios";
 
 const MyProduct = (props) => {
   const [product, setProduct] = useState([]);
@@ -13,7 +13,7 @@ const MyProduct = (props) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/item`, {
+      .get(`/item`, {
         headers: {
           Authentication: "Bearer " + token,
         },
@@ -25,7 +25,6 @@ const MyProduct = (props) => {
           groups[p.itemId] = p.status === "Y" ? true : false;
         });
         setRadioGroups(groups);
-        console.log(response.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -49,7 +48,7 @@ const MyProduct = (props) => {
   const itemOnOff = (idx) => {
     axios
       .put(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/api/item/active/${product[idx].itemId}`,
+        `item/active/${product[idx].itemId}`,
         {},
         {
           headers: {

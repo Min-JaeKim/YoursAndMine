@@ -26,7 +26,7 @@ const Header = (props) => {
 
     if (token) {
       axios
-      .get(`/api/user/mypage`, {
+      .get(`/user/mypage`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -35,8 +35,6 @@ const Header = (props) => {
           setUserAddress(response.data.userAddress.split(' '))
         })
         .catch((error) => {
-          console.log('header errer')
-          console.log(error)
           setUserAddress(null);
           Swal.fire({
             title: 'Error!',

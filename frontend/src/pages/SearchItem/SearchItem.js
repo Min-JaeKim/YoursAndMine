@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Filter.css";
-import axios from "axios";
+import axios from "../../api/axios";
 import "./SearchItem.css";
 import "./SearchResult.css";
 import Filter from "./Filter";
@@ -46,7 +46,7 @@ const SearchItem = ({ location, match }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/search/keyword`, {
+      .get(`/search/keyword`, {
         params: {
           keyword: text,
           page: 1,

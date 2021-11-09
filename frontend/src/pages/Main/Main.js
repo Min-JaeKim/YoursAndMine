@@ -22,18 +22,17 @@ const Main = () => {
   useEffect(() => {
     if (token === null) {
       axios
-        .get(`api/item?page=0&size=6&sort=itemModifiedTime,DESC`, {
+        .get(`/item?page=0&size=6&sort=itemModifiedTime,DESC`, {
         })
         .then((response) => {
           setNonMemberProduct(response.data);
-          console.log(response)
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
       axios
-        .get(`api/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
+        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -52,7 +51,7 @@ const Main = () => {
     }
 
     axios
-      .get(`api/user/item/take`, {
+      .get(`/user/item/take`, {
         headers: {
           Authorization: "Bearer " + token,
         },

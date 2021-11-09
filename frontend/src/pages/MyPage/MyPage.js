@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./MyPage.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
@@ -18,6 +17,7 @@ import authLevel2 from "../../assets/icons/auth-level2.png";
 import authLevel3 from "../../assets/icons/auth-level3.png";
 
 import Swal from 'sweetalert2'
+import axios from "../../api/axios";
 
 const MyPage = () => {
   const history = useHistory();
@@ -31,7 +31,7 @@ const MyPage = () => {
     const token = JSON.parse(window.localStorage.getItem("token"));
 
     axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
+    .get(`/user/mypage`, {
       headers: {
         Authorization: "Bearer " + token,
       },
