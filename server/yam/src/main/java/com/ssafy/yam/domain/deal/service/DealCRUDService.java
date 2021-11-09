@@ -140,4 +140,14 @@ public class DealCRUDService {
         deal.setDealStatus("대여중");
         dealRepository.save(deal);
     }
+
+    public void updateDealStatus(){
+        List<Deal> dealList = dealRepository.findAll();
+        for(Deal deal : dealList){
+            if(deal.getDealStartDate().equals(LocalDate.now())) {
+                deal.setDealStatus("대여중");
+                dealRepository.save(deal);
+            }
+        }
+    }
 }
