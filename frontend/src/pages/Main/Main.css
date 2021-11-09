@@ -78,3 +78,9 @@
 .main-search input {
   border-radius: 20px !important;
 }
+
+.main-non-member-product {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
