@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ssafy.yam.utils.ConstantsUtils.SEARCH;
+
 @RestController
-@RequestMapping("/search")
+@RequestMapping(SEARCH)
 @RequiredArgsConstructor
 public class SearchController {
 
