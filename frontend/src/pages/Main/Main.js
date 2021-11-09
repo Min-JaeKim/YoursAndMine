@@ -13,6 +13,7 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 const Main = () => {
   const [nearProduct, setNearProduct] = useState([]);
   const [rentProduct, setRentProduct] = useState([]);
+  const [nonMemberProduct, setNonMemberProduct] = useState([]);
   const [nearProdcutCount, setNearProdcutCount] = useState([]);
   const [rentProductCount, setRentProductCount] = useState([]);
 
@@ -20,10 +21,19 @@ const Main = () => {
 
   useEffect(() => {
     if (token === null) {
-
+      axios
+        .get(`api/item?page=0&size=6&sort=itemModifiedTime,DESC`, {
+        })
+        .then((response) => {
+          setNonMemberProduct(response.data);
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       axios
-        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
+        .get(`api/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -137,6 +147,16 @@ const Main = () => {
     });
   };
 
+  const nonMemberCarousel = (productItem, flag) => {
+    return productItem.map((product, idx) => {
+      return (
+        <div className="product-carousel-box" key={idx}>
+          <ThumbNail product={product} flag={flag}/>
+        </div>
+      );
+    });
+  }
+
   return (
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
@@ -196,6 +216,9 @@ const Main = () => {
               <Link to="/tradelog" className="rent-header-link">
                 {"대여내역 보기 >"}
               </Link>
+            </div>
+            <div className="main-non-member-product">
+              {nonMemberCarousel(nonMemberProduct, "3")}
             </div>
           </div>
     }
