@@ -157,4 +157,14 @@ public class UserResponseDto {
         private List<String> itemImage = new ArrayList<>();
         private String itemAddress;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatUserInfoResDto {
+        private int userId;
+        private String userNickname;
+        private String userImage;
+    }
 }
