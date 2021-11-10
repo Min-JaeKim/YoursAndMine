@@ -7,11 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduleUtils {
 
-//    @Scheduled(cron = "10 * * * * ?")
-//    public void scheduleTest(){
-//        System.out.println(DateTime.now());
-//    }
-
     private final DealCRUDService dealCRUDService;
 
     public ScheduleUtils(DealCRUDService dealCRUDService) {
@@ -20,7 +15,6 @@ public class ScheduleUtils {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void checkDeal(){
-        System.out.println("스케줄 실행");
         dealCRUDService.updateDealStatus();
     }
 }
