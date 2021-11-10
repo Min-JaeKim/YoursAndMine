@@ -2,3 +2,4 @@
 2. server/yam/* -> server/yam/.*으로 변경
 3. 세번째 시도 exclude 또한 추가
 4. sparse checkout 추가
+5. 위 두 옵션 순서 바꿔보기
