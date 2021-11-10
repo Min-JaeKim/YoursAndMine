@@ -48,23 +48,23 @@ const Main = () => {
         .catch((error) => {
           console.log(error);
         });
-    }
 
-    axios
-      .get(`/user/item/take`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((response) => {
-        setRentProduct(response.data);
-        if (response.data.length >= 3) {
-          setRentProductCount(3);
-        } else {
-          setRentProductCount(response.data.length);
-        }
-      })
-      .catch((error) => {});
+        axios
+          .get(`/user/item/take`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((response) => {
+            setRentProduct(response.data);
+            if (response.data.length >= 3) {
+              setRentProductCount(3);
+            } else {
+              setRentProductCount(response.data.length);
+            }
+          })
+          .catch((error) => {});
+    }
   }, []);
 
   // const NextArrow = (props) => {
