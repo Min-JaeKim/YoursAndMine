@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../api/axios";
 import "./MySchedule.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
@@ -26,48 +26,43 @@ const MySchedule = () => {
     getProductDates: schedule.getProductDates,
   }));
 
-	useEffect(() => {
-		const token = JSON.parse(window.localStorage.getItem("token"));
+	// useEffect(() => {
+	// 	const token = JSON.parse(window.localStorage.getItem("token"));
     
-    axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/schedule/${moment().format('YYYY-MM-DD')}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      })
-      .then((response) => {
-				// console.log(response.data.반납일정)
-				dispatch(allActions.scheduleActions.setSchedule(response.data));
-				console.log(78979)
-				console.log(scheduleDates)
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: 'Error!',
-          text: '일정 불러오기 실패!',
-          icon: 'error',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
-        }).then((result) => {
-          history.push('/signin');
-        })
-      });
-	}, [])
+  //   axios
+  //   .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/schedule/${moment().format('YYYY-MM-DD')}`, {
+  //     headers: {
+  //       Authorization: "Bearer " + token,
+  //     },
+  //     })
+  //     .then((response) => {
+	// 			// console.log(response.data.반납일정)
+	// 			dispatch(allActions.scheduleActions.setSchedule(response.data));
+	// 			console.log(78979)
+	// 			console.log(scheduleDates)
+  //     })
+  //     .catch((error) => {
+  //       Swal.fire({
+  //         title: 'Error!',
+  //         text: '일정 불러오기 실패!',
+  //         icon: 'error',
+  //         confirmButtonText: 'OK!',
+  //         confirmButtonColor: '#497c5f'
+  //       }).then((result) => {
+  //         history.push('/signin');
+  //       })
+  //     });
+	// }, [])
 
 	useEffect(() => {
 		if (scheduleDates !== undefined) {
-			console.log(111)
 			setLoading(false);
 		}
 	}, [scheduleDates])
 
 	return (
 		<>
-		{loading ? 
-				<p>loading...</p>
-		 : (
-
-			flag ? (
+		{flag ? (
 				<>
 					<div className="select-button">
 						<Button className="active-button" onClick={()=>setFlag(true)}>
@@ -103,7 +98,7 @@ const MySchedule = () => {
 					</div>
 				</>
 			)
-		)}
+		}
 		</>
 	)
 }

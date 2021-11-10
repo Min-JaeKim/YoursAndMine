@@ -1,0 +1,7 @@
+1. 이파일이 올라가면 api-server만 배포시도 해야함
+2. server/yam/* -> server/yam/.*으로 변경
+3. 세번째 시도 exclude 또한 추가
+4. sparse checkout 추가
+5. 위 두 옵션 순서 바꿔보기
+6. 프로젝트 새로 파보기
+7. /.* 빼기

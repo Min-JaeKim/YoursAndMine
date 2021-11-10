@@ -12,7 +12,6 @@ buildscript {
     }
 }
 plugins {
-    id "com.moowork.node" version "${mooworkNodeVersion}"
     id "java"
     id "org.springframework.boot" version "${springBootVersion}"
     id "io.spring.dependency-management" version "${dependencyManagementVersion}"
@@ -68,19 +67,3 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-
-//리액트 프로젝트 경로
-//$projectDir은 스프링 부트 root 경로
-def webappDir = "$projectDir/../../frontend"
-//def webappDir = "../../frontend"
-
-task appNpmInstall(type: NpmTask) {
-    workingDir = file("${webappDir}")
-    args = ["run", "build"]
-}
-task copyWebApp(type: Copy) {
-    from '../../frontend/build'
-    into "build/resources/main"
-}
-copyWebApp.dependsOn(appNpmInstall)
-compileJava.dependsOn(copyWebApp)

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./TradeDetail.css";
 import noImage from "../../assets/image/no-image.jpg";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/axios";
 
 const TradeDetail = () => {
   const { cNo } = useParams();

@@ -7,7 +7,7 @@ import { DateRange } from "react-date-range";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleRight } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../api/axios";
 import dayjs from "dayjs";
 
 const Rent = () => {
@@ -88,7 +88,6 @@ const Rent = () => {
   };
 
   const buyProduct = () => {
-    console.log(1);
     // let minABI = [
     //   // transfer
     //   {

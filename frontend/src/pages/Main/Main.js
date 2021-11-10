@@ -13,40 +13,55 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 const Main = () => {
   const [nearProduct, setNearProduct] = useState([]);
   const [rentProduct, setRentProduct] = useState([]);
+  const [nonMemberProduct, setNonMemberProduct] = useState([]);
   const [nearProdcutCount, setNearProdcutCount] = useState([]);
   const [rentProductCount, setRentProductCount] = useState([]);
+
   const token = JSON.parse(window.localStorage.getItem("token"));
-  console.log(233232)
-  console.log(token)
 
   useEffect(() => {
-    axios
-      .get(`/item`, {
-        // headers: {
-        //   Authentication: "Bearer " + token,
-        // },
-      })
-      .then((response) => {
-        console.log(response);
-        setNearProduct(response.data);
-        if (response.data.length >= 3) {
-          setNearProdcutCount(3);
-        } else {
-          setNearProdcutCount(response.data.length);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (token === null) {
+      axios
+        .get(`/item?page=0&size=6&sort=itemModifiedTime,DESC`, {
+        })
+        .then((response) => {
+          setNonMemberProduct(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          setNearProduct(response.data);
+          if (response.data.length >= 3) {
+            setNearProdcutCount(3);
+          } else {
+            setNearProdcutCount(response.data.length);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
 
     axios
-      .get(`/user/item/take`)
+      .get(`/user/item/take`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((response) => {
         setRentProduct(response.data);
         if (response.data.length >= 3) {
           setRentProductCount(3);
         } else {
-          setRentProduct(response.data.length);
+          setRentProductCount(response.data.length);
         }
       })
       .catch((error) => {});
@@ -111,15 +126,36 @@ const Main = () => {
     ],
   };
 
-  const productCarousel = (productItem) => {
+  const productCarousel = (productItem, flag) => {
     return productItem.map((product, idx) => {
       return (
         <div className="product-carousel-box" key={idx}>
-          <ThumbNail product={product} />
+          <ThumbNail product={product} flag={flag}/>
         </div>
       );
     });
   };
+
+  const remtProductCarousel = (productItem, flag) => {
+    return productItem.map((product, idx) => {
+      return (
+        <div className="product-carousel-box" key={idx}>
+          <ThumbNail product={product} flag={flag}/>
+        </div>
+      );
+    });
+  };
+
+  const nonMemberCarousel = (productItem, flag) => {
+    return productItem.map((product, idx) => {
+      return (
+        <div className="product-carousel-box" key={idx}>
+          <ThumbNail product={product} flag={flag}/>
+        </div>
+      );
+    });
+  }
+
   return (
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
@@ -161,7 +197,7 @@ const Main = () => {
             </Link>
           </div>
 
-          <Slider {...responsiveSettings}>{productCarousel(nearProduct)}</Slider>
+          <Slider {...responsiveSettings}>{productCarousel( nearProduct, "1")}</Slider>
         </div>
         <div className="main-current-rent">
           <div className="main-current-rent-header">
@@ -171,7 +207,7 @@ const Main = () => {
             </Link>
           </div>
 
-          <Slider {...responsiveSettings2}>{productCarousel(rentProduct)}</Slider>
+          <Slider {...responsiveSettings2}>{remtProductCarousel(rentProduct, "2")}</Slider>
         </div> </> : 
           <div className="main-current-rent">
             <div className="main-current-rent-header">
@@ -179,6 +215,9 @@ const Main = () => {
               <Link to="/tradelog" className="rent-header-link">
                 {"대여내역 보기 >"}
               </Link>
+            </div>
+            <div className="main-non-member-product">
+              {nonMemberCarousel(nonMemberProduct, "3")}
             </div>
           </div>
     }

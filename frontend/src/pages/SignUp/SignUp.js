@@ -1,6 +1,6 @@
 import "./SignUp.css";
-import axios from 'axios';
 import Swal from 'sweetalert2'
+import axios from "../../api/axios";
 import React, { useState, useRef } from "react";
 import check from "../../assets/icons/check.png";
 import { Button, Input } from "semantic-ui-react";
@@ -38,9 +38,8 @@ const SignUp = ({ history }) => {
     }
 
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/signup`, formData)
+      .post(`/signup`, formData)
       .then((response) => {
-        console.log(response);
         Swal.fire({
           title: 'Success!',
           text: '회원가입에 성공하였습니다.',
@@ -65,7 +64,7 @@ const SignUp = ({ history }) => {
 
   const sendCert = () => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/email/${watch('email', '')}`)
+      .get(`/user/email/${watch('email', '')}`)
       .then((response) => {
         if (response.data === true) {
           Swal.fire({
@@ -78,7 +77,7 @@ const SignUp = ({ history }) => {
         } else {
           setEmailLoading(true)
           axios
-            .post(`${process.env.REACT_APP_SERVER_BASE_URL}/user/email`, {
+            .post(`/user/email`, {
               userEmail: watch('email', ''),
             })
             .then((response) => {
@@ -91,7 +90,6 @@ const SignUp = ({ history }) => {
                 confirmButtonText: 'OK!',
                 confirmButtonColor: '#497c5f'
               })
-              console.log(code, response.data.object)
               setEmailLoading(false);
             }).catch((error) => {
               console.log(error);

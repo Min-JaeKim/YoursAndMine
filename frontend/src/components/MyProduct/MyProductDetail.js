@@ -1,13 +1,18 @@
 import React from 'react'
+import moment from 'moment';
+import { useSelector } from 'react-redux';
+
 import './MyProduct.css'
 import { Button } from "semantic-ui-react";
 import tmpPic from '../../assets/icons/borrow.png'
 
-import moment from 'moment';
-
 const MyProductDetail = (props) => {
 	const data = props.data;
 	const flag = props.flag;
+
+	let { selectDate } = useSelector(({ schedule }) => ({
+		selectDate: schedule.selectDate
+  }));
 
 	return (
 		<div className="mpd-card">
@@ -16,10 +21,12 @@ const MyProductDetail = (props) => {
 		 	<div className="mpd-product-info">
 				<div className="mpd-product-name">
 					{data.itemName}
+					{selectDate === data.dealEndDate ?
 					<div className="mpd-product-rent-falg">
-
-						회수예정
-					</div>
+							회수예정
+					</div> :
+					null
+						}
 				</div>
 					<div className="mpd-product-date">
 						<div>대여일 {data.dealStartDate}</div>

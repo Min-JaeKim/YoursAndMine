@@ -25,7 +25,6 @@ import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
 import RentUserList from "./pages/RentUserList/RentUserList";
 import Notice from "./pages/Notice/Notice";
-import axios from "axios";
 import TradeDetail from "./pages/TradeDetail/TradeDetail";
 import MySchedule from "./pages/MySchedule/MySchedule";
 import Product from "./pages/Product/Product";
