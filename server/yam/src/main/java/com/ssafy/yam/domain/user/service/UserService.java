@@ -442,4 +442,20 @@ public class UserService {
 
         return wishList;
     }
+
+    public List<UserResponseDto.ChatUserInfoResDto> getInfo(List<Integer> userIdList) {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException(("해당 유저가 없습니다.")));
+
+        List<UserResponseDto.ChatUserInfoResDto> chatUserInfoResDtoList = new ArrayList<>();
+
+        for (int i = 0; i < userIdList.size(); i++) {
+            User tmp = userRepository.findByUserId(userIdList.get(i)).get();
+            UserResponseDto.ChatUserInfoResDto chatUserInfoResDto = new UserResponseDto.ChatUserInfoResDto(tmp.getUserId(), tmp.getUserNickname(), tmp.getUserImageUrl());
+            chatUserInfoResDtoList.add(chatUserInfoResDto);
+        }
+
+        return chatUserInfoResDtoList;
+    }
 }
