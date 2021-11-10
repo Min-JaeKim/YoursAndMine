@@ -1,2 +1,3 @@
 1. 이파일이 올라가면 api-server만 배포시도 해야함
 2. server/yam/* -> server/yam/.*으로 변경
+3. 세번째 시도 exclude 또한 추가
