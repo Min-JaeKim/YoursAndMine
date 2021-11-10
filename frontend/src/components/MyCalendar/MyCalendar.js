@@ -31,11 +31,6 @@ const MyCalendar = (props) => {
 	const [giveDays, setGiveDays] = useState([]);
 	const [getDay, setGetDay] = useState([]);
 	const [getDays, setGetDays] = useState([]);
-	const [changeMonth, setChangeMonth] = useState(false);
-	
-	const returnDate = "3";
-	const rentDate = ["1", "2"];
-	// const returnDate = [11, 23, 29]
 	
   const today = getMoment;
   const firstWeek = today.clone().startOf('month').week();
@@ -44,37 +39,10 @@ const MyCalendar = (props) => {
 	useEffect(() => {
 		setSelectMonth(moment().format('MM'));
 		setSelectDay(moment().format('DD'));
-
-		const token = JSON.parse(window.localStorage.getItem("token"));
-    
-    axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/month-schedule/${today.format('YYYY-MM-DD')}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      })
-      .then((response) => {
-				console.log(response)
-				setGiveDay(response.data.반납날짜);
-				setGiveDays(response.data.반납일정);
-				setGetDay(response.data.회수날짜);
-				setGetDays(response.data.회수일정);
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: 'Error!',
-          text: '일정 불러오기 실패!',
-          icon: 'error',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
-        }).then((result) => {
-          history.push('/signin');
-        })
-      });
-			setChangeMonth(true);
   }, []);
 
 	useEffect(() => {
+		
 		const token = JSON.parse(window.localStorage.getItem("token"));
     
     axios
@@ -84,11 +52,17 @@ const MyCalendar = (props) => {
       },
       })
       .then((response) => {
-				console.log(response)
 				setGiveDay(response.data.반납날짜);
 				setGiveDays(response.data.반납일정);
 				setGetDay(response.data.회수날짜);
 				setGetDays(response.data.회수일정);
+				if (flag) {
+					setRedDay(response.data.반납날짜);
+					setGrayDay(response.data.반납일정);
+				} else {
+					setRedDay(response.data.회수날짜);
+					setGrayDay(response.data.회수일정);
+				}
       })
       .catch((error) => {
         Swal.fire({
@@ -101,17 +75,8 @@ const MyCalendar = (props) => {
           history.push('/signin');
         })
       });
-			console.log(1212122121)
-			setChangeMonth(true);
-			// calendarArr();
-	}, [getMoment])
 
-	useEffect(() => {
-		if (changeMonth) {
-			// calendarArr();
-			// setChangeMonth(false);
-		}
-	}, [changeMonth])
+	}, [getMoment])
 
 	useEffect(() => {
 		if (flag) {
@@ -122,6 +87,14 @@ const MyCalendar = (props) => {
 			setGrayDay(getDays);
 		}
 	}, [flag])
+
+	const prevMonth =  () => {
+		setMoment(getMoment.clone().subtract(1, 'month'));
+	}
+
+	const nextMonth = () => {
+		setMoment(getMoment.clone().add(1, 'month'));
+	}
 
 	const onClickDate = (e) => {
 		if (dateStyle !== ""){
@@ -237,8 +210,6 @@ const calendarArr=()=>{
 	}
 	return result;
 }
-
-console.log(changeMonth)
 	
 	return (
 		<div className="All">
@@ -250,7 +221,7 @@ console.log(changeMonth)
 							alt="arrowLeft"
 							width="30px"
 							height="30px"
-							className="post-month-button" onClick={()=>{ setMoment(getMoment.clone().subtract(1, 'month')) }}
+							className="post-month-button" onClick={prevMonth}
 						/>
 				<span className="year-month">{today.format('YYYY 년 MM 월')}</span>
 				<img
@@ -258,18 +229,14 @@ console.log(changeMonth)
 							alt="arrowRight"
 							width="30px"
 							height="30px"
-							className="prev-month-button" onClick={()=>{ setMoment(getMoment.clone().add(1, 'month')) }}
+							className="prev-month-button" onClick={nextMonth}
 						/>
 					</div>
-					{changeMonth ?
 					<table>
 						<tbody>
 							{calendarArr()}
 						</tbody>
 					</table>
-					:
-					null
-				}
 			</div>
 		</div>
 	);
