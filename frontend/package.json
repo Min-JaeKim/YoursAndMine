@@ -66,5 +66,5 @@
     "eslint-config-naver": "^2.1.0",
     "http-proxy-middleware": "^0.19.1"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://k5a102.p.ssafy.io:8080"
 }
