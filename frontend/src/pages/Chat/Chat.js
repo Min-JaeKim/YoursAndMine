@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import ChatList from "./ChatList";
 
-const Chat = () => {
+const Chat = (props) => {
   return (
     <div>
-      <ChatList></ChatList>
+      <ChatList client={props.client}></ChatList>
     </div>
   );
 };

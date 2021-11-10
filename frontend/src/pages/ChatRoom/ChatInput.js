@@ -1,16 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import ImageSendBtn from "../../assets/icons/image-send-btn.png";
 import SendMsgBtn from "../../assets/icons/msg-send-btn.png";
 import "./ChatRoom.css";
+import { useSelector, useDispatch } from "react-redux";
 
-function ChatInput() {
+function ChatInput(props) {
   const [msg, setMsg] = useState();
+
+  // const client = useRef({});
 
   const handleChange = ({ target: { value } }) => setMsg(value);
 
+  // useEffect(() => {
+  //   console.log(props.client);
+  // }, []);
   // 서버로 메시지 전송
   const sendMsg = () => {
     console.log(msg);
+    props.client.current.publish({
+      destination: "/app/send",
+      body: JSON.stringify({
+        message: msg,
+        author: "내 id",
+        to: "abc",
+        timestamp: new Date().getTime(),
+      }),
+    });
     setMsg("");
   };
 

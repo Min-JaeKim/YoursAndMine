@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
+import axios from "axios";
 
 const ROOM_SEQ = 1;
 
@@ -17,7 +18,7 @@ const WebSocketTest = () => {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/chat/websocket", // 웹소켓 서버로 직접 접속
+      brokerURL: "ws://localhost:8000/chat/websocket", // 웹소켓 서버로 직접 접속
       //   webSocketFactory: () => new SockJS("/chat"), // proxy를 통한 접속
       connectHeaders: {
         "auth-token": "spring-chat-auth-token",
@@ -30,6 +31,14 @@ const WebSocketTest = () => {
       heartbeatOutgoing: 4000,
       onConnect: () => {
         console.log("연결완료");
+        axios({
+          method: "get",
+          url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllUsers/" + "abc",
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {});
         subscribe();
       },
       onStompError: (frame) => {
@@ -46,7 +55,7 @@ const WebSocketTest = () => {
 
   const subscribe = () => {
     console.log("구독");
-    client.current.subscribe(`/topic/1`, ({ body }) => {
+    client.current.subscribe(`/topic/abc`, ({ body }) => {
       console.log("데이터 수신");
       setChatMessages((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
     });
@@ -58,8 +67,13 @@ const WebSocketTest = () => {
     }
 
     client.current.publish({
-      destination: "/app/chat/message",
-      body: JSON.stringify({ roomSeq: ROOM_SEQ, message }),
+      destination: "/app/send",
+      body: JSON.stringify({
+        message: "바보",
+        author: "내 id",
+        to: "abc",
+        timestamp: new Date().getTime(),
+      }),
     });
 
     setMessage("");

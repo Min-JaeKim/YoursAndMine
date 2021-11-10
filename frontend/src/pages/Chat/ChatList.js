@@ -1,9 +1,24 @@
-import React from "react";
-import ChatDetatil from "./ChatDetail";
+import React, { useEffect, useState } from "react";
+import ChatDetail from "./ChatDetail";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import ChatRoom from "../ChatRoom/ChatRoom";
 
-function ChatList() {
+function ChatList(props) {
   // 더미 데이터
+  const conversationList = useSelector((state) => state.conversationlist);
+  const [chatOpen, setChatOpen] = useState();
+
+  useEffect(() => {
+    console.log(chatOpen);
+  }, [chatOpen]);
+
+  const sendToMessage = (from, to, msg) => {
+    const m = { message: msg, author: from, to: to, timestamp: new Date().getTime() };
+    // $websocket.current.sendMessage("/app/send", JSON.stringify(m));
+    // dispatch(insertMessage(m));
+  };
+
   const users = [
     {
       id: 1,
@@ -72,8 +87,20 @@ function ChatList() {
 
   return (
     <div>
-      {users.map((user) => (
-        <ChatDetatil user={user} key={user.id}></ChatDetatil>
+      {/* {users.map((user) => (
+        <ChatDetail user={user} key={user.id}></ChatDetail>
+      ))} */}
+      {chatOpen ? <ChatRoom client={props.client} setChatOpen={setChatOpen} /> : null}
+      {Object.keys(conversationList).map((key, index) => (
+        <ChatDetail
+          key={key}
+          client={props.client}
+          profileImg={null}
+          user={key}
+          setChatOpen={setChatOpen}
+          partner={key}
+          sendToMessage={sendToMessage}
+        />
       ))}
     </div>
   );
