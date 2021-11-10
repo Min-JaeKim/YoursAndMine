@@ -1,9 +1,9 @@
-const setSchedule = (schedule) => {
+const selectDate = (date) => {
   return {
-    type: "SET_SCHEDULE",
-		schedule
+    type: "SELECT_DATE",
+		date
   };
 };
 
-const scheduleActions = { setSchedule };
+const scheduleActions = { selectDate };
 export default scheduleActions;
