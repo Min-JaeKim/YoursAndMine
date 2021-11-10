@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 
   httpsAgent: new https.Agent({ rejectUnauthorized: false }),
 });
-
+console.log(process.env.REACT_APP_SERVER_BASE_URL);
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
