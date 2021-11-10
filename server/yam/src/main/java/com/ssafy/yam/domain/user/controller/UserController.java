@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static com.ssafy.yam.utils.ConstantsUtils.USER;
 
 @RequiredArgsConstructor
@@ -77,5 +79,10 @@ public class UserController {
     @GetMapping("/wishlist")
     public ResponseEntity<?> getWishList() {
         return ResponseEntity.ok().body(userService.getWishList());
+    }
+
+    @PostMapping("/get-info")
+    public ResponseEntity<?> getInfo(@RequestBody List<Integer> userIdList) {
+        return ResponseEntity.ok().body(userService.getInfo(userIdList));
     }
 }

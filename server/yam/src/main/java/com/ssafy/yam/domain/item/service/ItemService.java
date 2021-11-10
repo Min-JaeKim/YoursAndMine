@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.item.service;
 
+import com.ssafy.yam.domain.bookmark.entity.Bookmark;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.image.entity.Image;
@@ -59,10 +60,6 @@ public class ItemService {
         );
 
         int bookmarkCnt = bookmarkRepository.countByItemId(itemId);
-        if(bookmarkCnt == 0)
-            response.setBookmark("N");
-        else
-            response.setBookmark("Y");
         response.setBookmarkCount(bookmarkCnt);
 
         List<Image> images = imageRepository.findAllByItem_ItemId(itemId);
@@ -73,8 +70,26 @@ public class ItemService {
 
         List<LocalDate> deal = dealService.getUnavailableDate(itemId);
 
-        ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
-        return itemDetail;
+
+
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        System.out.println(tokenEmail);
+        if(tokenEmail.equals("anonymousUser") ) {
+            ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
+            return itemDetail;
+        }else{
+            User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+            int userId = user.getUserId();
+            Bookmark bookmark = bookmarkRepository.findBookmarkByBookmarkId_UserIdAndBookmarkId_ItemId(userId, itemId);
+            if(bookmark != null)
+                response.setBookmark("Y");
+            else
+                response.setBookmark("N");
+
+            ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
+            return itemDetail;
+        }
+
     }
 
     public List<ItemListResponse> getItemList(Pageable pageable){
