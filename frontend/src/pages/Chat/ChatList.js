@@ -90,7 +90,7 @@ function ChatList(props) {
       {/* {users.map((user) => (
         <ChatDetail user={user} key={user.id}></ChatDetail>
       ))} */}
-      {chatOpen ? <ChatRoom client={props.client} to={chatOpen} /> : null}
+      {chatOpen ? <ChatRoom client={props.client} to={chatOpen} setChatOpen={setChatOpen} /> : null}
       {Object.keys(conversationList).map((key, index) => (
         <ChatDetail
           key={key}

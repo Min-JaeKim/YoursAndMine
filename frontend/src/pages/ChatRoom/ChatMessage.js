@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import chatProfile from "../../assets/icons/chat-profile.png";
 
-function ChatMessage({ profileImg, msg }) {
+function ChatMessage({ profileImg, msg, to }) {
   return (
     <>
       {msg.type === "message" ? (
@@ -13,6 +13,7 @@ function ChatMessage({ profileImg, msg }) {
               <img src={chatProfile} alt="profile"></img>
             )}
           </div>
+
           <div className="receive-msg-content">{msg.message}</div>
           <div className="receive-msg-time">{msg.timestamp}</div>
         </div>

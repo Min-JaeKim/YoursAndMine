@@ -19,7 +19,7 @@ function ChatInput(props) {
   // 서버로 메시지 전송
   const sendMsg = () => {
     const author = "test";
-    const to = "test";
+    const to = props.to;
     const timestamp = new Date();
 
     console.log(msg);
@@ -38,7 +38,10 @@ function ChatInput(props) {
       message: msg,
       author: author,
       to: to,
-      timestamp: timestamp.getHours() + ":" + timestamp.getMinutes(),
+      timestamp:
+        timestamp.getHours().toString().padStart(2, "0") +
+        ":" +
+        timestamp.getMinutes().toString().padStart(2, "0"),
     };
     console.log(m);
     dispatch(insertMessage(m));

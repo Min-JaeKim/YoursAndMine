@@ -5,6 +5,32 @@
   height: 100%;
 }
 
+.chat-header-content {
+  display: flex;
+  align-items: center;
+  position: relative;
+  top: 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.chat-header {
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  width: 100%;
+  max-width: 418px;
+  max-height: 65px;
+  height: 65px;
+  border-bottom: 1px solid rgba(225, 225, 225, 1);
+
+  background-color: #ffffff;
+}
+
+.content-time-box {
+  display: flex;
+}
+
 .input-bottom {
   /* position: absolute; */
   position: fixed;
@@ -13,7 +39,7 @@
   /* bottom: 77px;
    */
   width: 100%;
-  max-width: 420px;
+  max-width: 418px;
   height: 77px;
   border-top: 1px solid rgba(225, 225, 225, 1);
   border-bottom: none;
