@@ -458,4 +458,14 @@ public class UserService {
 
         return chatUserInfoResDtoList;
     }
+
+    public UserResponseDto.MeResDto getMe() {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        UserResponseDto.MeResDto meResDto = modelMapper.map(user, UserResponseDto.MeResDto.class);
+
+        return meResDto;
+    }
 }
