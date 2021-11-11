@@ -443,22 +443,6 @@ public class UserService {
         return wishList;
     }
 
-    public List<UserResponseDto.ChatUserInfoResDto> getInfo(List<Integer> userIdList) {
-        String tokenEmail = SecurityUtils.getCurrentUsername().get();
-        User user = userRepository.findByUserEmail(tokenEmail)
-                .orElseThrow(() -> new IllegalArgumentException(("해당 유저가 없습니다.")));
-
-        List<UserResponseDto.ChatUserInfoResDto> chatUserInfoResDtoList = new ArrayList<>();
-
-        for (int i = 0; i < userIdList.size(); i++) {
-            User tmp = userRepository.findByUserId(userIdList.get(i)).get();
-            UserResponseDto.ChatUserInfoResDto chatUserInfoResDto = new UserResponseDto.ChatUserInfoResDto(tmp.getUserId(), tmp.getUserNickname(), tmp.getUserImageUrl());
-            chatUserInfoResDtoList.add(chatUserInfoResDto);
-        }
-
-        return chatUserInfoResDtoList;
-    }
-
     public UserResponseDto.MeResDto getMe() {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
@@ -467,5 +451,27 @@ public class UserService {
         UserResponseDto.MeResDto meResDto = modelMapper.map(user, UserResponseDto.MeResDto.class);
 
         return meResDto;
+    }
+
+    public List<UserResponseDto.ChatInfoResDto> getChatInfo(List<UserRequestDto.ChatInfoReqDto> mapList) {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException(("해당 유저가 없습니다.")));
+
+        List<UserResponseDto.ChatInfoResDto> chatInfoResDtoList = new ArrayList<>();
+
+        for (int i = 0; i < mapList.size(); i++) {
+            UserResponseDto.ChatInfoResDto tmp = modelMapper.map(itemRepository.findItemByItemId(mapList.get(i).getItemId()), UserResponseDto.ChatInfoResDto.class);
+            tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(mapList.get(i).getItemId()));
+            tmp.setItemSellerNickname(userRepository.findByUserId(tmp.getItemSellerId()).get().getUserNickname());
+            tmp.setItemSellerImageUrl(userRepository.findByUserId(tmp.getItemSellerId()).get().getUserImageUrl());
+            tmp.setUserId(mapList.get(i).getUserId());
+            tmp.setUserNickname(userRepository.findByUserId(tmp.getUserId()).get().getUserNickname());
+            tmp.setUserImageUrl(userRepository.findByUserId(tmp.getUserId()).get().getUserImageUrl());
+
+            chatInfoResDtoList.add(tmp);
+        }
+
+        return chatInfoResDtoList;
     }
 }
