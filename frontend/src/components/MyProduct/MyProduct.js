@@ -23,7 +23,6 @@ const MyProduct = (props) => {
 	let {selectDate } = useSelector(({ schedule }) => ({
 		selectDate: schedule.selectDate
   }));
-
 	// const datas = [
 	// 	{
 	// 		id: 1,
@@ -52,36 +51,39 @@ const MyProduct = (props) => {
 	// ]
 
 	useEffect(() => {
-		setSelectMonth(selectDate.substring(5, 7));
-		setSelectDay(selectDate.substring(8, 10));
-		const token = JSON.parse(window.localStorage.getItem("token"));
-    
-    axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/day-schedule/${selectDate}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      })
-      .then((response) => {
-				setGiveProducts(response.data.반납일정);
-				setGetProducts(response.data.회수일정);
-				if (flag) {
-					setMyProducts(response.data.반납일정);
-				} else {
-					setMyProducts(response.data.회수일정);
-				}
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: 'Error!',
-          text: '일정 불러오기 실패!',
-          icon: 'error',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
-        }).then((result) => {
-          history.push('/signin');
-        })
-      });
+		if (selectDate) {
+
+			setSelectMonth(selectDate.substring(5, 7));
+			setSelectDay(selectDate.substring(8, 10));
+			const token = JSON.parse(window.localStorage.getItem("token"));
+			
+			axios
+			.get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/day-schedule/${selectDate}`, {
+				headers: {
+					Authorization: "Bearer " + token,
+				},
+				})
+				.then((response) => {
+					setGiveProducts(response.data.반납일정);
+					setGetProducts(response.data.회수일정);
+					if (flag) {
+						setMyProducts(response.data.반납일정);
+					} else {
+						setMyProducts(response.data.회수일정);
+					}
+				})
+				.catch((error) => {
+					Swal.fire({
+						title: 'Error!',
+						text: '일정 불러오기 실패!',
+						icon: 'error',
+						confirmButtonText: 'OK!',
+						confirmButtonColor: '#497c5f'
+					}).then((result) => {
+						history.push('/signin');
+					})
+				});
+		}
 	}, [selectDate])
 
 	useEffect(() => {

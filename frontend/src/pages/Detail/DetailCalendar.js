@@ -10,14 +10,18 @@ function DetailCalendar(props) {
 
   useEffect(() => {
     setUnavailableDates(props.unavailableDate);
-  }, [])
-
-    useEffect(() => {
-    if (unavailableDates.length !== 0) {
-      let tmp = unavailableDates.map((x) => dayjs(x).toDate());
+    if (props.unavailableDate.length !== 0) {
+      let tmp = props.unavailableDate.map((x) => dayjs(x).toDate());
       setUnavailableDates(tmp);
     }
-  }, [unavailableDates]);
+  }, [])
+
+  //   useEffect(() => {
+  //   if (unavailableDates.length !== 0) {
+  //     let tmp = unavailableDates.map((x) => dayjs(x).toDate());
+  //     setUnavailableDates(tmp);
+  //   }
+  // }, [unavailableDates]);
 
   return (
     <>
