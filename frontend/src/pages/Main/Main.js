@@ -13,41 +13,58 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 const Main = () => {
   const [nearProduct, setNearProduct] = useState([]);
   const [rentProduct, setRentProduct] = useState([]);
+  const [nonMemberProduct, setNonMemberProduct] = useState([]);
   const [nearProdcutCount, setNearProdcutCount] = useState([]);
   const [rentProductCount, setRentProductCount] = useState([]);
+
   const token = JSON.parse(window.localStorage.getItem("token"));
 
   useEffect(() => {
-    axios
-      .get(`/item`, {
-        // headers: {
-        //   Authentication: "Bearer " + token,
-        // },
-      })
-      .then((response) => {
-        console.log(response);
-        setNearProduct(response.data);
-        if (response.data.length >= 3) {
-          setNearProdcutCount(3);
-        } else {
-          setNearProdcutCount(response.data.length);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (token === null) {
+      axios
+        .get(`/item?page=0&size=6&sort=itemModifiedTime,DESC`, {
+        })
+        .then((response) => {
+          setNonMemberProduct(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          setNearProduct(response.data);
+          if (response.data.length >= 3) {
+            setNearProdcutCount(3);
+          } else {
+            setNearProdcutCount(response.data.length);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-    axios
-      .get(`/user/item/take`)
-      .then((response) => {
-        setRentProduct(response.data);
-        if (response.data.length >= 3) {
-          setRentProductCount(3);
-        } else {
-          setRentProduct(response.data.length);
-        }
-      })
-      .catch((error) => {});
+        axios
+          .get(`/user/item/take`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((response) => {
+            setRentProduct(response.data);
+            if (response.data.length >= 3) {
+              setRentProductCount(3);
+            } else {
+              setRentProductCount(response.data.length);
+            }
+          })
+          .catch((error) => {});
+    }
   }, []);
 
   // const NextArrow = (props) => {
@@ -109,15 +126,36 @@ const Main = () => {
     ],
   };
 
-  const productCarousel = (productItem) => {
+  const productCarousel = (productItem, flag) => {
     return productItem.map((product, idx) => {
       return (
         <div className="product-carousel-box" key={idx}>
-          <ThumbNail product={product} />
+          <ThumbNail product={product} flag={flag}/>
         </div>
       );
     });
   };
+
+  const remtProductCarousel = (productItem, flag) => {
+    return productItem.map((product, idx) => {
+      return (
+        <div className="product-carousel-box" key={idx}>
+          <ThumbNail product={product} flag={flag}/>
+        </div>
+      );
+    });
+  };
+
+  const nonMemberCarousel = (productItem, flag) => {
+    return productItem.map((product, idx) => {
+      return (
+        <div className="product-carousel-box" key={idx}>
+          <ThumbNail product={product} flag={flag}/>
+        </div>
+      );
+    });
+  }
+
   return (
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
@@ -148,26 +186,41 @@ const Main = () => {
           {/* <h3>빌리지하세요</h3> */}
         </div>
       </Slider>
-      <div className="main-near-product">
-        <div className="main-current-rent-header">
-          <h4>가까운 위치에 있는 물건 소개 ✌🏻</h4>
-          <Link to="/product" className="rent-header-link">
-            {"전체 상품보기 >"}
-          </Link>
-        </div>
 
-        <Slider {...responsiveSettings}>{productCarousel(nearProduct)}</Slider>
-      </div>
-      <div className="main-current-rent">
-        <div className="main-current-rent-header">
-          <h4>최근에 대여했어요 ✌🏻</h4>
-          <Link to="/tradelog" className="rent-header-link">
-            {"대여내역 보기 >"}
-          </Link>
-        </div>
+      {token ?
+        <>
+        <div className="main-near-product">
+          <div className="main-current-rent-header">
+            <h4>가까운 위치에 있는 물건 소개 ✌🏻</h4>
+            <Link to="/product" className="rent-header-link">
+              {"전체 상품보기 >"}
+            </Link>
+          </div>
 
-        <Slider {...responsiveSettings2}>{productCarousel(rentProduct)}</Slider>
-      </div>
+          <Slider {...responsiveSettings}>{productCarousel( nearProduct, "1")}</Slider>
+        </div>
+        <div className="main-current-rent">
+          <div className="main-current-rent-header">
+            <h4>최근에 대여했어요 ✌🏻</h4>
+            <Link to="/tradelog" className="rent-header-link">
+              {"대여내역 보기 >"}
+            </Link>
+          </div>
+
+          <Slider {...responsiveSettings2}>{remtProductCarousel(rentProduct, "2")}</Slider>
+        </div> </> : 
+          <div className="main-current-rent">
+            <div className="main-current-rent-header">
+              <h4>최근 등록된 물건 ✌🏻</h4>
+              <Link to="/tradelog" className="rent-header-link">
+                {"대여내역 보기 >"}
+              </Link>
+            </div>
+            <div className="main-non-member-product">
+              {nonMemberCarousel(nonMemberProduct, "3")}
+            </div>
+          </div>
+    }
     </div>
   );
 };

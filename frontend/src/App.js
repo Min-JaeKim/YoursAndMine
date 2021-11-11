@@ -18,7 +18,6 @@ import SignUp from "./pages/SignUp/SignUp";
 import FindPwd from "./pages/FindPwd/FindPwd";
 import UserEdit from "./pages/UserEdit/UserEdit";
 import TradeLog from "./pages/TradeLog/TradeLog";
-import WebSocketTest from "./pages/ChatRoom/WebSocketTest";
 // import Charge from "./pages/Charge/Charge";
 import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
@@ -30,13 +29,12 @@ import Product from "./pages/Product/Product";
 import Category from "./pages/Category/Category";
 import Join from "./pages/Join/Join";
 import Test from "./pages/Product/Test";
-import WebSocket from "./components/WebSocket/WebSocket";
 
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as StompJs from "@stomp/stompjs";
 import axios from "axios";
-import { insertPartner } from "./redux/reducers/ConversationList";
+import { insertPartner, receive } from "./redux/reducers/ConversationList";
 
 function App() {
   const client = useRef({});
@@ -50,7 +48,7 @@ function App() {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8000/chat/websocket", // 웹소켓 서버로 직접 접속
+      brokerURL: "ws://localhost:8081/chat/websocket", // 웹소켓 서버로 직접 접속
       //   webSocketFactory: () => new SockJS("/chat"), // proxy를 통한 접속
       connectHeaders: {
         "auth-token": "spring-chat-auth-token",
@@ -65,7 +63,7 @@ function App() {
         // 이전 데이터 불러오기
         axios({
           method: "get",
-          url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllUsers/" + "abc",
+          url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllChats/" + "test",
         })
           .then((response) => {
             console.log(response);
@@ -96,14 +94,17 @@ function App() {
 
   const subscribe = () => {
     // 새롭게 들어오는 데이터는 이곳으로
-    client.current.subscribe(`/topic/abc`, ({ body }) => {
-      console.log(body);
+    client.current.subscribe(`/topic/test`, ({ body }) => {
+      // console.log(JSON.parse(body));
+      const m = JSON.parse(body);
+      m.type = "message";
+      console.log(m);
+      dispatch(receive(m));
     });
   };
 
   return (
     <div className="App">
-      {/* <WebSocket /> */}
       <Router>
         {/* <ScrollToTop /> */}
         <Switch>
@@ -135,7 +136,6 @@ function App() {
             <PrivateRouter path="/myschedule" component={MySchedule} exact />
 
             <PrivateRouter path="/test" component={Test} exact />
-            <PrivateRouter path="/test2" component={WebSocketTest} exact />
           </Layout>
         </Switch>
       </Router>

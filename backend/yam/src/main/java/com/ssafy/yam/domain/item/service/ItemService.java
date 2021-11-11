@@ -1,9 +1,13 @@
 package com.ssafy.yam.domain.item.service;
 
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
+import com.ssafy.yam.domain.deal.dto.response.DealResponse;
+import com.ssafy.yam.domain.deal.repository.DealRepository;
+import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
+import com.ssafy.yam.domain.item.dto.response.ItemDetailResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemListResponse;
 import com.ssafy.yam.domain.item.dto.response.ItemResponse;
 import com.ssafy.yam.domain.item.entity.Item;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +36,10 @@ public class ItemService {
     private final BookmarkRepository bookmarkRepository;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
+    private final DealService dealService;
 
-    public ItemResponse getItemByItemId(int itemId){
+
+    public ItemDetailResponse getItemByItemId(int itemId){
         Item item = itemRepository.findItemByItemId(itemId);
         User owner = item.getSeller();
         ItemResponse response = ItemResponse.builder()
@@ -67,7 +74,11 @@ public class ItemService {
         response.setItemImage(images.stream()
                 .map(Image::getImageUrl)
                 .collect(Collectors.toList()));
-        return response;
+
+        List<LocalDate> deal = dealService.getUnavailableDate(itemId);
+
+        ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
+        return itemDetail;
     }
 
     public List<ItemListResponse> getItemList(String token, Pageable pageable){

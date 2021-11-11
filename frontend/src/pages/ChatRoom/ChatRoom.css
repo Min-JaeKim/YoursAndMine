@@ -6,8 +6,12 @@
 }
 
 .input-bottom {
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
+  z-index: 10;
   bottom: 0;
+  /* bottom: 77px;
+   */
   width: 100%;
   max-width: 420px;
   height: 77px;

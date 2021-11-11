@@ -1,10 +1,12 @@
+import "./SignUp.css";
+import Swal from 'sweetalert2'
+import axios from "../../api/axios";
 import React, { useState, useRef } from "react";
+import check from "../../assets/icons/check.png";
 import { Button, Input } from "semantic-ui-react";
 import { useForm, Controller } from "react-hook-form";
-import check from "../../assets/icons/check.png";
 import checkOn from "../../assets/icons/check-on.png";
-import "./SignUp.css";
-import axios from 'axios';
+
 const SignUp = ({ history }) => {
   const [option1, setOption1] = useState(false);
   const [option2, setOption2] = useState(false);
@@ -30,53 +32,69 @@ const SignUp = ({ history }) => {
 
   const signup = () => {
     const formData = {
-      userEmail: watch('email', ''),
-      userName: watch('name', ''),
+      userNickname: watch('name', ''),
       userPassword: watch('pwd', ''),
+      userEmail: watch('email', '')
     }
 
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/signup`, formData)
+      .post(`/signup`, formData)
       .then((response) => {
-        console.log(response);
-        alert("회원가입에 성공하였습니다.")
+        Swal.fire({
+          title: 'Success!',
+          text: '회원가입에 성공하였습니다.',
+          icon: 'success',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        })
         history.push('/signin')
 
       }).catch((error) => {
         console.log(error)
-        alert("회원가입에 실패하였습니다.")
+        Swal.fire({
+          title: 'Error!',
+          text: '회원가입에 실패하였습니다.',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        })
       }
       )
   };
 
   const sendCert = () => {
-    console.log(watch('email', ''))
-    console.log(typeof (watch('email', '')))
-
-
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/signup/email-check`, {
-        userEmail: watch('email', ''),
-      })
+      .get(`/user/email/${watch('email', '')}`)
       .then((response) => {
-
-        if (response.data) {
+        if (response.data === true) {
+          Swal.fire({
+            title: 'Error!',
+            text: '중복된 아이디입니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          })
+        } else {
           setEmailLoading(true)
           axios
-            .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/email-certification`, {
+            .post(`/user/email`, {
               userEmail: watch('email', ''),
             })
             .then((response) => {
-              setCode(response.data.object);
+              setCode(response.data.certificationNumber);
               setSendEmail(true);
-              alert("인증번호 전송");
-              console.log(code, response.data.object)
-              setEmailLoading(false)
+              Swal.fire({
+                title: 'Success!',
+                text: '인증번호가 전송되었습니다.',
+                icon: 'success',
+                confirmButtonText: 'OK!',
+                confirmButtonColor: '#497c5f'
+              })
+              setEmailLoading(false);
             }).catch((error) => {
               console.log(error);
             })
         }
-        console.log(response)
       }).catch((error) => {
         console.log(error);
       })
@@ -84,12 +102,23 @@ const SignUp = ({ history }) => {
   };
 
   const confirmCert = () => {
-    console.log()
     if (cert.current === code) {
-      alert("인증 성공");
+      Swal.fire({
+        title: 'Success!',
+        text: '인증이 성공하였습니다.',
+        icon: 'success',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
       setIsCert(true);
     } else {
-      alert("인증 실패");
+      Swal.fire({
+        title: 'Error!',
+        text: '인증이 실패하였습니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
     }
   };
 
@@ -128,7 +157,7 @@ const SignUp = ({ history }) => {
       <form onSubmit={handleSubmit(signup)}>
         <div className="signup-input">
           <div className="signup-input-header">
-            <p>이름</p>
+            <p>닉네임</p>
             {errors.name ? <span> {errors.name.message}</span> : ""}
           </div>
           <Controller

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
-import logo from "../../assets/image/billige.PNG";
+import logo from "../../assets/image/yam.png";
 import { Button, Input } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import kakao from "../../assets/icons/kakao-talk.png";
 
 import "./SignIn.css";
-import axios from 'axios';
+import Swal from 'sweetalert2'
+import axios from "../../api/axios";
 import allActions from '../../redux/actions';
 
 const SignIn = ({ history }) => {
@@ -17,34 +18,46 @@ const SignIn = ({ history }) => {
   const signin = (e) => {
     e.preventDefault();
     axios
-      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/login`, {
+      .post(`/login`, {
         userEmail: email,
         userPassword: password,
       })
       .then((response) => {
-        const token = response.headers.authentication.split(" ")[1]
+        const token = response.data.accessToken.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
-          .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
-            headers: {
-              Authentication:
-                "Bearer " + token,
-            },
-
-          })
-          .then((response) => {
-            dispatch(allActions.userActions.loginUser(response.data));
-            window.localStorage.setItem("login", JSON.stringify(true));
-
-            console.log(response);
+        .get(`/user/mypage`, {
+          headers: {
+            Authorization:
+            "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          dispatch(allActions.userActions.loginUser(response.data));
+          window.localStorage.setItem("login", JSON.stringify(true));
           })
           .catch((error) => {
-            console.log(error)
+            Swal.fire({
+              title: 'Error!',
+              text: '로그인에 실패하였습니다.',
+              icon: 'error',
+              confirmButtonText: 'OK!',
+              confirmButtonColor: '#497c5f'
+            });
+            window.localStorage.removeItem("user");
+            window.localStorage.removeItem('token');
+            window.localStorage.removeItem("login");
           })
-        history.push('/')
+        history.push('/');
       })
       .catch(() => {
-        alert("아이디 혹은 비밀번호를 확인해주세요")
+        Swal.fire({
+          title: 'Error!',
+          text: '로그인에 실패하였습니다.',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        })
       })
   }
 

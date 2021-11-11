@@ -46,3 +46,14 @@
 .main-item-price {
   font-weight: 300;
 }
+
+.main-non-member-item-box {
+  margin: 10px;
+}
+
+.main-non-member-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  display: block;
+}

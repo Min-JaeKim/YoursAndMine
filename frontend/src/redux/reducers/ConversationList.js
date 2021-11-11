@@ -16,9 +16,12 @@ const ConversationList = (state = initialState, action) => {
       state[action.payload.partner] = [...action.payload.list];
       return { ...state };
     case NEWMESSAGE:
+      // console.log(action.payload);
       state[action.payload.to] = [...state[action.payload.to], action.payload];
       return { ...state };
     case RECEIVED:
+      console.log(action.payload);
+      console.log(action.payload.author);
       if (state[action.payload.author] === undefined) {
         state[action.payload.author] = [action.payload];
       } else {

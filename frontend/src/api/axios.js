@@ -2,12 +2,13 @@ import axios from "axios";
 import https from "https";
 
 const axiosInstance = axios.create({
-  baseURL: `https://23a41662-eb47-40d9-a8dd-783436980149.mock.pstmn.io/`,
-  // baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}`,
+  // baseURL: `https://23a41662-eb47-40d9-a8dd-783436980149.mock.pstmn.io/`, 
+  baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}/api`,
 
   httpsAgent: new https.Agent({ rejectUnauthorized: false }),
 });
-
+console.log("process.env.REACT_APP_SERVER_BASE_URL is : ")
+console.log(process.env.REACT_APP_SERVER_BASE_URL)
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;

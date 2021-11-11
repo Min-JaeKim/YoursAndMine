@@ -16,7 +16,7 @@ const Footer = (props) => {
     <>
       {pathname ? null : (
         <div className="footer">
-          빌리지
+          Yours And Mine
           <hr />
           <div className="footer-team">
             <div className="footer-member">
@@ -32,9 +32,9 @@ const Footer = (props) => {
             </div>
           </div>
           <div className="footer-desc">
-            빌리지는 통신판매중개업자이며 통신판매의 거래당사자가 아닙니다
+            얌(YAM)은 통신판매중개업자이며 통신판매의 거래당사자가 아닙니다
             <br />
-            사용자간 상품 및 거래에 대해 빌리지는 일체 책임을 지지 않습니다.
+            사용자간 상품 및 거래에 대해 얌(YAM)은 일체 책임을 지지 않습니다.
           </div>
         </div>
       )}

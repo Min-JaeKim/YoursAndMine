@@ -9,9 +9,9 @@ function ChatList(props) {
   const conversationList = useSelector((state) => state.conversationlist);
   const [chatOpen, setChatOpen] = useState();
 
-  useEffect(() => {
-    console.log(chatOpen);
-  }, [chatOpen]);
+  // useEffect(() => {
+  //   console.log(chatOpen);
+  // }, [chatOpen]);
 
   const sendToMessage = (from, to, msg) => {
     const m = { message: msg, author: from, to: to, timestamp: new Date().getTime() };
@@ -90,7 +90,7 @@ function ChatList(props) {
       {/* {users.map((user) => (
         <ChatDetail user={user} key={user.id}></ChatDetail>
       ))} */}
-      {chatOpen ? <ChatRoom client={props.client} setChatOpen={setChatOpen} /> : null}
+      {chatOpen ? <ChatRoom client={props.client} to={chatOpen} /> : null}
       {Object.keys(conversationList).map((key, index) => (
         <ChatDetail
           key={key}

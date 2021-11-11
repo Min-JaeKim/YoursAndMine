@@ -33,6 +33,7 @@
     "semantic-ui-react": "^2.0.3",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.3",
+    "sweetalert2": "^11.1.9",
     "truffle-contract": "^4.0.31",
     "web-vitals": "^1.0.1",
     "web3": "^1.5.3",
@@ -66,5 +67,5 @@
     "eslint-config-naver": "^2.1.0",
     "http-proxy-middleware": "^0.19.1"
   },
-  "proxy": "http://localhost:8000"
+  "proxy": "http://localhost:8081"
 }

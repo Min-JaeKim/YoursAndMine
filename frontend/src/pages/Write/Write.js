@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../api/axios";
 import { useHistory } from "react-router";
 import { Input, Button, Form, TextArea, Grid } from "semantic-ui-react";
 import "./Write.css";

@@ -3,9 +3,11 @@ import ImageSendBtn from "../../assets/icons/image-send-btn.png";
 import SendMsgBtn from "../../assets/icons/msg-send-btn.png";
 import "./ChatRoom.css";
 import { useSelector, useDispatch } from "react-redux";
+import { insertMessage } from "../../redux/reducers/ConversationList";
 
 function ChatInput(props) {
-  const [msg, setMsg] = useState();
+  const [msg, setMsg] = useState("");
+  const dispatch = useDispatch();
 
   // const client = useRef({});
 
@@ -16,16 +18,30 @@ function ChatInput(props) {
   // }, []);
   // 서버로 메시지 전송
   const sendMsg = () => {
+    const author = "test";
+    const to = "test";
+    const timestamp = new Date();
+
     console.log(msg);
     props.client.current.publish({
       destination: "/app/send",
       body: JSON.stringify({
+        type: "send",
         message: msg,
-        author: "내 id",
-        to: "abc",
-        timestamp: new Date().getTime(),
+        author: author,
+        to: to,
+        timestamp: timestamp.getTime(),
       }),
     });
+    const m = {
+      type: "send",
+      message: msg,
+      author: author,
+      to: to,
+      timestamp: timestamp.getHours() + ":" + timestamp.getMinutes(),
+    };
+    console.log(m);
+    dispatch(insertMessage(m));
     setMsg("");
   };
 

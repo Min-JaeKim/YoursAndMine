@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+
+import axios from "../../api/axios";
 import { useHistory } from "react-router";
 import allActions from "../../redux/actions";
 const { kakao } = window;
@@ -32,7 +33,7 @@ const Location = ({ searchPlace }) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     const second = await axios
       .put(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/api/user/modify/address`,
+        `/user/modify/address`,
         {
           userAddress: address,
           userSigunguCode: sigungu,

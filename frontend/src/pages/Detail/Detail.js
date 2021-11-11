@@ -14,6 +14,7 @@ export const Detail = () => {
   const history = useHistory();
   const { pNo } = useParams();
   const [detail, setDetail] = useState({});
+  const [unavailableDate, setUnavailableDate] = useState([]);
   const [loading, setLoading] = useState(true);
   const [like, setLike] = useState(false);
 
@@ -26,18 +27,15 @@ export const Detail = () => {
 
   useEffect(() => {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    console.log("hi");
     axios
       .get(`/item/${pNo}`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
       })
       .then((response) => {
+        console.log(response.data);
         setDetail(response.data.item);
+        setUnavailableDate(response.data.unavailableDate);
         setLoading(false);
         // setLike(response.data.bookmark);
-        // console.log(response.data);
       })
       .catch((error) => {
         alert("상품 내역이 존재하지 않습니다.");
@@ -62,7 +60,7 @@ export const Detail = () => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/api/bookmark/${detail.itemId}`,
+        `/bookmark/${detail.itemId}`,
         {},
         {
           headers: {
@@ -80,7 +78,7 @@ export const Detail = () => {
     setLike(false);
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
-      .delete(`${process.env.REACT_APP_SERVER_BASE_URL}/api/bookmark/${detail.itemId}`, {
+      .delete(`/bookmark/${detail.itemId}`, {
         headers: {
           Authentication: "Bearer " + token,
         },
@@ -110,10 +108,10 @@ export const Detail = () => {
 
           {/* <img src={detail.itemImage[0]} alt="product" className="detail-product" /> */}
           <div className="detail-profile">
-            <img src={detail.user.userProfileImg} alt="product" className="detail-user-icon" />
+            <img src={detail.owner.ownerImageUrl} alt="product" className="detail-user-icon" />
             <div className="detail-user-info">
-              <div className="detail-user-name">{detail.user.userName}</div>
-              <div className="detail-user-address">{detail.user.userAddress}</div>
+              <div className="detail-user-name">{detail.owner.ownerNickName}</div>
+              <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
             <div className="detail-like">
               {like ? (
@@ -160,7 +158,7 @@ export const Detail = () => {
               <input id="tab2-1" name="tabs-two" type="radio" defaultChecked="checked" />
               <div>
                 <div className="detail-product-detail">
-                  <div>{detail.itemContent}</div>
+                  <div className="detail-product-content">{detail.itemContent}</div>
                 </div>
               </div>
             </div>
@@ -170,7 +168,7 @@ export const Detail = () => {
               <div>
                 <div>
                   <div className="detail-product-detail">
-                    <DetailCalendar />
+                    <DetailCalendar unavailableDate={unavailableDate}/>
                   </div>
                 </div>
               </div>

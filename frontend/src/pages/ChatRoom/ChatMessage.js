@@ -13,15 +13,15 @@ function ChatMessage({ profileImg, msg }) {
               <img src={chatProfile} alt="profile"></img>
             )}
           </div>
-          <div className="receive-msg-content">{msg.content}</div>
-          <div className="receive-msg-time">{msg.time}</div>
+          <div className="receive-msg-content">{msg.message}</div>
+          <div className="receive-msg-time">{msg.timestamp}</div>
         </div>
       ) : null}
 
       {msg.type === "send" ? (
         <div className="send-msg-box">
-          <div className="send-msg-time">{msg.time}</div>
-          <div className="send-msg-content">{msg.content}</div>
+          <div className="send-msg-time">{msg.timestamp}</div>
+          <div className="send-msg-content">{msg.message}</div>
         </div>
       ) : null}
     </>
