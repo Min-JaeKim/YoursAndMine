@@ -19,14 +19,14 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
 
-    public void addBookmark(BookmarkRequest bookmarkRequest) {
+    public void addBookmark(int itemId) {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         System.out.println("북마크 서비스 : " + tokenEmail);
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         int userId = user.getUserId();
         System.out.println("북마크 서비스 : " + userId);
 
-        int itemId = bookmarkRequest.getItemId();
+        //int itemId = bookmarkRequest.getItemId();
         BookmarkId bookmarkId = new BookmarkId(userId, itemId);
         Bookmark bookmark = new Bookmark(bookmarkId);
         bookmarkRepository.save(bookmark);

@@ -79,10 +79,10 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemCRUDService.deleteItemImage(itemId, itemImage));
     }
 
-    @PostMapping("/bookmark")
-    public ResponseEntity<?> addBookmark(BookmarkRequest bookmarkRequest){
+    @PostMapping("/bookmark/{itemId}")
+    public ResponseEntity<?> addBookmark(@PathVariable int itemId){
         System.out.println("북마크 컨트롤러 post!!!!!!!!!!!");
-        bookmarkService.addBookmark(bookmarkRequest);
+        bookmarkService.addBookmark(itemId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -86,11 +86,13 @@ export const Detail = () => {
     console.log('onLike');
     console.log(token);
     axios
-    .post(`/item/bookmark/${detail.itemId}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      })
+    .post(`/item/bookmark/${detail.itemId}`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          }
+        })
         .then((response) => {
 
         })
