@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.item.controller;
 
+import com.ssafy.yam.domain.bookmark.dto.request.BookmarkRequest;
 import com.ssafy.yam.domain.bookmark.service.BookmarkService;
 import com.ssafy.yam.domain.item.dto.request.ItemCreateRequest;
 import com.ssafy.yam.domain.item.dto.request.ItemUpdateRequest;
@@ -78,14 +79,16 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemCRUDService.deleteItemImage(itemId, itemImage));
     }
 
-    @PostMapping("/bookmark/{itemId}")
-    public ResponseEntity<?> addBookmark(@PathVariable int itemId){
-        bookmarkService.addBookmark(itemId);
+    @PostMapping("/bookmark")
+    public ResponseEntity<?> addBookmark(BookmarkRequest bookmarkRequest){
+        System.out.println("북마크 컨트롤러 post!!!!!!!!!!!");
+        bookmarkService.addBookmark(bookmarkRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/bookmark/{itemId}")
     public ResponseEntity<?> deleteBookmark(@PathVariable int itemId){
+        System.out.println("북마크 컨트롤러 delete!!!!!!!!!!!");
         bookmarkService.deleteBookmark(itemId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

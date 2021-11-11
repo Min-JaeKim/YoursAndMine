@@ -73,7 +73,7 @@ public class ItemService {
 
 
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
-        System.out.println(tokenEmail);
+//        System.out.println(tokenEmail);
         if(tokenEmail.equals("anonymousUser") ) {
             ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
             return itemDetail;
