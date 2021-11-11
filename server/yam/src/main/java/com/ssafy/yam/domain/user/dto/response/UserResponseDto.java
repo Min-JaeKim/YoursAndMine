@@ -162,16 +162,6 @@ public class UserResponseDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ChatUserInfoResDto {
-        private int userId;
-        private String userNickname;
-        private String userImage;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
     public static class MeResDto {
         private int userId;
         private String userEmail;
