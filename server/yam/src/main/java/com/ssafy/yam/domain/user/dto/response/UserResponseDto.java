@@ -167,4 +167,18 @@ public class UserResponseDto {
         private String userNickname;
         private String userImage;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MeResDto {
+        private int userId;
+        private String userEmail;
+        private String userNickname;
+        private String userAddress;
+        private String userAreaCode;
+        private String userImageUrl;
+        private int userAuthLevel;
+    }
 }

@@ -85,4 +85,9 @@ public class UserController {
     public ResponseEntity<?> getInfo(@RequestBody List<Integer> userIdList) {
         return ResponseEntity.ok().body(userService.getInfo(userIdList));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMe() {
+        return ResponseEntity.ok().body(userService.getMe());
+    }
 }
