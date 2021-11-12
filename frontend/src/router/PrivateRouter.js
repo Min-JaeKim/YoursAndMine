@@ -14,18 +14,22 @@ const PrivateRouter = ({ component: Component, client, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        // !window.localStorage.getItem('token') &&
-        // Swal.fire({
-        //   title: 'Error!',
-        //   text: '다시 로그인해 주세요',
-        //   icon: 'error',
-        //   confirmButtonText: 'OK!',
-        //   confirmButtonColor: '#497c5f'
-        // }).then((result) => {
-        //   history.push('/signin');
-        // });
-        // return window.localStorage.getItem('token') ? <Component client={client} {...props} /> : <Redirect to="/signin" />;
-        return <Component client={client} {...props} />;
+        !window.localStorage.getItem("token") &&
+          Swal.fire({
+            title: "Error!",
+            text: "다시 로그인해 주세요",
+            icon: "error",
+            confirmButtonText: "OK!",
+            confirmButtonColor: "#497c5f",
+          }).then((result) => {
+            history.push("/signin");
+          });
+        return window.localStorage.getItem("token") ? (
+          <Component client={client} {...props} />
+        ) : (
+          <Redirect to="/signin" />
+        );
+        // return <Component client={client} {...props} />;
       }}
     />
   );
