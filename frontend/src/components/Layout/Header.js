@@ -27,7 +27,6 @@ const Header = (props) => {
   const userData = JSON.parse(window.localStorage.getItem("user"));
 
   useEffect(() => {
-
     if (token) {
       axios
       .get(`/user/mypage`, {
@@ -36,7 +35,11 @@ const Header = (props) => {
         },
         })
         .then((response) => {
-          setUserAddress(response.data.userAddress.split(' '))
+          if (response.data.userAddress) {
+            setUserAddress(response.data.userAddress.split(' '))
+          } else {
+          setUserAddress(null);
+          }
         })
         .catch((error) => {
           setUserAddress(null);
@@ -53,7 +56,7 @@ const Header = (props) => {
     } else {
       setUserAddress(null);
     }
-    }, [token, userData]);
+    }, [token]);
     
   useEffect(() => {
     if (user?.userAddress) {

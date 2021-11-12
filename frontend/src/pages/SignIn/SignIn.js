@@ -26,17 +26,19 @@ const SignIn = ({ history }) => {
         const token = response.data.accessToken.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
-        .get(`/user/mypage`, {
+        .get(`/user/me`, {
+        // .get(`/user/mypage`, {
           headers: {
             Authorization:
             "Bearer " + token,
           },
         })
         .then((response) => {
-          dispatch(allActions.userActions.loginUser(response.data));
+          dispatch(allActions.userActions.loginUser(response.data))
           window.localStorage.setItem("login", JSON.stringify(true));
-          })
-          .catch((error) => {
+        })
+        .catch((error) => {
+            console.log(error)
             Swal.fire({
               title: 'Error!',
               text: '로그인에 실패하였습니다.',

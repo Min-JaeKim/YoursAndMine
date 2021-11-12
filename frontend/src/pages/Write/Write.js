@@ -1,9 +1,11 @@
-import React, { useState } from "react";
 import axios from "../../api/axios";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { Input, Button, Form, TextArea, Grid } from "semantic-ui-react";
-import "./Write.css";
 import Category from "../Category/Category";
+
+import "./Write.css";
+import Swal from "sweetalert2";
+import { Input, Button, Form, TextArea, Grid } from "semantic-ui-react";
 
 const Write = () => {
   const userdata = JSON.parse(window.localStorage.getItem("user"));
@@ -16,7 +18,7 @@ const Write = () => {
 
   const history = useHistory();
   const [itemname, setItemName] = useState('')
-  const [itembli, setItemBli] = useState('')
+  const [itemPrice, setItemPrice] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('test');
   const [file, setFile] = useState('');
@@ -30,43 +32,79 @@ const Write = () => {
   const getCategory = (category) => {
     setCategory(category);
   };
+
   const writeProduct = () => {
     if (file === ''){
-      alert('사진은 필수입니다.');
+      Swal.fire({
+        title: 'Error!',
+        text: '사진은 필수입니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
       return;
     }
     if (category === 'test') {
-      alert('카테고리는 필수입니다.');
+      Swal.fire({
+        title: 'Error!',
+        text: '카테고리는 필수입니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
       return;
     }
     if (itemname === ''){
-      alert('상품명은 필수입니다.');
+      Swal.fire({
+        title: 'Error!',
+        text: '상품명은 필수입니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
       return;
     }
-    if (itembli === ''){
-      alert('상품 가격은 필수입니다.');
+    if (itemPrice === ''){
+      Swal.fire({
+        title: 'Error!',
+        text: '상품가격은 필수입니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
       return;
     }
     if (description === '') {
-      alert('상품 설명은 필수입니다.');
+      Swal.fire({
+        title: 'Error!',
+        text: '상품 설명은 필수입니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
       return;
     }
+
+      const itemData = {
+        "itemName": itemname,
+        "itemContent": description,
+        "itemCategory": category,
+        "itemPrice": itemPrice
+        }
+
       const formData = new FormData();
-      formData.append("category", category);
-      formData.append("description", description);
-      formData.append("images", file);
-      formData.append("itemname", itemname);
-      formData.append("position", address);
-      formData.append("price", itembli);
-      const token = JSON.parse(window.localStorage.getItem('token'))
+      formData.append("itemImage", file);
+      formData.append("itemData",  new Blob([JSON.stringify(itemData)], {type: "application/json"}));
+
+      const token = JSON.parse(window.localStorage.getItem("token"));
       axios
-        .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/item`, formData, {
+        .post(`/item`, formData, {
           headers: {
-            Authentication:
-              "Bearer " + token
+            Authorization: "Bearer " + token,
           },
         })
         .then((response) => {
+          console.log(4654664864)
           history.push('/myproduct');
         })
         .catch((error) => {
@@ -78,8 +116,8 @@ const Write = () => {
     setItemName(e.target.value);
   };
 
-  const onChangeItemBli = (e) => {
-    setItemBli(e.target.value);
+  const onChangeItemPrice = (e) => {
+    setItemPrice(e.target.value);
   };
 
   const onChangeDesc = (e) => {
@@ -129,8 +167,8 @@ const Write = () => {
           </Grid.Column>
           <Grid.Column>
             <div className="item-bli">
-              <Input placeholder="가격" className="write-bli" onChange={onChangeItemBli} />
-              <h4>BLI</h4>
+              <h4>₩</h4>
+              <Input placeholder="가격" className="write-bli" onChange={onChangeItemPrice} />
             </div>
           </Grid.Column>
         </Grid.Row>
