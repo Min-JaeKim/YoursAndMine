@@ -459,8 +459,8 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException(("해당 유저가 없습니다.")));
 
         List<UserResponseDto.ChatInfoResDto> chatInfoResDtoList = new ArrayList<>();
-
         for (int i = 0; i < mapList.size(); i++) {
+            System.out.println((i+1)+"번째 mapList : " + mapList.get(i).toString());
             UserResponseDto.ChatInfoResDto tmp = modelMapper.map(itemRepository.findItemByItemId(mapList.get(i).getItemId()), UserResponseDto.ChatInfoResDto.class);
             tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(mapList.get(i).getItemId()));
             tmp.setItemSellerNickname(userRepository.findByUserId(tmp.getItemSellerId()).get().getUserNickname());

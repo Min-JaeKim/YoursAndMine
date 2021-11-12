@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Conversation {
-    String partner;
+    String partnerPk;
+    String itemPk;
     List<MessageModel> messageList;
 }
