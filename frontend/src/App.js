@@ -112,7 +112,7 @@ function App() {
             <PublicRouter path="/" component={Main} exact />
             <PublicRouter path="/searchplace" component={SearchPlace} exact />
             <PublicRouter path="/searchitem" component={SearchItem} exact />
-            <PublicRouter path="/detail/:pNo" component={Detail} exact />
+            <PublicRouter path="/detail/:pNo" client={client} component={Detail} exact />
             <PublicRouter path="/signin" component={SignIn} exact />
             <PublicRouter path="/signup" component={SignUp} exact />
             <PublicRouter path="/findpwd" component={FindPwd} exact />
@@ -124,8 +124,6 @@ function App() {
             <PrivateRouter path="/useredit" component={UserEdit} exact />
             <PrivateRouter path="/tradelog" component={TradeLog} exact />
             <PrivateRouter path="/myproduct" component={MyProduct} exact />
-            {/* <PrivateRouter path="/charge" component={Charge} exact /> */}
-            {/* <PrivateRouter path="/wish" component={Wish} exact /> */}
             <PrivateRouter path="/notice" component={Notice} exact />
             <PrivateRouter path="/product" component={Product} exact />
             <PrivateRouter path="/write" component={Write} exact />

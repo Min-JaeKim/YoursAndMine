@@ -4,7 +4,7 @@ import chatProfile from "../../assets/icons/chat-profile.png";
 function ChatMessage({ profileImg, msg, to }) {
   return (
     <>
-      {msg.type === "message" ? (
+      {msg.type === "message" ? ( // 받은 메시지
         <div className="receive-msg-box">
           <div className="receive-profile-img">
             {profileImg ? (
@@ -19,7 +19,7 @@ function ChatMessage({ profileImg, msg, to }) {
         </div>
       ) : null}
 
-      {msg.type === "send" ? (
+      {msg.type === "send" ? ( // 보낸 메시지
         <div className="send-msg-box">
           <div className="send-msg-time">{msg.timestamp}</div>
           <div className="send-msg-content">{msg.message}</div>

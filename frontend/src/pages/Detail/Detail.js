@@ -10,7 +10,7 @@ import { Button } from "semantic-ui-react";
 import axios from "../../api/axios";
 import Slider from "react-slick";
 
-export const Detail = () => {
+export const Detail = (props) => {
   const history = useHistory();
   const { pNo } = useParams();
   const [detail, setDetail] = useState({});
@@ -28,8 +28,7 @@ export const Detail = () => {
   useEffect(() => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
-      .get(`/item/${pNo}`, {
-      })
+      .get(`/item/${pNo}`, {})
       .then((response) => {
         console.log(response.data);
         setDetail(response.data.item);
@@ -168,7 +167,7 @@ export const Detail = () => {
               <div>
                 <div>
                   <div className="detail-product-detail">
-                    <DetailCalendar unavailableDate={unavailableDate}/>
+                    <DetailCalendar unavailableDate={unavailableDate} />
                   </div>
                 </div>
               </div>

@@ -38,10 +38,11 @@ function ChatInput(props) {
       message: msg,
       author: author,
       to: to,
-      timestamp:
-        timestamp.getHours().toString().padStart(2, "0") +
-        ":" +
-        timestamp.getMinutes().toString().padStart(2, "0"),
+      timestamp: timestamp.toLocaleString(),
+      // timestamp:
+      //   timestamp.getHours().toString().padStart(2, "0") +
+      //   ":" +
+      //   timestamp.getMinutes().toString().padStart(2, "0"),
     };
     console.log(m);
     dispatch(insertMessage(m));
