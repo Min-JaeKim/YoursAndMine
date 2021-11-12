@@ -41,7 +41,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    connect();
+    if (localStorage.getItem("token")) {
+      connect();
+    }
 
     return () => disconnect();
   }, []);

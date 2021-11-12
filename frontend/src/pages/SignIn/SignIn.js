@@ -28,18 +28,16 @@ const SignIn = ({ history }) => {
         const token = response.data.accessToken.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
-          .get(
-            `/user/mypage`,
-            {},
-            {
-              headers: {
-                Authorization: "Bearer " + token,
-              },
-            }
-          )
+          .get(`/user/me`, {
+            // .get(`/user/mypage`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
           .then((response) => {
             dispatch(allActions.userActions.loginUser(response.data));
             window.localStorage.setItem("login", JSON.stringify(true));
+            window.location.replace("/");
           })
           .catch((error) => {
             console.log(error);
@@ -54,7 +52,6 @@ const SignIn = ({ history }) => {
             window.localStorage.removeItem("token");
             window.localStorage.removeItem("login");
           });
-        history.push("/");
       })
       .catch(() => {
         Swal.fire({

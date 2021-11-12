@@ -33,6 +33,8 @@ export const Detail = (props) => {
 
   useEffect(() => {
     if (token !== null) {
+      console.log(4546465465465465);
+      console.log(token)
       axios
         .get(`/item/${pNo}`, {
           headers: {

@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
-import Slider from "react-slick";
-import { Link } from "react-router-dom";
-// import { Input } from "semantic-ui-react";
-import arrow from "../../assets/icons/next.png";
-import "./Main.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import ThumbNail from "../../components/ThumbNail/ThumbNail";
 import axios from "../../api/axios";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import arrow from "../../assets/icons/next.png";
+import React, { useState, useEffect } from "react";
+// import { Input } from "semantic-ui-react";
+import ThumbNail from "../../components/ThumbNail/ThumbNail";
 import SearchInput from "../../components/SearchInput/SearchInput";
 
+import "./Main.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const Main = () => {
+  let { user, loginFlag } = useSelector(({ user }) => ({
+    loginFlag: user.login,
+    user: user.user,
+  }));
+
   const [nearProduct, setNearProduct] = useState([]);
   const [rentProduct, setRentProduct] = useState([]);
   const [nonMemberProduct, setNonMemberProduct] = useState([]);
@@ -20,7 +27,7 @@ const Main = () => {
   const token = JSON.parse(window.localStorage.getItem("token"));
 
   useEffect(() => {
-    if (token === null) {
+    if (!loginFlag || !user?.userAddress) {
       axios
         .get(`/item?page=0&size=6&sort=itemModifiedTime,DESC`, {})
         .then((response) => {
@@ -69,7 +76,7 @@ const Main = () => {
         })
         .catch((error) => {});
     }
-  }, []);
+  }, [loginFlag]);
 
   // const NextArrow = (props) => {
   //   const { className, style, onClick } = props;
@@ -191,7 +198,19 @@ const Main = () => {
         </div>
       </Slider>
 
-      {token ? (
+      {!loginFlag || !user?.userAddress ? (
+        // {!user?.userAddress || (user?.userAddress && !user.userAddress) ?
+
+        <div className="main-current-rent">
+          <div className="main-current-rent-header">
+            <h4>최근 등록된 물건 ✌🏻</h4>
+            <Link to="/tradelog" className="rent-header-link">
+              {"대여내역 보기 >"}
+            </Link>
+          </div>
+          <div className="main-non-member-product">{nonMemberCarousel(nonMemberProduct, "3")}</div>
+        </div>
+      ) : (
         <>
           <div className="main-near-product">
             <div className="main-current-rent-header">
@@ -214,16 +233,6 @@ const Main = () => {
             <Slider {...responsiveSettings2}>{remtProductCarousel(rentProduct, "2")}</Slider>
           </div>{" "}
         </>
-      ) : (
-        <div className="main-current-rent">
-          <div className="main-current-rent-header">
-            <h4>최근 등록된 물건 ✌🏻</h4>
-            <Link to="/tradelog" className="rent-header-link">
-              {"대여내역 보기 >"}
-            </Link>
-          </div>
-          <div className="main-non-member-product">{nonMemberCarousel(nonMemberProduct, "3")}</div>
-        </div>
       )}
     </div>
   );
