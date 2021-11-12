@@ -31,6 +31,7 @@ const Main = () => {
           console.log(error);
         });
     } else {
+      console.log(798797987987987)
       axios
         .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {}, {
           headers: {
@@ -52,7 +53,7 @@ const Main = () => {
         axios
           .get(`/user/item/take`, {
             headers: {
-              Authorization: "Bearer " + token,
+              Authorization: "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzNjc4MTkwMX0.iefeE_h-dEVjPZU0F-EJVg-EJCpeZC3wgffAvtYNhhiU_UTZqGrNS1qSjD-HgG1744Ly7ANri_OuzH0prnHhNQ",
             },
           })
           .then((response) => {

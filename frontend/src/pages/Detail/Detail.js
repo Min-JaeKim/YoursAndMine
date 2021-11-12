@@ -30,6 +30,8 @@ export const Detail = () => {
 
   useEffect(() => {
     if (token !== null) {
+      console.log(4546465465465465);
+      console.log(token)
       axios
         .get(`/item/${pNo}`, {
           headers: {
@@ -37,7 +39,7 @@ export const Detail = () => {
           },
         })
         .then((response) => {
-          // console.log(response.data);
+          console.log(response.data);
           setDetail(response.data.item);
           setUnavailableDate(response.data.unavailableDate);
           setLoading(false);
