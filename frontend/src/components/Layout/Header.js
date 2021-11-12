@@ -35,7 +35,11 @@ const Header = (props) => {
         },
         })
         .then((response) => {
-          setUserAddress(response.data.userAddress.split(' '))
+          if (response.data.userAddress) {
+            setUserAddress(response.data.userAddress.split(' '))
+          } else {
+          setUserAddress(null);
+          }
         })
         .catch((error) => {
           setUserAddress(null);
