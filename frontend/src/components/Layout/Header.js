@@ -27,7 +27,6 @@ const Header = (props) => {
   const userData = JSON.parse(window.localStorage.getItem("user"));
 
   useEffect(() => {
-
     if (token) {
       axios
       .get(`/user/mypage`, {
@@ -53,7 +52,7 @@ const Header = (props) => {
     } else {
       setUserAddress(null);
     }
-    }, [token, userData]);
+    }, [token]);
     
   useEffect(() => {
     if (user?.userAddress) {
