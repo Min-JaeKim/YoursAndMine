@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-
 import axios from "../../api/axios";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import allActions from "../../redux/actions";
+import React, { useEffect, useState } from "react";
+
+import Swal from "sweetalert2";
+
 const { kakao } = window;
 
 const Location = ({ searchPlace }) => {
+
   const dispatch = useDispatch();
   const history = useHistory();
   // 검색결과 배열에 담아줌
@@ -21,42 +24,41 @@ const Location = ({ searchPlace }) => {
         headers: { Authorization: "KakaoAK 3c8ffe0fda9423ae3d4595085463213e" },
       })
       .then((res) => {
-        console.log(address);
         const location = res.data.documents[0];
-        // console.log(location);
-        // console.log(location?.address?.b_code);
         sigungu = location?.address?.b_code !== undefined ? location?.address?.b_code.slice(0, 5) : null;
-        console.log(sigungu);
       });
-    // console.log(data);
-    // console.log(sigungu);
     const token = JSON.parse(window.localStorage.getItem("token"));
     const second = await axios
       .put(
-        `/user/modify/address`,
+        `/user/address`,
         {
           userAddress: address,
-          userSigunguCode: sigungu,
+          userAreaCode: sigungu,
         },
         {
           headers: {
-            Authentication: "Bearer " + token,
+            Authorization: "Bearer " + token,
           },
         }
       )
       .then((response) => {
-        window.localStorage.setItem("token", JSON.stringify(response.data.split(" ")[1]));
+        // window.localStorage.setItem("token", JSON.stringify(response.data.split(" ")[1]));
         const userData = JSON.parse(window.localStorage.getItem("user"));
         userData.userAddress = address;
         window.localStorage.setItem("user", JSON.stringify(userData));
+        Swal.fire({
+          title: 'Log out!',
+          text: '주소가 변경되었습니다.',
+          icon: 'success',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        }).then((result) => {
+          history.push('/');
+        })
       })
       .catch((err) => {
         console.log(err);
       });
-
-    // console.log(second);
-    alert("주소가 변경되었습니다.");
-    history.push("/");
   };
 
   useEffect(() => {

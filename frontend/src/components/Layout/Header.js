@@ -14,6 +14,9 @@ import Swal from 'sweetalert2'
 const Header = (props) => {
   const history = useHistory();
 
+  //중요
+  // 로그아웃 시 헤더가 변경되지 않는 오류가 있습니다
+
   let { user, loginFlag } = useSelector(({ user }) => ({
     user: user.user,
     loginFlag: user.login,
@@ -21,6 +24,7 @@ const Header = (props) => {
 
   const [userAddress, setUserAddress] = useState(null);
   const token = JSON.parse(window.localStorage.getItem("token"));
+  const userData = JSON.parse(window.localStorage.getItem("user"));
 
   useEffect(() => {
 
@@ -46,9 +50,10 @@ const Header = (props) => {
             history.push('/signin');
           })
         });
+    } else {
+      setUserAddress(null);
     }
-
-    }, [token]);
+    }, [token, userData]);
     
   useEffect(() => {
     if (user?.userAddress) {
@@ -59,7 +64,6 @@ const Header = (props) => {
   }, [user])
 
   const onClickCategory = () => {
-    // history.push('/category');
     history.push({
       pathname: "/category",
       state: {
@@ -94,7 +98,13 @@ const Header = (props) => {
     <div className="header">
       {props.location.pathname === "/" ? (
         <div className="header-location">
-          {checkUserAddress()}
+          {/* {checkUserAddress()} */}
+          {userAddress ?
+          <Link to="/searchplace">{userAddress[0] + ' ' + userAddress[1] + ' ' + userAddress[2]}</Link> :
+          loginFlag ? 
+          <Link to="/searchplace">주소를 지정해 주세요</Link> :
+          <Link to="/signin">주소를 지정해 주세요</Link>
+        }
           <img
             className="hd-location-category-img"
             src={categoryImg}

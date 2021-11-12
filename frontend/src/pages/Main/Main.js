@@ -32,7 +32,7 @@ const Main = () => {
         });
     } else {
       axios
-        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
+        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {}, {
           headers: {
             Authorization: "Bearer " + token,
           },
