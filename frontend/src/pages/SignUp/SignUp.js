@@ -63,6 +63,8 @@ const SignUp = ({ history }) => {
   };
 
   const sendCert = () => {
+    // 중요
+    // 인증 다 받은 다음 아이디 바꾸고 가입해도 잘 됨. 고쳐야 할듯.
     axios
       .get(`/user/email/${watch('email', '')}`)
       .then((response) => {
