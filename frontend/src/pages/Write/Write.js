@@ -26,8 +26,6 @@ const Write = () => {
 
   let profile_preview = null;
   if(file !=='') {
-    console.log('file')
-    console.log(file)
     profile_preview = <img className='profile_preview' src={previewURL}></img>
   }
 
@@ -86,31 +84,21 @@ const Write = () => {
       })
       return;
     }
-      // const itemImage = new FormData();
-      // itemImage.append("itemImage", file);
 
-      const tmp = {
-        "itemName": "비모피규어",
-          "itemContent": "비모피규어 내용",
-          "itemCategory": "가전제품",
-          "itemPrice": 4000
+      const itemData = {
+        "itemName": itemname,
+        "itemContent": description,
+        "itemCategory": category,
+        "itemPrice": itemPrice
         }
-      const itemData = new FormData();
-      // itemData.append("itemName", itemname);
-      itemData.append("itemImage", file);
-      itemData.append("itemData",  new Blob([JSON.stringify(tmp)], {type: "application/json"}));
-      // itemData.append("itemContent", description);
-      // itemData.append("itemCategory", category);
-      // itemData.append("itemPrice", itemPrice);
 
-      // const tmp = new FormData
-
-      // formData.append('showInfoUpdatePatchReq', new Blob([JSON.stringify(showInfoUpdatePatchReq)], {type: "application/json"}))
+      const formData = new FormData();
+      formData.append("itemImage", file);
+      formData.append("itemData",  new Blob([JSON.stringify(itemData)], {type: "application/json"}));
 
       const token = JSON.parse(window.localStorage.getItem("token"));
-      console.log(token);
       axios
-        .post(`/item`, itemData, {
+        .post(`/item`, formData, {
           headers: {
             Authorization: "Bearer " + token,
           },

@@ -24,19 +24,22 @@ const SignIn = ({ history }) => {
       })
       .then((response) => {
         const token = response.data.accessToken.split(" ")[1];
+        console.log(token)
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
         .get(`/user/mypage`, {
           headers: {
             Authorization:
-            "Bearer " + token,
+            "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzNjc4MTkwMX0.iefeE_h-dEVjPZU0F-EJVg-EJCpeZC3wgffAvtYNhhiU_UTZqGrNS1qSjD-HgG1744Ly7ANri_OuzH0prnHhNQ",
           },
         })
         .then((response) => {
+          console.log(response)
           dispatch(allActions.userActions.loginUser(response.data));
           window.localStorage.setItem("login", JSON.stringify(true));
           })
           .catch((error) => {
+            console.log(error)
             Swal.fire({
               title: 'Error!',
               text: '로그인에 실패하였습니다.',
@@ -44,9 +47,9 @@ const SignIn = ({ history }) => {
               confirmButtonText: 'OK!',
               confirmButtonColor: '#497c5f'
             });
-            window.localStorage.removeItem("user");
-            window.localStorage.removeItem('token');
-            window.localStorage.removeItem("login");
+            // window.localStorage.removeItem("user");
+            // window.localStorage.removeItem('token');
+            // window.localStorage.removeItem("login");
           })
         history.push('/');
       })
