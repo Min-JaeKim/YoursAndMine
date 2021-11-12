@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./MyPage.css";
+import axios from "../../api/axios";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import allActions from "../../redux/actions";
-
 import star from "../../assets/icons/star.png";
 import profile from "../../assets/image/user.png";
 import arrow from "../../assets/icons/arrow-right.png";
@@ -13,12 +12,12 @@ import product from "../../assets/icons/product.png";
 import productlist from "../../assets/icons/productlist.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+
 import authLevel1 from "../../assets/icons/auth-level1.png";
 import authLevel2 from "../../assets/icons/auth-level2.png";
 import authLevel3 from "../../assets/icons/auth-level3.png";
 
 import Swal from 'sweetalert2'
-import axios from "../../api/axios";
 
 const MyPage = () => {
   const history = useHistory();
@@ -27,19 +26,12 @@ const MyPage = () => {
   const [user, setUser] = useState({});
   const btn = useRef();
   const dispatch = useDispatch();
-
-  let { checkUser } = useSelector(({ user }) => ({
-    checkUser: user.user,
-  }));
-
-  // console.log('checkUser')
-  // console.log(checkUser)
   
   useEffect(() => {
     const token = JSON.parse(window.localStorage.getItem("token"));
 
     axios
-    .get(`/user/mypage`, {
+    .get(`user/mypage/`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -60,23 +52,18 @@ const MyPage = () => {
         })
       });
     }, []);
-
-    useEffect(() => {
-      if (!checkUser?.userAddress) {
-        Swal.fire({
-          title: 'Log out!',
-          text: '로그아웃되었습니다.',
-          icon: 'success',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
-        }).then((result) => {
-          history.push('/');
-        })
-      }
-    }, [checkUser])
     
   const logout = () => {
     dispatch(allActions.userActions.logoutUser());
+    Swal.fire({
+      title: 'Log out!',
+      text: '로그아웃되었습니다.',
+      icon: 'success',
+      confirmButtonText: 'OK!',
+      confirmButtonColor: '#497c5f'
+    }).then((result) => {
+      history.push('/');
+    })
   };
 
   return (
@@ -151,11 +138,11 @@ const MyPage = () => {
           </div>
         </Link>
 
-        {/* <Link to="/"> */}
+        <Link to="/">
           <div className="mypage-option" onClick={logout}>
             <p>로그아웃</p> <img src={arrow} width="20px" alt="arrow" />
           </div>
-        {/* </Link> */}
+        </Link>
       </div>
     </div>
   );

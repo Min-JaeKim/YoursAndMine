@@ -15,7 +15,7 @@
 .detail-profile {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   flex-direction: row;
   margin-top: 20px;
   padding: 10px;
@@ -26,6 +26,7 @@
   width: 70px;
   border-radius: 15px;
   object-fit: cover;
+  margin-right: 10px;
 }
 
 .detail-user-icon {
@@ -34,7 +35,7 @@
 }
 
 .detail-user-info {
-  /* margin-right: 30%; */
+  margin-right: 103px;
 }
 
 .detail-user-name {
