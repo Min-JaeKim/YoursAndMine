@@ -5,7 +5,7 @@ import ChatList from "./ChatList";
 const Chat = (props) => {
   return (
     <div>
-      <ChatList client={props.client}></ChatList>
+      <ChatList roomnum={props.location.state.userPK} client={props.client}></ChatList>
     </div>
   );
 };

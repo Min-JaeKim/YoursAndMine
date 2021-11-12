@@ -3,6 +3,8 @@ import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import DetailCalendar from "./DetailCalendar";
 import React, { useState, useEffect } from "react";
+import { insertMessage } from "../../redux/reducers/ConversationList";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./Detail.css";
 import Slider from "react-slick";
@@ -18,6 +20,7 @@ export const Detail = (props) => {
   const [unavailableDate, setUnavailableDate] = useState([]);
   const [loading, setLoading] = useState(true);
   const [like, setLike] = useState(false);
+  const dispatch = useDispatch();
 
   const settings = {
     dots: true,
@@ -84,7 +87,7 @@ export const Detail = (props) => {
 
   const onSelectProduct = () => {
     const timestamp = new Date();
-
+    console.log(detail.owner.ownerId);
     props.client.current.publish({
       destination: "/app/send",
       body: JSON.stringify({
@@ -94,6 +97,24 @@ export const Detail = (props) => {
         to: detail.owner.ownerId,
         timestamp: timestamp.getTime(),
       }),
+    });
+
+    const m = {
+      type: "create",
+      message: "",
+      author: "test", // 내이름
+      to: detail.owner.ownerId,
+      // timestamp:
+      //   timestamp.getHours().toString().padStart(2, "0") +
+      //   ":" +
+      //   timestamp.getMinutes().toString().padStart(2, "0"),
+    };
+    console.log(m);
+    dispatch(insertMessage(m));
+
+    history.push({
+      pathname: "/chat",
+      state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
     });
   };
 
