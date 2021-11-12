@@ -19,6 +19,7 @@ const Category = ({ flag, category, getCategory }) => {
   
   const funcSetCategory = (category) => {
     setWriteCategory(category);
+    getCategory(category);
   }
 
   return (

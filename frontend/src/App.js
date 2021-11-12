@@ -66,7 +66,7 @@ function App() {
           url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllChats/" + "test",
         })
           .then((response) => {
-            console.log(response);
+            console.log(response.data);
             for (const key in response.data) {
               dispatch(
                 insertPartner({

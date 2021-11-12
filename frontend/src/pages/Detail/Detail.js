@@ -37,7 +37,7 @@ export const Detail = (props) => {
           },
         })
         .then((response) => {
-          // console.log(response.data);
+          console.log(response.data);
           setDetail(response.data.item);
           setUnavailableDate(response.data.unavailableDate);
           setLoading(false);
@@ -83,7 +83,18 @@ export const Detail = (props) => {
   }, []);
 
   const onSelectProduct = () => {
-    console.log("문의");
+    const timestamp = new Date();
+
+    props.client.current.publish({
+      destination: "/app/send",
+      body: JSON.stringify({
+        type: "create",
+        message: "",
+        author: "test", // 내이름
+        to: detail.owner.ownerId,
+        timestamp: timestamp.getTime(),
+      }),
+    });
   };
 
   const onLike = (e) => {
