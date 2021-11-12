@@ -1,10 +1,7 @@
 package com.ssafy.yam.domain.user.dto.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.validation.constraints.NotEmpty;
@@ -63,6 +60,7 @@ public class UserRequestDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @ToString
     public static class ChatInfoReqDto {
         private int userId;
         private int itemId;
