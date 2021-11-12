@@ -48,8 +48,15 @@ export const Detail = () => {
           }
         })
         .catch((error) => {
-          alert("상품 내역이 존재하지 않습니다.");
-          history.push("/");
+          Swal.fire({
+            title: 'Error!',
+            text: '상품 내역이 존재하지 않습니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          }).then((result) => {
+            history.push('/');
+          })
         });
     } else {
       axios
@@ -63,8 +70,15 @@ export const Detail = () => {
           // setLike(response.data.bookmark);
         })
         .catch((error) => {
-          alert("상품 내역이 존재하지 않습니다.");
-          history.push("/");
+          Swal.fire({
+            title: 'Error!',
+            text: '상품 내역이 존재하지 않습니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          }).then((result) => {
+            history.push('/');
+          })
         });
     }
   }, []);
@@ -82,11 +96,10 @@ export const Detail = () => {
   };
 
   const onLike = (e) => {
+    const token = JSON.parse(window.localStorage.getItem("token"));
     setLike(true);
-    console.log('onLike');
-    console.log(token);
     axios
-    .post(`/item/bookmark/${detail.itemId}`, {
+    .post(`/item/bookmark/${detail.itemId}`, {}, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -95,14 +108,19 @@ export const Detail = () => {
 
         })
         .catch((error) => {
-          alert("상품 내역이 존재하지 않습니다.");
+          Swal.fire({
+            title: 'Error!',
+            text: '관심 등록이 불가합니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          })
         });
   };
 
   const onUnLike = (e) => {
+    const token = JSON.parse(window.localStorage.getItem("token"));
     setLike(false);
-    console.log('onUnLike');
-    console.log(token);
     axios
     .delete(`/item/bookmark/${detail.itemId}`, {
       headers: {
@@ -113,7 +131,13 @@ export const Detail = () => {
 
         })
         .catch((error) => {
-          alert("상품 내역이 존재하지 않습니다.");
+          Swal.fire({
+            title: 'Error!',
+            text: '관심 등록 취소 불가합니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          })
         });
   };
 
