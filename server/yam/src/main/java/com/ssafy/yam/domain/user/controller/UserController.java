@@ -81,13 +81,13 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getWishList());
     }
 
-    @PostMapping("/get-info")
-    public ResponseEntity<?> getInfo(@RequestBody List<Integer> userIdList) {
-        return ResponseEntity.ok().body(userService.getInfo(userIdList));
-    }
-
     @GetMapping("/me")
     public ResponseEntity<?> getMe() {
         return ResponseEntity.ok().body(userService.getMe());
+    }
+
+    @PostMapping("/chat-info")
+    public ResponseEntity<?> getChatInfo(@RequestBody List<UserRequestDto.ChatInfoReqDto> requestList) {
+        return ResponseEntity.ok().body(userService.getChatInfo(requestList));
     }
 }
