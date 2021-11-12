@@ -162,9 +162,29 @@ public class UserResponseDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ChatUserInfoResDto {
+    public static class MeResDto {
+        private int userId;
+        private String userEmail;
+        private String userNickname;
+        private String userAddress;
+        private String userAreaCode;
+        private String userImageUrl;
+        private int userAuthLevel;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatInfoResDto {
         private int userId;
         private String userNickname;
-        private String userImage;
+        private String userImageUrl;
+        private int itemId;
+        private String itemName;
+        private List<String> itemImage = new ArrayList<>();
+        private int itemSellerId;
+        private String itemSellerNickname;
+        private String itemSellerImageUrl;
     }
 }

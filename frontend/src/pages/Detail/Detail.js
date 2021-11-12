@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import axios from "../../api/axios";
+import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
-
 import DetailCalendar from "./DetailCalendar";
+import React, { useState, useEffect } from "react";
+
 import "./Detail.css";
+import Slider from "react-slick";
+import { Swal } from "sweetalert2";
+import { Button } from "semantic-ui-react";
 import unlikeIcon from "../../assets/icons/wish.png";
 import likeIcon from "../../assets/icons/wish-on.png";
-import { useHistory } from "react-router";
-import { Button } from "semantic-ui-react";
-import axios from "../../api/axios";
-import Slider from "react-slick";
 
 export const Detail = () => {
   const history = useHistory();
@@ -25,22 +26,61 @@ export const Detail = () => {
     slidesToScroll: 1,
   };
 
+  const token = JSON.parse(window.localStorage.getItem("token"));
+
   useEffect(() => {
-    const token = JSON.parse(window.localStorage.getItem("token"));
-    axios
-      .get(`/item/${pNo}`, {
-      })
-      .then((response) => {
-        console.log(response.data);
-        setDetail(response.data.item);
-        setUnavailableDate(response.data.unavailableDate);
-        setLoading(false);
-        // setLike(response.data.bookmark);
-      })
-      .catch((error) => {
-        alert("상품 내역이 존재하지 않습니다.");
-        history.push("/");
-      });
+    if (token !== null) {
+      axios
+        .get(`/item/${pNo}`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          // console.log(response.data);
+          setDetail(response.data.item);
+          setUnavailableDate(response.data.unavailableDate);
+          setLoading(false);
+          if (response.data.item.bookmark === 'Y') {
+            setLike(true);
+          } else {
+            setLike(false);
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: '상품 내역이 존재하지 않습니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          }).then((result) => {
+            history.push('/');
+          })
+        });
+    } else {
+      axios
+        .get(`/item/${pNo}`, {
+        })
+        .then((response) => {
+          // console.log(response.data);
+          setDetail(response.data.item);
+          setUnavailableDate(response.data.unavailableDate);
+          setLoading(false);
+          // setLike(response.data.bookmark);
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: '상품 내역이 존재하지 않습니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          }).then((result) => {
+            history.push('/');
+          })
+        });
+    }
   }, []);
 
   const onSelectProduct = () => {
@@ -56,37 +96,49 @@ export const Detail = () => {
   };
 
   const onLike = (e) => {
-    setLike(true);
     const token = JSON.parse(window.localStorage.getItem("token"));
+    setLike(true);
     axios
-      .post(
-        `/bookmark/${detail.itemId}`,
-        {},
-        {
-          headers: {
-            Authentication: "Bearer " + token,
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((error) => {
-        alert("찜버튼을 다시 눌러 주세요.");
-      });
+    .post(`/item/bookmark/${detail.itemId}`, {}, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+      })
+        .then((response) => {
+
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: '관심 등록이 불가합니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          })
+        });
   };
 
   const onUnLike = (e) => {
-    setLike(false);
     const token = JSON.parse(window.localStorage.getItem("token"));
+    setLike(false);
     axios
-      .delete(`/bookmark/${detail.itemId}`, {
-        headers: {
-          Authentication: "Bearer " + token,
-        },
+    .delete(`/item/bookmark/${detail.itemId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
       })
-      .then((response) => {})
-      .catch((error) => {
-        alert("찜버튼을 다시 눌러 주세요.");
-      });
+        .then((response) => {
+
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: '관심 등록 취소 불가합니다.',
+            icon: 'error',
+            confirmButtonText: 'OK!',
+            confirmButtonColor: '#497c5f'
+          })
+        });
   };
 
   return (
@@ -113,24 +165,26 @@ export const Detail = () => {
               <div className="detail-user-name">{detail.owner.ownerNickName}</div>
               <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
-            <div className="detail-like">
-              {like ? (
-                <img
-                  src={likeIcon}
-                  alt="likeIcon"
-                  className="detail-like-icon"
-                  onClick={onUnLike}
-                />
-              ) : (
-                <img
-                  src={unlikeIcon}
-                  alt="likeIcon"
-                  className="detail-like-icon"
-                  onClick={onLike}
-                />
-              )}
-              <div>관심 등록</div>
-            </div>
+            {token ? 
+              <div className="detail-like">
+                {like ? (
+                  <img
+                    src={likeIcon}
+                    alt="likeIcon"
+                    className="detail-like-icon"
+                    onClick={onUnLike}
+                  />
+                ) : (
+                  <img
+                    src={unlikeIcon}
+                    alt="likeIcon"
+                    className="detail-like-icon"
+                    onClick={onLike}
+                  />
+                )}
+                <div>관심 등록</div>
+              </div> : null
+            }
           </div>
           <div className="detail-product-header">
             <div className="detail-product-name">{detail.itemName}</div>
