@@ -21,6 +21,7 @@ export const Detail = (props) => {
   const [loading, setLoading] = useState(true);
   const [like, setLike] = useState(false);
   const dispatch = useDispatch();
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
 
   const settings = {
     dots: true,
@@ -34,7 +35,7 @@ export const Detail = (props) => {
   useEffect(() => {
     if (token !== null) {
       console.log(4546465465465465);
-      console.log(token)
+      console.log(token);
       axios
         .get(`/item/${pNo}`, {
           headers: {
@@ -95,8 +96,9 @@ export const Detail = (props) => {
       body: JSON.stringify({
         type: "create",
         message: "",
-        author: "test", // 내이름
+        author: userId, // 내이름
         to: detail.owner.ownerId,
+        itemPk: pNo,
         timestamp: timestamp.getTime(),
       }),
     });
@@ -104,15 +106,17 @@ export const Detail = (props) => {
     const m = {
       type: "create",
       message: "",
-      author: "test", // 내이름
+      author: userId, // 내이름
       to: detail.owner.ownerId,
+      itemPk: pNo,
+      timestamp: timestamp.getTime(),
       // timestamp:
       //   timestamp.getHours().toString().padStart(2, "0") +
       //   ":" +
       //   timestamp.getMinutes().toString().padStart(2, "0"),
     };
     console.log(m);
-    dispatch(insertMessage(m));
+    // dispatch(insertMessage(m));
 
     history.push({
       pathname: "/chat",

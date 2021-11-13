@@ -39,9 +39,12 @@ import { insertPartner, receive } from "./redux/reducers/ConversationList";
 function App() {
   const client = useRef({});
   const dispatch = useDispatch();
-
+  const userId = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")).userId
+    : null;
+  const token = JSON.parse(localStorage.getItem("token"));
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("user")) {
       connect();
     }
 
@@ -63,18 +66,27 @@ function App() {
       heartbeatOutgoing: 4000,
       onConnect: () => {
         // 이전 데이터 불러오기
+        console.log(userId);
+        console.log(token);
         axios({
-          method: "get",
-          url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllChats/" + "test",
+          method: "post",
+          url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllChats",
+          data: {
+            userPk: userId,
+            token: token,
+          },
         })
           .then((response) => {
             console.log(response.data);
-            for (const key in response.data) {
+            console.log(response.data.conversation);
+            for (const key in response.data.conversation) {
+              console.log(key);
               dispatch(
                 insertPartner({
-                  photo: process.env.REACT_APP_USER_BASE_IMAGE,
-                  partner: response.data[key].partner,
-                  list: [...response.data[key].messageList],
+                  partner: response.data.conversation[key].partnerPk,
+                  partnerNickname: response.data.chatRoomInfo[key].userNickname,
+                  partnerImg: response.data.chatRoomInfo[key].userImageUrl,
+                  list: [...response.data.conversation[key].messageList],
                 })
               );
             }
@@ -96,7 +108,7 @@ function App() {
 
   const subscribe = () => {
     // 새롭게 들어오는 데이터는 이곳으로
-    client.current.subscribe(`/topic/test`, ({ body }) => {
+    client.current.subscribe(`/topic/` + userId, ({ body }) => {
       // console.log(JSON.parse(body));
       const m = JSON.parse(body);
       m.type = "message";

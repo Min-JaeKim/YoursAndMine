@@ -8,6 +8,7 @@ import { insertMessage } from "../../redux/reducers/ConversationList";
 function ChatInput(props) {
   const [msg, setMsg] = useState("");
   const dispatch = useDispatch();
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
 
   // const client = useRef({});
 
@@ -28,7 +29,7 @@ function ChatInput(props) {
       body: JSON.stringify({
         type: "send",
         message: msg,
-        author: author,
+        author: userId,
         to: to,
         timestamp: timestamp.getTime(),
       }),
@@ -36,7 +37,7 @@ function ChatInput(props) {
     const m = {
       type: "send",
       message: msg,
-      author: author,
+      author: userId,
       to: to,
       timestamp: timestamp.toLocaleString(),
       // timestamp:
