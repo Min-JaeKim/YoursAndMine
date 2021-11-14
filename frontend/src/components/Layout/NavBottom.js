@@ -62,8 +62,7 @@ const NavBottom = (props) => {
               <div>홈</div>
             </div>
           </Link>
-          {user?.userAddress ?
-          <>
+          
             <Link to="/chat">
               <div className="nav-bottom-items">
                 {props.location.pathname === "/chat" ? (
@@ -99,39 +98,7 @@ const NavBottom = (props) => {
                 <div className="nb-notification-dot"></div> {/* 새로운 알림 표시 */}
               </div>
             </Link>
-            </> : 
-            <>
-              <div className="nav-bottom-items" onClick={clickForAddressUser}>
-                {props.location.pathname === "/chat" ? (
-                  <img src={chatOn} alt="chatIconOn" className="nav-bottom-chatting" />
-                ) : (
-                  <img src={chat} alt="chatIcon" className="nav-bottom-chatting" />
-                )}
-                <div>채팅</div>
-              </div>
-              
-              <div className="nav-bottom-items" onClick={clickForAddressUser}>
-                {props.location.pathname === "/write" ? (
-                  <img src={plusOn} alt="homeIcon" className="nav-bottom-writing" />
-                  ) : (
-                    <img src={plus} alt="homeIcon" className="nav-bottom-writing" />
-                    )}
-                <div>글쓰기</div>
-              </div>
 
-              <div className="nb-notification-all" onClick={clickForAddressUser}>
-                <div className="nav-bottom-items">
-                  {props.location.pathname === "/notice" ? (
-                    <img src={notificationOn} alt="starIconOn" className="nav-bottom-like" />
-                  ) : (
-                    <img src={notification} alt="starIcon" className="nav-bottom-like" />
-                  )}
-                  <div>알림</div>
-                </div>
-                <div className="nb-notification-dot"></div> {/* 새로운 알림 표시 */}
-              </div>
-            </>
-        }
           {localStorage.getItem('token') ? (
             <Link to="/mypage">
               <div className="nav-bottom-items">
