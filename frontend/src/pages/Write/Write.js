@@ -1,6 +1,7 @@
 import axios from "../../api/axios";
-import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import React, { useState, useEffect } from "react";
 import Category from "../Category/Category";
 
 import "./Write.css";
@@ -8,13 +9,12 @@ import Swal from "sweetalert2";
 import { Input, Button, Form, TextArea, Grid } from "semantic-ui-react";
 
 const Write = () => {
+
+  let { user } = useSelector(({ user }) => ({
+    user: user.user
+  }));
+
   const userdata = JSON.parse(window.localStorage.getItem("user"));
-  let address = userdata ? userdata.userAddress : '서울시 강남구'
-  if (address !== '서울시 강남구') {
-    let addressArray = address.split(' ');
-    address = addressArray[0] + ' ' + addressArray[1] + ' ' + addressArray[2];
-    // console.log(address)
-  }
 
   const history = useHistory();
   const [itemname, setItemName] = useState('')
@@ -104,7 +104,6 @@ const Write = () => {
           },
         })
         .then((response) => {
-          console.log(4654664864)
           history.push('/myproduct');
         })
         .catch((error) => {
@@ -134,6 +133,20 @@ const Write = () => {
     }
     reader.readAsDataURL(file);
   }
+
+  useEffect(() => {
+    if (!user?.userAddress) {
+      Swal.fire({
+        title: 'Error!',
+        text: '주소 지정을 해주셔야 합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      }).then(()=>{
+        history.push('/searchplace');
+      })
+    }
+  }, [])
 
 
   return (
