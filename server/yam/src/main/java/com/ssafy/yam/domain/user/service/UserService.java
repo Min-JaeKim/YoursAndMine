@@ -375,6 +375,21 @@ public class UserService {
         return giveItemList;
     }
 
+    public String switchItemActive(int itemId) {
+        String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        User user = userRepository.findByUserEmail(tokenEmail)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        Item item = itemRepository.findItemByItemId(itemId);
+        String status = item.getItemIsActive();
+        status = status.equals("Y") ? "N" : "Y";
+        String result = status.equals("Y") ? "활성화" : "비활성화";
+        item.setItemIsActive(status);
+        itemRepository.save(item);
+
+        return String.format("%d번 아이템이 %s 되었습니다.", itemId, result);
+    }
+
     public List<UserResponseDto.GetTakeItemResDto> getTakeItem() {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         User user = userRepository.findByUserEmail(tokenEmail)
