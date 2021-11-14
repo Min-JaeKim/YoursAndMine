@@ -14,7 +14,8 @@ import java.util.Date;
 public class MessageModel {
     private String type;
     private String message;
-    private String author;
-    private String to;
+    private String author;  //보내는사람 pk
+    private String to;      //받는사람 pk
+    private String itemPk;  //아이템 pk
     private Date timestamp;
 }

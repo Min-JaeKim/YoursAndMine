@@ -1,28 +1,38 @@
 package com.ssafy.yam.controller;
 
+import com.ssafy.yam.model.ChatInfoDto;
 import com.ssafy.yam.model.Conversation;
 import com.ssafy.yam.model.MessageModel;
+import com.ssafy.yam.model.UserInfoRequest;
+import com.ssafy.yam.service.ChatService;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ChatController {
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+
     private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+
+    @Autowired
+    private ChatService chatService;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -39,7 +49,7 @@ public class ChatController {
             con.getMessageList().add(msg);
             ho.put(msg.getAuthor(),msg.getTo(),con);
         } else { // 상대방 데이터가 없을때
-            Conversation newCon = new Conversation(msg.getTo(), new ArrayList<>());
+            Conversation newCon = new Conversation(msg.getTo(), msg.getItemPk(), new ArrayList<>());
             newCon.getMessageList().add(msg);
             ho.put(msg.getAuthor(),msg.getTo(),newCon);
         }
@@ -48,19 +58,24 @@ public class ChatController {
             con.getMessageList().add(msg);
             ho.put(msg.getTo(), msg.getAuthor(),con);
         } else { // 상대방에게 대화 데이터가 없을때
-            Conversation newCon = new Conversation(msg.getAuthor(), new ArrayList<>());
+            Conversation newCon = new Conversation(msg.getAuthor(), msg.getItemPk(), new ArrayList<>());
             newCon.getMessageList().add(msg);
             ho.put(msg.getTo(), msg.getAuthor(),newCon);
         }
         simpMessagingTemplate.convertAndSend("/topic/"+msg.getTo() , msg);
     }
 
-    @GetMapping("/fetchAllChats/{userName}")
-    public ResponseEntity<Collection<Conversation>> fetchAll(@PathVariable String userName){
+    @GetMapping("/fetchAllChats")
+    public ResponseEntity<?> fetchAll(@RequestBody UserInfoRequest userInfoRequest){
+        logger.info("user info : " + userInfoRequest.toString());
+        String userPk = userInfoRequest.getUserPk();
+        String token = userInfoRequest.getToken();
+
         HashOperations<String, String, Conversation> hashOperations = conversationTemplate.opsForHash();
-        logger.info("user name: {}", userName);
-        Map<String, Conversation> mapper = hashOperations.entries(userName);
+        Map<String, Conversation> mapper = hashOperations.entries(userPk);
         Collection<Conversation> res = mapper.values();
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        Map<String, Object> chatInfo = chatService.getChatInfo(res, token);
+
+        return new ResponseEntity<>(chatInfo, HttpStatus.OK);
     }
 }
