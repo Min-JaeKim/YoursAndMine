@@ -43,11 +43,11 @@ public class DealCRUDService {
             return 1;
         }
 
-        List<Deal> dealList = dealRepository.findAllByItem_ItemId(item.getItemId());
-        for(Deal deal : dealList){
-            if(deal.getDealStatus().equals("대여중"))
-                return 1;
-        }
+//        List<Deal> dealList = dealRepository.findAllByItem_ItemId(item.getItemId());
+//        for(Deal deal : dealList){
+//            if(deal.getDealStatus().equals("대여중"))
+//                return 1;
+//        }
 
         // 대여가능한 날짜인지 검사
         LocalDate start = dealRequest.getDealStartDate();
