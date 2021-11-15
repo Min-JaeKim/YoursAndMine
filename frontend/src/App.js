@@ -67,8 +67,6 @@ function App() {
       heartbeatOutgoing: 4000,
       onConnect: () => {
         // 이전 데이터 불러오기
-        console.log(userId);
-        console.log(token);
         axios({
           method: "post",
           url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllChats",
@@ -79,7 +77,6 @@ function App() {
         })
           .then((response) => {
             console.log(response.data);
-            console.log(response.data.conversation);
             for (const key in response.data.conversation) {
               console.log(key);
               dispatch(
