@@ -334,6 +334,7 @@ public class UserService {
                     tmpTake.setItemName(tmpItem.getItemName());
                     tmpTake.setItemBuyerNickname(userRepository.findByUserId(dealList.get(i).getBuyer().getUserId()).get().getUserNickname());
                     tmpTake.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmpItem.getItemId()));
+                    tmpTake.setDealId(dealList.get(i).getDealId());
                     tmpTake.setDealStartDate(dealList.get(i).getDealStartDate());
                     tmpTake.setDealEndDate(dealList.get(i).getDealEndDate());
                     takeList.add(tmpTake);
