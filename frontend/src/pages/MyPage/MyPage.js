@@ -17,7 +17,7 @@ import authLevel1 from "../../assets/icons/auth-level1.png";
 import authLevel2 from "../../assets/icons/auth-level2.png";
 import authLevel3 from "../../assets/icons/auth-level3.png";
 
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const MyPage = () => {
   const history = useHistory();
@@ -26,15 +26,15 @@ const MyPage = () => {
   const [user, setUser] = useState({});
   const btn = useRef();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const token = JSON.parse(window.localStorage.getItem("token"));
 
     axios
-    .get(`user/mypage/`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
+      .get(`user/mypage/`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       })
       .then((response) => {
         setUser(response.data);
@@ -42,34 +42,38 @@ const MyPage = () => {
       })
       .catch((error) => {
         Swal.fire({
-          title: 'Error!',
-          text: '다시 로그인해 주세요',
-          icon: 'error',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
+          title: "Error!",
+          text: "다시 로그인해 주세요",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
         }).then((result) => {
-          history.push('/signin');
-        })
+          history.push("/signin");
+        });
       });
-    }, []);
-    
+  }, []);
+
   const logout = () => {
     dispatch(allActions.userActions.logoutUser());
     Swal.fire({
-      title: 'Log out!',
-      text: '로그아웃되었습니다.',
-      icon: 'success',
-      confirmButtonText: 'OK!',
-      confirmButtonColor: '#497c5f'
+      title: "Log out!",
+      text: "로그아웃되었습니다.",
+      icon: "success",
+      confirmButtonText: "OK!",
+      confirmButtonColor: "#497c5f",
     }).then((result) => {
-      history.push('/');
-    })
+      history.push("/");
+    });
   };
 
   return (
     <div className="mypage">
       <div className="mypage-profile">
-        <img src={user.userImage} alt="profile-img" className="mypage-user-icon" />
+        {user.userImage ? (
+          <img src={user.userImage} alt="profile-img" className="mypage-user-icon" />
+        ) : (
+          <img src={profile} alt="profile-img" className="mypage-user-icon" />
+        )}
         <div className="mypage-profile-desc">
           <h4>{user.userNickname} 님 안녕하세요!</h4>
           <span>{user.userAddress}</span>
@@ -85,11 +89,11 @@ const MyPage = () => {
         </div>
         {user.userAuthLevel === 1 ? (
           <img alt="auth-level1" src={authLevel1}></img>
-          ) : (user.userAuthLevel === 2 ? (
-            <img alt="auth-level1" src={authLevel2}></img>
-            ) : (
+        ) : user.userAuthLevel === 2 ? (
+          <img alt="auth-level1" src={authLevel2}></img>
+        ) : (
           <img alt="auth-level1" src={authLevel3}></img>
-        ))}
+        )}
       </div>
 
       <div className="mypage-user-info">
@@ -116,7 +120,7 @@ const MyPage = () => {
 
         <Link to="/myschedule">
           <div className="user-calendar">
-          <FontAwesomeIcon icon={faCalendarAlt} size="2x" style={{ color: "#7d7d7d"}}/>
+            <FontAwesomeIcon icon={faCalendarAlt} size="2x" style={{ color: "#7d7d7d" }} />
             <p>나의 일정</p>
           </div>
         </Link>

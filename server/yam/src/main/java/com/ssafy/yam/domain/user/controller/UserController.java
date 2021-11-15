@@ -61,6 +61,11 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getGiveItem());
     }
 
+    @PutMapping("item/give/switch/{itemId}")
+    public ResponseEntity<?> switchItemActive(@PathVariable int itemId) {
+        return ResponseEntity.ok().body(userService.switchItemActive(itemId));
+    }
+
     @GetMapping("/item/take")
     public ResponseEntity<?> getTakeItem() {
         return ResponseEntity.ok().body(userService.getTakeItem());
