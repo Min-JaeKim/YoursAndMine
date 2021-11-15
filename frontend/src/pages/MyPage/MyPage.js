@@ -31,7 +31,7 @@ const MyPage = () => {
     const token = JSON.parse(window.localStorage.getItem("token"));
 
     axios
-      .get(`user/mypage/`, {
+      .get(`user/me`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -98,21 +98,21 @@ const MyPage = () => {
 
       <div className="mypage-user-info">
         <Link to="/myproduct">
-          <div className="user-info">
+          <div className="mp-user-info-icon">
             <img src={product} width="30px" alt="eth" />
             <p>등록한 제품</p>
           </div>
         </Link>
 
         <Link to="/tradelog">
-          <div className="user-info">
+          <div className="mp-user-info-icon">
             <img src={productlist} width="30px" alt="eth" />
             <p>대여내역</p>
           </div>
         </Link>
 
         <Link to="/wish">
-          <div className="user-info">
+          <div className="mp-user-info-icon">
             <img src={star} width="30px" alt="eth" />
             <p>찜</p>
           </div>

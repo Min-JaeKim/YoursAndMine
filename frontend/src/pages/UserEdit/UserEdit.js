@@ -20,7 +20,7 @@ const UserEdit = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/mypage`, {
+      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/me`, {
         headers: {
           Authentication: "Bearer " + token,
         },

@@ -48,7 +48,7 @@
   margin: 40px 0 20px 0;
 }
 
-.user-info p {
+.mp-user-info-icon p {
   margin: 5px 0;
   font-weight: 500;
 }
@@ -57,7 +57,7 @@
   margin: 20% 0;
   font-weight: 500;
 }
-.user-info span {
+.mp-user-info-icon span {
   color: #497c5f;
 }
 

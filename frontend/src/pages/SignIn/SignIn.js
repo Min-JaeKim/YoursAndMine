@@ -29,7 +29,6 @@ const SignIn = ({ history }) => {
         window.localStorage.setItem("token", JSON.stringify(token));
         axios
           .get(`/user/me`, {
-            // .get(`/user/mypage`, {
             headers: {
               Authorization: "Bearer " + token,
             },
