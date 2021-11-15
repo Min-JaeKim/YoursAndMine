@@ -3,6 +3,8 @@ import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import DetailCalendar from "./DetailCalendar";
 import React, { useState, useEffect } from "react";
+import { insertMessage } from "../../redux/reducers/ConversationList";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./Detail.css";
 import Slider from "react-slick";
@@ -11,13 +13,15 @@ import { Button } from "semantic-ui-react";
 import unlikeIcon from "../../assets/icons/wish.png";
 import likeIcon from "../../assets/icons/wish-on.png";
 
-export const Detail = () => {
+export const Detail = (props) => {
   const history = useHistory();
   const { pNo } = useParams();
   const [detail, setDetail] = useState({});
   const [unavailableDate, setUnavailableDate] = useState([]);
   const [loading, setLoading] = useState(true);
   const [like, setLike] = useState(false);
+  const dispatch = useDispatch();
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
 
   const settings = {
     dots: true,
@@ -40,7 +44,7 @@ export const Detail = () => {
           setDetail(response.data.item);
           setUnavailableDate(response.data.unavailableDate);
           setLoading(false);
-          if (response.data.item.bookmark === 'Y') {
+          if (response.data.item.bookmark === "Y") {
             setLike(true);
           } else {
             setLike(false);
@@ -48,19 +52,18 @@ export const Detail = () => {
         })
         .catch((error) => {
           Swal.fire({
-            title: 'Error!',
-            text: '상품 내역이 존재하지 않습니다.',
-            icon: 'error',
-            confirmButtonText: 'OK!',
-            confirmButtonColor: '#497c5f'
+            title: "Error!",
+            text: "상품 내역이 존재하지 않습니다.",
+            icon: "error",
+            confirmButtonText: "OK!",
+            confirmButtonColor: "#497c5f",
           }).then((result) => {
-            history.push('/');
-          })
+            history.push("/");
+          });
         });
     } else {
       axios
-        .get(`/item/${pNo}`, {
-        })
+        .get(`/item/${pNo}`, {})
         .then((response) => {
           // console.log(response.data);
           setDetail(response.data.item);
@@ -70,27 +73,51 @@ export const Detail = () => {
         })
         .catch((error) => {
           Swal.fire({
-            title: 'Error!',
-            text: '상품 내역이 존재하지 않습니다.',
-            icon: 'error',
-            confirmButtonText: 'OK!',
-            confirmButtonColor: '#497c5f'
+            title: "Error!",
+            text: "상품 내역이 존재하지 않습니다.",
+            icon: "error",
+            confirmButtonText: "OK!",
+            confirmButtonColor: "#497c5f",
           }).then((result) => {
-            history.push('/');
-          })
+            history.push("/");
+          });
         });
     }
   }, []);
 
   const onSelectProduct = () => {
+    const timestamp = new Date();
+    console.log(detail.owner.ownerId);
+    props.client.current.publish({
+      destination: "/app/send",
+      body: JSON.stringify({
+        type: "create",
+        message: "",
+        author: userId, // 내이름
+        to: detail.owner.ownerId,
+        itemPk: pNo,
+        timestamp: timestamp.getTime(),
+      }),
+    });
+
+    const m = {
+      type: "create",
+      message: "",
+      author: userId, // 내이름
+      to: detail.owner.ownerId,
+      itemPk: pNo,
+      timestamp: timestamp.getTime(),
+      // timestamp:
+      //   timestamp.getHours().toString().padStart(2, "0") +
+      //   ":" +
+      //   timestamp.getMinutes().toString().padStart(2, "0"),
+    };
+    console.log(m);
+    // dispatch(insertMessage(m));
+
     history.push({
-      pathname: "/rent",
-      state: {
-        itemId: detail.itemId,
-        ownerWallet: detail.owner.wallet,
-        ownerId: detail.owner.uid,
-        price: detail.price,
-      },
+      pathname: "/chat",
+      state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
     });
   };
 
@@ -105,15 +132,15 @@ export const Detail = () => {
     .then((response) => {
         setLike(true);
       })
-        .catch((error) => {
-          Swal.fire({
-            title: 'Error!',
-            text: '관심 등록이 불가합니다.',
-            icon: 'error',
-            confirmButtonText: 'OK!',
-            confirmButtonColor: '#497c5f'
-          })
-        });
+    .catch((error) => {
+      Swal.fire({
+        title: 'Error!',
+        text: '관심 등록이 불가합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
+    });
   };
 
   const onUnLike = (e) => {
@@ -127,21 +154,21 @@ export const Detail = () => {
     .then((response) => {
       setLike(false);      
       })
-        .catch((error) => {
-          Swal.fire({
-            title: 'Error!',
-            text: '관심 등록 취소 불가합니다.',
-            icon: 'error',
-            confirmButtonText: 'OK!',
-            confirmButtonColor: '#497c5f'
-          })
-        });
+    .catch((error) => {
+      Swal.fire({
+        title: 'Error!',
+        text: '관심 등록 취소 불가합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
+    });
   };
 
   return (
     <div>
       {loading ? (
-        <>loading...</>
+        <div className="product-loader">loading...</div>
       ) : (
         <>
           {/* <Button style={{ backgroundColor: "#497C5F", color: "white" }} className="detail-mayment" onClick={onSelectProduct}>
@@ -162,7 +189,7 @@ export const Detail = () => {
               <div className="detail-user-name">{detail.owner.ownerNickName}</div>
               <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
-            {token ? 
+            {token ? (
               <div className="detail-like">
                 {like ? (
                   <img
@@ -180,8 +207,8 @@ export const Detail = () => {
                   />
                 )}
                 <div>관심 등록</div>
-              </div> : null
-            }
+              </div>
+            ) : null}
           </div>
           <div className="detail-product-header">
             <div className="detail-product-name">{detail.itemName}</div>
@@ -219,7 +246,7 @@ export const Detail = () => {
               <div>
                 <div>
                   <div className="detail-product-detail">
-                    <DetailCalendar unavailableDate={unavailableDate}/>
+                    <DetailCalendar unavailableDate={unavailableDate} />
                   </div>
                 </div>
               </div>

@@ -1,3 +1,74 @@
+.chat-room {
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+
+  /* animation: slide-up 0.3s linear both; */
+}
+
+.chat-header-text {
+  font-size: small;
+  font-weight: 300;
+}
+/* 
+@keyframes slide-up {
+  from {
+    top: 100%;
+  }
+
+  to {
+    top: 0%;
+  }
+} */
+
+.chat-header-content {
+  display: flex;
+  align-items: center;
+  position: relative;
+  top: 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.chat-header {
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  width: 100%;
+  max-width: 418px;
+  max-height: 65px;
+  height: 65px;
+  border-bottom: 1px solid rgba(225, 225, 225, 1);
+
+  background-color: #ffffff;
+}
+
+.content-time-box {
+  display: flex;
+}
+
+.input-bottom {
+  /* position: absolute; */
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  /* bottom: 77px;
+   */
+  width: 100%;
+  max-width: 418px;
+  height: 77px;
+  border-top: 1px solid rgba(225, 225, 225, 1);
+  border-bottom: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .send-img-btn {
   border: transparent;
   background-color: transparent;
@@ -92,9 +163,9 @@
 }
 
 .reserve-btn {
-  position: absolute;
-  bottom: 11%;
-  left: 4%;
+  position: sticky;
+  bottom: 1%;
+  margin-left: 10px;
 }
 
 .reserve-btn img {
@@ -103,10 +174,10 @@
 }
 
 .calendar-modal-background {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  width: 100%;
+  position: fixed;
+  bottom: 0;
+  width: 420px;
+  max-width: 420px;
   height: 100%;
   background-color: #c4c4c47e;
 

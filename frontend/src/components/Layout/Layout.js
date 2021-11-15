@@ -23,8 +23,8 @@ const Layout = (props) => {
         </section>
         <NavBottom location={props.location} />
         {/* <FloatButton location={props.location} /> */}
-        <ReserveButton setOpenReserve={setIsOpenReserve} location={props.location} />
-        <CalendarModal setOpenReserve={setIsOpenReserve} isOpen={isOpenReserve} />
+        {/* <ReserveButton setOpenReserve={setIsOpenReserve} location={props.location} /> */}
+        {/* <CalendarModal setOpenReserve={setIsOpenReserve} isOpen={isOpenReserve} /> */}
       </div>
       <Side />
     </div>

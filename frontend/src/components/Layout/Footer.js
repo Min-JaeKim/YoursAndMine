@@ -7,7 +7,9 @@ const Footer = (props) => {
     // 채팅방 입장 시 Footer 제거
     const url = props.location.pathname.split("/");
     if (url.length >= 2 && url[1] === "chat") {
-      setPathname(url[2]);
+      setPathname(url[1]);
+    } else {
+      setPathname();
     }
   }, [props.location.pathname]);
   return (

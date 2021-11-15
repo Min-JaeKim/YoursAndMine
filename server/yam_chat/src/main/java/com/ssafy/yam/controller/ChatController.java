@@ -5,7 +5,7 @@ import com.ssafy.yam.model.Conversation;
 import com.ssafy.yam.model.MessageModel;
 import com.ssafy.yam.model.UserInfoRequest;
 import com.ssafy.yam.service.ChatService;
-import jdk.nashorn.internal.parser.JSONParser;
+//import jdk.nashorn.internal.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -65,9 +66,9 @@ public class ChatController {
         simpMessagingTemplate.convertAndSend("/topic/"+msg.getTo() , msg);
     }
 
-    @GetMapping("/fetchAllChats")
+    @PostMapping("/fetchAllChats")
     public ResponseEntity<?> fetchAll(@RequestBody UserInfoRequest userInfoRequest){
-        logger.info("user info : " + userInfoRequest.toString());
+        logger.info("user info : " + userInfoRequest.getToken());
         String userPk = userInfoRequest.getUserPk();
         String token = userInfoRequest.getToken();
 

@@ -52,13 +52,18 @@ public class UserController {
     }
 
     @GetMapping("/day-schedule/{userDate}")
-    public ResponseEntity<?> getSchedule(@PathVariable String userDate) {
+    public ResponseEntity<?> getDaySchedule(@PathVariable String userDate) {
         return ResponseEntity.ok().body(userService.getDaySchedule(userDate));
     }
 
     @GetMapping("/item/give")
     public ResponseEntity<?> getGiveItem() {
         return ResponseEntity.ok().body(userService.getGiveItem());
+    }
+
+    @PutMapping("item/give/switch/{itemId}")
+    public ResponseEntity<?> switchItemActive(@PathVariable int itemId) {
+        return ResponseEntity.ok().body(userService.switchItemActive(itemId));
     }
 
     @GetMapping("/item/take")
