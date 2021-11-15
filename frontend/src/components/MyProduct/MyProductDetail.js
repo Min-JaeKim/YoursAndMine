@@ -1,18 +1,42 @@
 import React from 'react'
 import moment from 'moment';
+import axios from '../../api/axios';
 import { useSelector } from 'react-redux';
 
 import './MyProduct.css'
 import { Button } from "semantic-ui-react";
 import tmpPic from '../../assets/icons/borrow.png'
+import axiosInstance from '../../api/axios';
 
 const MyProductDetail = (props) => {
 	const data = props.data;
+	console.log(data);
 	const flag = props.flag;
 
 	let { selectDate } = useSelector(({ schedule }) => ({
 		selectDate: schedule.selectDate
   }));
+
+	const cancelRent = () => {
+		const token = JSON.parse(window.localStorage.getItem("token"));
+		// axios
+    //     .delete(`api/deal/${dealId}`, {
+    //       headers: {
+    //         Authorization: "Bearer " + token,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       // setNearProduct(response.data);
+    //       // if (response.data.length >= 3) {
+    //       //   setNearProdcutCount(3);
+    //       // } else {
+    //       //   setNearProdcutCount(response.data.length);
+    //       // }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+	}
 
 	return (
 		<div className="mpd-card">
@@ -40,7 +64,7 @@ const MyProductDetail = (props) => {
 						)}
 					</div>
 					{moment().format('YYYY-MM-DD') < data.dealStartDate && flag === false ?
-						<Button className="mpd-rent-button">
+						<Button className="mpd-rent-button" onClick={cancelRent}>
 							예약 취소
 						</Button> :
 						<div className="mpd-rent-button"></div>

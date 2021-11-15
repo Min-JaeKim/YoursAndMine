@@ -56,7 +56,7 @@ function App() {
             <PrivateRouter path="/tradelog" component={TradeLog} exact />
             <PrivateRouter path="/myproduct" component={MyProduct} exact />
             {/* <PrivateRouter path="/charge" component={Charge} exact /> */}
-            {/* <PrivateRouter path="/wish" component={Wish} exact /> */}
+            <PrivateRouter path="/wish" component={Wish} exact />
             <PrivateRouter path="/notice" component={Notice} exact />
             <PrivateRouter path="/product" component={Product} exact />
             <PrivateRouter path="/write" component={Write} exact />

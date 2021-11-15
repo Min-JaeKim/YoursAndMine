@@ -30,8 +30,6 @@ export const Detail = () => {
 
   useEffect(() => {
     if (token !== null) {
-      console.log(4546465465465465);
-      console.log(token)
       axios
         .get(`/item/${pNo}`, {
           headers: {
@@ -39,7 +37,6 @@ export const Detail = () => {
           },
         })
         .then((response) => {
-          console.log(response.data);
           setDetail(response.data.item);
           setUnavailableDate(response.data.unavailableDate);
           setLoading(false);
@@ -99,16 +96,15 @@ export const Detail = () => {
 
   const onLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    setLike(true);
     axios
     .post(`/item/bookmark/${detail.itemId}`, {}, {
       headers: {
         Authorization: "Bearer " + token,
       },
+    })
+    .then((response) => {
+        setLike(true);
       })
-        .then((response) => {
-
-        })
         .catch((error) => {
           Swal.fire({
             title: 'Error!',
@@ -122,16 +118,15 @@ export const Detail = () => {
 
   const onUnLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    setLike(false);
     axios
     .delete(`/item/bookmark/${detail.itemId}`, {
       headers: {
         Authorization: "Bearer " + token,
       },
+    })
+    .then((response) => {
+      setLike(false);      
       })
-        .then((response) => {
-
-        })
         .catch((error) => {
           Swal.fire({
             title: 'Error!',

@@ -64,6 +64,7 @@ const MyProduct = (props) => {
 				},
 				})
 				.then((response) => {
+					console.log(response);
 					setGiveProducts(response.data.반납일정);
 					setGetProducts(response.data.회수일정);
 					if (flag) {

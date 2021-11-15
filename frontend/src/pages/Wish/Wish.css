@@ -14,11 +14,13 @@
   margin: 20px;
   height: 100px;
   margin-bottom: 15%;
+  cursor: pointer;
 }
 .wish-item-vertical {
   width: fit-content;
   margin-bottom: auto;
   padding-top: 2%;
+  cursor: pointer;
 }
 .wish-item-title {
   font-size: large;
