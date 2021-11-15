@@ -4,38 +4,40 @@ import axios from '../../api/axios';
 import { useSelector } from 'react-redux';
 
 import './MyProduct.css'
+import Swal from 'sweetalert2';
 import { Button } from "semantic-ui-react";
 import tmpPic from '../../assets/icons/borrow.png'
-import axiosInstance from '../../api/axios';
 
 const MyProductDetail = (props) => {
+	console.log(props.data);
 	const data = props.data;
-	console.log(data);
 	const flag = props.flag;
 
 	let { selectDate } = useSelector(({ schedule }) => ({
 		selectDate: schedule.selectDate
   }));
 
-	const cancelRent = () => {
+	const CancelRent = () => {
 		const token = JSON.parse(window.localStorage.getItem("token"));
-		// axios
-    //     .delete(`api/deal/${dealId}`, {
-    //       headers: {
-    //         Authorization: "Bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       // setNearProduct(response.data);
-    //       // if (response.data.length >= 3) {
-    //       //   setNearProdcutCount(3);
-    //       // } else {
-    //       //   setNearProdcutCount(response.data.length);
-    //       // }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
+		axios
+        .delete(`/deal/${data.dealId}`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+					props.cancelRentFlag(true);
+					Swal.fire({
+						title: "Cancel!",
+						text: "예약 취소가 되었습니다.",
+						icon: "success",
+						confirmButtonText: "OK!",
+						confirmButtonColor: "#497c5f",
+					})
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 	}
 
 	return (
@@ -64,7 +66,7 @@ const MyProductDetail = (props) => {
 						)}
 					</div>
 					{moment().format('YYYY-MM-DD') < data.dealStartDate && flag === false ?
-						<Button className="mpd-rent-button" onClick={cancelRent}>
+						<Button className="mpd-rent-button" onClick={CancelRent}>
 							예약 취소
 						</Button> :
 						<div className="mpd-rent-button"></div>
