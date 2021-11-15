@@ -169,7 +169,7 @@ public class UserResponseDto {
         private String userNickname;
         private String userAddress;
         private String userAreaCode;
-        private String userImageUrl;
+        private String userImage;
         private int userAuthLevel;
     }
 
