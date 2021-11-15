@@ -16,6 +16,7 @@
   width: 100px;
   border-radius: 30%;
   margin-right: 30px;
+  object-fit: cover;
 }
 .mypage-profile-desc h4 {
   color: #424242;

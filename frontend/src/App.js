@@ -8,6 +8,7 @@ import SearchPlace from "./pages/Location/SearchPlace";
 import SearchItem from "./pages/SearchItem/SearchItem";
 import PrivateRouter from "./router/PrivateRouter";
 import PublicRouter from "./router/PublicRouter";
+import NotFound from "./pages/Error/NotFound";
 
 import MyPage from "./pages/MyPage/MyPage";
 import Write from "./pages/Write/Write";
@@ -86,6 +87,13 @@ function App() {
                   partner: response.data.conversation[key].partnerPk,
                   partnerNickname: response.data.chatRoomInfo[key].userNickname,
                   partnerImg: response.data.chatRoomInfo[key].userImageUrl,
+                  itemName: response.data.chatRoomInfo[key].itemName,
+                  itemPk: response.data.chatRoomInfo[key].itemId,
+                  itemImg: response.data.chatRoomInfo[key].itemImage[0],
+                  lastMsg:
+                    response.data.conversation[key].messageList[
+                      response.data.conversation[key].messageList.length - 1
+                    ],
                   list: [...response.data.conversation[key].messageList],
                 })
               );
@@ -146,7 +154,6 @@ function App() {
             <PrivateRouter path="/rentuser/:pNo" component={RentUserList} exact />
             <PrivateRouter path="/tradedetail/:cNo" component={TradeDetail} exact />
             <PrivateRouter path="/myschedule" component={MySchedule} exact />
-
             <PrivateRouter path="/test" component={Test} exact />
           </Layout>
         </Switch>

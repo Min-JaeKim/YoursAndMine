@@ -173,7 +173,7 @@ export const Detail = (props) => {
   return (
     <div>
       {loading ? (
-        <>loading...</>
+        <div className="product-loader">loading...</div>
       ) : (
         <>
           {/* <Button style={{ backgroundColor: "#497C5F", color: "white" }} className="detail-mayment" onClick={onSelectProduct}>

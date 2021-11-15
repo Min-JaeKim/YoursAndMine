@@ -6,6 +6,11 @@
 
   /* animation: slide-up 0.3s linear both; */
 }
+
+.chat-header-text {
+  font-size: small;
+  font-weight: 300;
+}
 /* 
 @keyframes slide-up {
   from {
@@ -158,9 +163,9 @@
 }
 
 .reserve-btn {
-  position: absolute;
-  bottom: 11%;
-  left: 4%;
+  position: sticky;
+  bottom: 1%;
+  margin-left: 10px;
 }
 
 .reserve-btn img {
@@ -169,10 +174,10 @@
 }
 
 .calendar-modal-background {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  width: 100%;
+  position: fixed;
+  bottom: 0;
+  width: 420px;
+  max-width: 420px;
   height: 100%;
   background-color: #c4c4c47e;
 

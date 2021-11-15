@@ -15,21 +15,32 @@ const ConversationList = (state = initialState, action) => {
     case NEWPARTNER:
       state[action.payload.partner] = {
         name: action.payload.partnerNickname,
-        img: action.payload.partnerImg,
+        itemPk: action.payload.itemPk,
+        userImg: action.payload.partnerImg,
+        itemImg: action.payload.itemImg,
+        itemName: action.payload.itemName,
+        lastMsg: action.payload.lastMsg.message,
+        timestamp: action.payload.lastMsg.timestamp,
         list: [...action.payload.list],
       };
       // state[action.payload.partner] = [...action.payload.list];
       return { ...state };
     case NEWMESSAGE:
       // console.log(action.payload);
-      state[action.payload.to] = [...state[action.payload.to], action.payload];
+      // state[action.payload.to] = [...state[action.payload.to], action.payload];
+      state[action.payload.to].list = [...state[action.payload.to].list, action.payload];
+      state[action.payload.to].lastMsg = action.payload.message;
+      state[action.payload.to].timestamp = action.payload.timestamp;
       return { ...state };
     case RECEIVED:
       if (state[action.payload.author] === undefined) {
-        state[action.payload.author] = [action.payload];
+        state[action.payload.author].list = [action.payload];
       } else {
-        state[action.payload.author] = [...state[action.payload.author], action.payload];
+        state[action.payload.author].list = [...state[action.payload.author].list, action.payload];
       }
+      state[action.payload.author].timestamp = action.payload.timestamp;
+      state[action.payload.author].lastMsg = action.payload.message;
+
       return { ...state };
     case LEAVECHAT:
       delete state[action.payload];

@@ -66,40 +66,38 @@ const MyProduct = (props) => {
 
   return (
     <div>
-      {loading ? (
-        <>loading...</>
-      ) : (
-        <>
-          {product.map((item, idx) => {
-            return (
-              <div className="wish-item-list" key={idx}>
-                <img
-                  src={item.image == null ? noImage : item.image}
-                  className="wish-item-icon"
-                  alt="profile"
-                ></img>
-                <div className="wish-item-vertical">
-                  <div className="wish-item-title">
-                    <Link to={`/rentuser/${item.itemId}`}>{item.itemname}</Link>
-                  </div>
-                  <span>{item.position}</span>
-                  <div className="wish-item-price">{item.price} BLI</div>
+      <>
+        {/* {loading ? <div className="product-loader">loading...</div> : null} */}
+        {product.map((item, idx) => {
+          return (
+            <div className="wish-item-list" key={idx}>
+              <img
+                src={item.image == null ? noImage : item.image}
+                className="wish-item-icon"
+                alt="profile"
+              ></img>
+              <div className="wish-item-vertical">
+                <div className="wish-item-title">
+                  <Link to={`/rentuser/${item.itemId}`}>{item.itemname}</Link>
                 </div>
-                <div>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      onClick={() => isActive(idx)}
-                      checked={radioGroups[item.itemId]}
-                    />
-                    <span className="slider round"></span>
-                  </label>
-                </div>
+                <span>{item.position}</span>
+                <div className="wish-item-price">{item.price} BLI</div>
               </div>
-            );
-          })}
-        </>
-      )}
+              <div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    onClick={() => isActive(idx)}
+                    checked={radioGroups[item.itemId]}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+            </div>
+          );
+        })}
+      </>
+      )
     </div>
   );
 };

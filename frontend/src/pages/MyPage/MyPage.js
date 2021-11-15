@@ -69,7 +69,11 @@ const MyPage = () => {
   return (
     <div className="mypage">
       <div className="mypage-profile">
-        <img src={user.userImage} alt="profile-img" className="mypage-user-icon" />
+        {user.userImage ? (
+          <img src={user.userImage} alt="profile-img" className="mypage-user-icon" />
+        ) : (
+          <img src={profile} alt="profile-img" className="mypage-user-icon" />
+        )}
         <div className="mypage-profile-desc">
           <h4>{user.userNickname} 님 안녕하세요!</h4>
           <span>{user.userAddress}</span>

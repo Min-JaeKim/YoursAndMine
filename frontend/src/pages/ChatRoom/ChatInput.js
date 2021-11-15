@@ -39,7 +39,7 @@ function ChatInput(props) {
       message: msg,
       author: userId,
       to: to,
-      timestamp: timestamp.toLocaleString(),
+      timestamp: timestamp.toISOString(),
       // timestamp:
       //   timestamp.getHours().toString().padStart(2, "0") +
       //   ":" +
