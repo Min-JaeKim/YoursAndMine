@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import profile from "../../assets/image/defaultuser.png";
-import { useParams } from "react-router-dom";
 import axios from "../../api/axios";
+import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
 import "./RentUserList.css";
+import profile from "../../assets/image/defaultuser.png";
 
 const RentUserList = ({ history }) => {
   const { pNo } = useParams();

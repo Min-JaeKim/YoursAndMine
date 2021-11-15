@@ -1,35 +1,37 @@
 // api components layout redux pages assets font utils
-import Layout from "./components/Layout/Layout";
-import Main from "./pages/Main/Main";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
-import Rent from "./pages/Rent/Rent";
-import Detail from "./pages/Detail/Detail";
+
+import Main from "./pages/Main/Main";
+import NotFound from "./pages/Error/NotFound";
+import Layout from "./components/Layout/Layout";
+import PublicRouter from "./router/PublicRouter";
+import PrivateRouter from "./router/PrivateRouter";
 import SearchPlace from "./pages/Location/SearchPlace";
 import SearchItem from "./pages/SearchItem/SearchItem";
-import PrivateRouter from "./router/PrivateRouter";
-import PublicRouter from "./router/PublicRouter";
-import NotFound from "./pages/Error/NotFound";
 
-import MyPage from "./pages/MyPage/MyPage";
-import Write from "./pages/Write/Write";
+import Wish from "./pages/Wish/Wish";
+import Join from "./pages/Join/Join";
+import Rent from "./pages/Rent/Rent";
 import Chat from "./pages/Chat/Chat";
-import ChatRoom from "./pages/ChatRoom/ChatRoom";
+import Write from "./pages/Write/Write";
+import Test from "./pages/Product/Test";
 import SignIn from "./pages/SignIn/SignIn";
+import Detail from "./pages/Detail/Detail";
 import SignUp from "./pages/SignUp/SignUp";
+import Notice from "./pages/Notice/Notice";
+import MyPage from "./pages/MyPage/MyPage";
+import Product from "./pages/Product/Product";
 import FindPwd from "./pages/FindPwd/FindPwd";
+import ChatRoom from "./pages/ChatRoom/ChatRoom";
 import UserEdit from "./pages/UserEdit/UserEdit";
 import TradeLog from "./pages/TradeLog/TradeLog";
+import Category from "./pages/Category/Category";
 // import Charge from "./pages/Charge/Charge";
 import "./App.css";
 import MyProduct from "./pages/MyProduct/MyProduct";
-import RentUserList from "./pages/RentUserList/RentUserList";
-import Notice from "./pages/Notice/Notice";
-import TradeDetail from "./pages/TradeDetail/TradeDetail";
 import MySchedule from "./pages/MySchedule/MySchedule";
-import Product from "./pages/Product/Product";
-import Category from "./pages/Category/Category";
-import Join from "./pages/Join/Join";
-import Test from "./pages/Product/Test";
+import TradeDetail from "./pages/TradeDetail/TradeDetail";
+import RentUserList from "./pages/RentUserList/RentUserList";
 
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -143,6 +145,8 @@ function App() {
             <PrivateRouter path="/useredit" component={UserEdit} exact />
             <PrivateRouter path="/tradelog" component={TradeLog} exact />
             <PrivateRouter path="/myproduct" component={MyProduct} exact />
+            {/* <PrivateRouter path="/charge" component={Charge} exact /> */}
+            <PrivateRouter path="/wish" component={Wish} exact />
             <PrivateRouter path="/notice" component={Notice} exact />
             <PrivateRouter path="/product" component={Product} exact />
             <PrivateRouter path="/write" component={Write} exact />
