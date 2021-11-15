@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import noImage from "../../assets/image/no-image.jpg";
-import { Link } from "react-router-dom";
-import "../Wish/Wish.css";
 import "./MyProduct.css";
+import "../Wish/Wish.css";
+import noImage from "../../assets/image/no-image.jpg";
+
 import axios from "../../api/axios";
+import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 const MyProduct = (props) => {
   const [product, setProduct] = useState([]);
@@ -13,16 +14,16 @@ const MyProduct = (props) => {
 
   useEffect(() => {
     axios
-      .get(`/item`, {
+      .get(`/user/item/give`, {
         headers: {
-          Authentication: "Bearer " + token,
+          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
         setProduct(response.data);
         const groups = {};
         response.data.forEach((p) => {
-          groups[p.itemId] = p.status === "Y" ? true : false;
+          groups[p.itemId] = p.itemActive === "Y" ? true : false;
         });
         setRadioGroups(groups);
         setLoading(false);
@@ -66,38 +67,40 @@ const MyProduct = (props) => {
 
   return (
     <div>
-      <>
-        {/* {loading ? <div className="product-loader">loading...</div> : null} */}
-        {product.map((item, idx) => {
-          return (
-            <div className="wish-item-list" key={idx}>
-              <img
-                src={item.image == null ? noImage : item.image}
-                className="wish-item-icon"
-                alt="profile"
-              ></img>
-              <div className="wish-item-vertical">
-                <div className="wish-item-title">
-                  <Link to={`/rentuser/${item.itemId}`}>{item.itemname}</Link>
+      {loading ? (
+        <>loading...</>
+      ) : (
+        <>
+          {product.map((item, idx) => {
+            return (
+              <div className="wish-item-list" key={idx}>
+                <img
+                  src={item.itemImage == null ? noImage : item.itemImage}
+                  className="wish-item-icon"
+                  alt="profile"
+                ></img>
+                <div className="wish-item-vertical">
+                  <div className="wish-item-title">
+                    <Link to={`/rentuser/${item.itemId}`}>{item.itemName}</Link>
+                  </div>
+                  <span>{item.itemAddress}</span>
+                  <div className="wish-item-price">{item.itemPrice} 원</div>
                 </div>
-                <span>{item.position}</span>
-                <div className="wish-item-price">{item.price} BLI</div>
+                <div>
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      onClick={() => isActive(idx)}
+                      checked={radioGroups[item.itemId]}
+                    />
+                    <span className="slider round"></span>
+                  </label>
+                </div>
               </div>
-              <div>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    onClick={() => isActive(idx)}
-                    checked={radioGroups[item.itemId]}
-                  />
-                  <span className="slider round"></span>
-                </label>
-              </div>
-            </div>
-          );
-        })}
-      </>
-      )
+            );
+          })}
+        </>
+      )}
     </div>
   );
 };

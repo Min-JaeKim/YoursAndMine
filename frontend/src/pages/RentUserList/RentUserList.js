@@ -11,14 +11,14 @@ const RentUserList = ({ history }) => {
 
   useEffect(() => {
     axios
-      .get(`/contract/my/${pNo}`, {
+      .get(`/user/item/history/${pNo}`, {
         headers: {
-          Authentication: "Bearer " + token,
+          Authorization: "Bearer " + token,
         },
       })
       .then((res) => {
-        setRentUser(res.data);
         console.log(res.data);
+        setRentUser(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -33,13 +33,13 @@ const RentUserList = ({ history }) => {
     return (
       <div className="rent-user">
         <div className="rent-user-list rent-user-box">
-          <img src={user.userImage} className="rent-user-image" alt="profile"></img>
+          <img src={user.itemBuyerImage} className="rent-user-image" alt="profile"></img>
           <div className="rent-user-vertical">
-            <div className="rent-user-name">{user.username}</div>
+            <div className="rent-user-name">{user.itemBuyerNickname}</div>
             <span>{user.position}</span>
             <br />
             <span className="rent-user-period">
-              {user.startDate.replaceAll("-", ".")} ~ {user.endDate.replaceAll("-", ".")}
+              {user.dealStartDate.replaceAll("-", ".")} ~ {user.dealEndDate.replaceAll("-", ".")}
             </span>
           </div>
         </div>
