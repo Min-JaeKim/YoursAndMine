@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import "./TradeLog.css";
 import noImage from "../../assets/image/no-image.jpg";
 
+// 빌린제품
 const TradeLog = ({ history }) => {
   const [product, setProduct] = useState([]);
 
