@@ -56,7 +56,7 @@ function App() {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: "wss://k5a102.p.ssafy.io/chat/websocket", // 웹소켓 서버로 직접 접속
+      brokerURL: process.env.REACT_APP_CHAT_SERVER_WSS_BASE_URL + "/websocket", // 웹소켓 서버로 직접 접속
       //   webSocketFactory: () => new SockJS("/chat"), // proxy를 통한 접속
       connectHeaders: {
         "auth-token": "spring-chat-auth-token",
