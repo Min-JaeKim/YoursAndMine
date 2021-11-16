@@ -433,6 +433,7 @@ public class UserService {
 
         Deal deal = dealRepository.findByDealId(dealId).get();
         UserResponseDto.Receipt receipt = modelMapper.map(deal, UserResponseDto.Receipt.class);
+        receipt.setItemId(deal.getItem().getItemId());
         receipt.setItemName(deal.getItem().getItemName());
         receipt.setItemBuyerNickname(deal.getBuyer().getUserNickname());
         receipt.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(deal.getItem().getItemId()));
