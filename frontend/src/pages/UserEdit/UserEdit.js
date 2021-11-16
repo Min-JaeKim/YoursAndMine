@@ -93,7 +93,7 @@ const UserEdit = () => {
         <span className="profile-title">프로필 이미지 변경</span>
       </div>
       <br /><br />
-      <div className="profile-img">
+      <div className="ue-profile-img">
         <div>
           {profile_preview}
         </div>
