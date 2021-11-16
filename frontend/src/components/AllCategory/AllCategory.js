@@ -25,19 +25,16 @@ const AllCategory = ( props ) => {
 	const [inputStatus, setInputStatus] = useState('');
 
 	const onClickCategory = (e) => {
-    const category = e.currentTarget.getAttribute('value');
-    if (props.flag === "1"){
-      e.preventDefault();
-      // this.props.onCreate(category);
-      props.funcSetCategory(category);
-    } else {
-      history.push({
-        pathname: "/searchItem",
-        state: {
-          category: category,
-        },
-      });
-    }
+      const category = e.currentTarget.getAttribute('value');
+      console.log("AllCategory : " + category)
+      if (props.flag === "1"){
+        e.preventDefault();
+        // this.props.onCreate(category);
+        props.funcSetCategory(category);
+      } else {
+
+      }
+      history.push(`/searchItem?category=${category}&keyword=&sort=1`);
 	}
 
 	return ( 

@@ -31,7 +31,7 @@ public class SearchService {
         List<SearchResponse> response = new ArrayList<>();
 
         if(category.equals("undefined") || category.equals("")){
-//            System.out.println("카테고리 없음");
+            System.out.println("카테고리 없음");
             List<Item> nameList = itemRepository.findAllByItemNameContains(keyword);
             List<Item> contentList = itemRepository.findAllByItemContentContains(keyword);
 
@@ -82,6 +82,28 @@ public class SearchService {
 //                System.out.println(cItem.toString());
                 if(checkContain(response, cItem))
                     addList(response, cItem);
+            }
+            if(sort == 1) {
+                Collections.sort(response, new Comparator<SearchResponse>() {
+                    @Override
+                    public int compare(SearchResponse o1, SearchResponse o2) {
+                        return o1.getItemModifiedTime().compareTo(o2.getItemModifiedTime());
+                    }
+                });
+            }else if(sort == 2){
+                Collections.sort(response, new Comparator<SearchResponse>() {
+                    @Override
+                    public int compare(SearchResponse o1, SearchResponse o2) {
+                        return -(o1.getBookmarkCount() - o2.getBookmarkCount());
+                    }
+                });
+            }else{
+                Collections.sort(response, new Comparator<SearchResponse>() {
+                    @Override
+                    public int compare(SearchResponse o1, SearchResponse o2) {
+                        return -(o1.getDealCount() - o2.getDealCount());
+                    }
+                });
             }
         }
 
