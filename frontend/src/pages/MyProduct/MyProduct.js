@@ -6,6 +6,7 @@ import axios from "../../api/axios";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
+// 등록한 대여제품
 const MyProduct = (props) => {
   const [product, setProduct] = useState([]);
   const [radioGroups, setRadioGroups] = useState({});
@@ -35,7 +36,6 @@ const MyProduct = (props) => {
 
   const isActive = (idx) => {
     const p = product[idx];
-    console.log(p);
     setRadioGroups({ ...radioGroups, [p.itemId]: !radioGroups[p.itemId] });
     // console.log(product[idx])
     // if (product[idx].status == "Y")
@@ -43,17 +43,16 @@ const MyProduct = (props) => {
     // else product[idx].status = "Y";
     itemOnOff(idx);
     // console.log(product);
-    console.log(radioGroups);
   };
 
   const itemOnOff = (idx) => {
     axios
       .put(
-        `item/active/${product[idx].itemId}`,
+        `user/item/give/switch/${product[idx].itemId}`,
         {},
         {
           headers: {
-            Authentication: "Bearer " + token,
+            Authorization: "Bearer " + token,
           },
         }
       )
