@@ -245,57 +245,58 @@ const Main = () => {
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
       <SearchInput />
-
-    <div class="wrap">
-    <div class="line">
-      <div class="main-left">
-        <div class="content">
-          <span class="spanFast">YOURS</span>
+    <div className="main-body">
+      <div class="wrap">
+      <div class="line">
+        <div class="main-left">
+          <div class="content">
+            <span class="spanFast">YOURS</span>
+          </div>
         </div>
-      </div>
-      <div class="main-right">
-        <div class="content">
-          <span class="spanFast">YOURS</span>
+        <div class="main-right">
+          <div class="content">
+            <span class="spanFast">YOURS</span>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="line">
-      <div class="main-left">
-        <div class="content">
-          <span class="spanFast">AND</span>
-        </div>
-      </div>
-      <div class="main-right">
-        <div class="content">
-          <span class="spanFast">AND</span>
-        </div>
-      </div>
       </div>
       <div class="line">
-          <div class="main-left">
-            <div class="content">
-              <span class="spanFast">MINE</span>
-            </div>
-          </div>
-          <div class="main-right">
-            <div class="content">
-              <span class="spanFast">MINE</span>
-            </div>
+        <div class="main-left">
+          <div class="content">
+            <span class="spanFast">AND</span>
           </div>
         </div>
-        {/* <div class="line">
-            <div class="left">
+        <div class="main-right">
+          <div class="content">
+            <span class="spanFast">AND</span>
+          </div>
+        </div>
+        </div>
+        <div class="line">
+            <div class="main-left">
               <div class="content">
-                <span class="spanSlow">want</span>
+                <span class="spanFast">MINE</span>
               </div>
             </div>
-            <div class="right">
+            <div class="main-right">
               <div class="content">
-                <span class="spanSlow">want</span>
+                <span class="spanFast">MINE</span>
               </div>
             </div>
-          </div> */}
-      </div>
+          </div>
+          {/* <div class="line">
+              <div class="left">
+                <div class="content">
+                  <span class="spanSlow">want</span>
+                </div>
+              </div>
+              <div class="right">
+                <div class="content">
+                  <span class="spanSlow">want</span>
+                </div>
+              </div>
+            </div> */}
+        </div>
+    </div>
 
       { !loginFlag || !user?.userAddress ?
       // {!user?.userAddress || (user?.userAddress && !user.userAddress) ?
@@ -303,9 +304,9 @@ const Main = () => {
         <div className="main-current-rent">
           <div className="main-current-rent-header">
             <h4>최근 등록된 물건 ✌🏻</h4>
-            <Link to="/tradelog" className="rent-header-link">
-              {"대여내역 보기 >"}
-            </Link>
+            {/* <Link to="/product" className="rent-header-link">
+               {"전체 상품보기 >"}
+             </Link> */}
           </div>
           <div className="main-non-member-product">
             {nonMemberCarousel(nonMemberProduct, "3")}
