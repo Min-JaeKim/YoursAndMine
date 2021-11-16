@@ -19,7 +19,8 @@ const ConversationList = (state = initialState, action) => {
         userImg: action.payload.partnerImg,
         itemImg: action.payload.itemImg,
         itemName: action.payload.itemName,
-        lastMsg: action.payload.lastMsg.message,
+        lastMsg:
+          action.payload.lastMsg.type === "message" ? action.payload.lastMsg.message : "거래 요청",
         timestamp: action.payload.lastMsg.timestamp,
         list: [...action.payload.list],
       };
@@ -29,7 +30,8 @@ const ConversationList = (state = initialState, action) => {
       // console.log(action.payload);
       // state[action.payload.to] = [...state[action.payload.to], action.payload];
       state[action.payload.to].list = [...state[action.payload.to].list, action.payload];
-      state[action.payload.to].lastMsg = action.payload.message;
+      state[action.payload.to].lastMsg =
+        action.payload.type === "message" ? action.payload.message : "거래요청";
       state[action.payload.to].timestamp = action.payload.timestamp;
       return { ...state };
     case RECEIVED:
@@ -39,7 +41,8 @@ const ConversationList = (state = initialState, action) => {
         state[action.payload.author].list = [...state[action.payload.author].list, action.payload];
       }
       state[action.payload.author].timestamp = action.payload.timestamp;
-      state[action.payload.author].lastMsg = action.payload.message;
+      state[action.payload.author].lastMsg =
+        action.payload.type === "message" ? action.payload.message : "거래요청";
 
       return { ...state };
     case LEAVECHAT:
