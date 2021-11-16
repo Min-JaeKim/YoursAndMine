@@ -47,7 +47,7 @@ const SignUp = ({ history }) => {
           confirmButtonText: 'OK!',
           confirmButtonColor: '#497c5f'
         })
-        history.push('/signin')
+        history.push('/join')
 
       }).catch((error) => {
         console.log(error)
