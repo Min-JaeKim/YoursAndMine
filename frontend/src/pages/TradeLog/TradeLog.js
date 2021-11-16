@@ -18,16 +18,21 @@ const TradeLog = ({ history }) => {
         },
       })
       .then((response) => {
+        console.log(response.data)
         setProduct(response.data);
-        console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const goToTradeDetail = (contractId) => {
-    history.push(`/tradedetail/${contractId}`);
+  const goToTradeDetail = (dealId) => {
+    history.push({
+      pathname: `/tradedetail/${dealId}`,
+      state: {
+        flag: 2,
+      },
+    });
   };
 
   return product.map((item) => {
@@ -38,12 +43,20 @@ const TradeLog = ({ history }) => {
           <div className="wish-item-vertical">
             <div className="wish-item-title">
               <Link to={`/detail/${item.dealId}`}>{item.itemName}</Link>
+              {item.dealStatus === "예약완료" ? 
+                <div className="tl-deal-status-pre">{item.dealStatus}</div>
+                :
+                item.dealStatus === "대여중" ?
+                  <div className="tl-deal-status-in">{item.dealStatus}</div>
+                  :
+                  <div className="tl-deal-status-post">{item.dealStatus}</div>
+              }
             </div>
             <span>{item.itemAddress}</span>
             <div className="wish-item-price">{item.dealTotalPrice} 원</div>
           </div>
           <div>
-            <button className="trade-log-button" onClick={() => goToTradeDetail(item.contractId)}>
+            <button className="trade-log-button" onClick={() => goToTradeDetail(item.dealId)}>
               상세보기
             </button>
           </div>

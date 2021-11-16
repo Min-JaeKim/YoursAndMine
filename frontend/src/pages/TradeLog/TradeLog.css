@@ -6,4 +6,36 @@
   border-radius: 8px;
   background: #c5d3cc;
   border: none;
+  cursor: pointer;
+}
+
+.wish-item-title {
+  display: flex;
+}
+
+.tl-deal-status-pre {
+  font-size: 11px;
+  margin: 0 10px;
+  color: white;
+  background-color: #c5d3cc;
+  border-radius: 30px;
+  padding: 2px 7px;
+}
+
+.tl-deal-status-in {
+  font-size: 11px;
+  margin: 0 10px;
+  color: white;
+  background-color: #497c5f;
+  border-radius: 30px;
+  padding: 2px 7px;
+}
+
+.tl-deal-status-post {
+  font-size: 11px;
+  margin: 0 10px;
+  color: white;
+  background-color: #939597;
+  border-radius: 30px;
+  padding: 2px 7px;
 }
