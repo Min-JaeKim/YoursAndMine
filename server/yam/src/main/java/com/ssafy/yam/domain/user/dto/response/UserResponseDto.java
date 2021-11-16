@@ -142,6 +142,7 @@ public class UserResponseDto {
         private int dealTotalPrice;
         private String itemName;
         private String itemBuyerNickname;
+        private String itemSellerNickname;
         private List<String> itemImage = new ArrayList<>();
         private String itemAddress;
         private int itemPrice;
