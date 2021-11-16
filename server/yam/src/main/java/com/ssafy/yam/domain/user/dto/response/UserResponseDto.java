@@ -127,6 +127,7 @@ public class UserResponseDto {
     public static class GetItemHistoryResDto {
         private String itemBuyerNickname;
         private String itemBuyerImage;
+        private int dealId;
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
     }
