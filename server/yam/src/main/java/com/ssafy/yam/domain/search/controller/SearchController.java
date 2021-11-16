@@ -19,6 +19,7 @@ public class SearchController {
 
     @GetMapping()
     public ResponseEntity<List<SearchResponse>> searchItem(@RequestParam String category, @RequestParam String keyword, @RequestParam int sort){
+        System.out.println(category + " " + keyword + " " + sort);
         return ResponseEntity.status(200).body(searchService.searchItem(category, keyword, sort));
     }
 }
