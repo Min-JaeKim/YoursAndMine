@@ -21,7 +21,7 @@ const MyProduct = (props) => {
 	const [getProducts, setGetProducts] = useState([]);
 	const [updateFlag, setUpdateFlag] = useState(false);
 
-	let {selectDate } = useSelector(({ schedule }) => ({
+	let {selectDate, rentalCancelFlag } = useSelector(({ schedule }) => ({
 		selectDate: schedule.selectDate
   }));
 	// const datas = [

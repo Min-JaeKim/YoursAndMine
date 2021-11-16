@@ -9,6 +9,11 @@ const user = (state = {}, action) => {
       window.localStorage.removeItem("token");
       window.localStorage.removeItem("login");
       return { ...state, user: {}, login: false };
+    
+    case "CHANGE_LOCAL_INIT":
+      return { ...state, changeLocalFlag: false };
+    case "CHANGE_LOCAL_SUCCESS":
+      return { ...state, changeLocalFlag: true };
 
     default:
       return state;

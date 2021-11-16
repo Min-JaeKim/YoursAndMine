@@ -51,15 +51,7 @@ export const Detail = (props) => {
           }
         })
         .catch((error) => {
-          Swal.fire({
-            title: "Error!",
-            text: "상품 내역이 존재하지 않습니다.",
-            icon: "error",
-            confirmButtonText: "OK!",
-            confirmButtonColor: "#497c5f",
-          }).then((result) => {
-            history.push("/");
-          });
+          history.push("/");
         });
     } else {
       axios
@@ -72,22 +64,13 @@ export const Detail = (props) => {
           // setLike(response.data.bookmark);
         })
         .catch((error) => {
-          Swal.fire({
-            title: "Error!",
-            text: "상품 내역이 존재하지 않습니다.",
-            icon: "error",
-            confirmButtonText: "OK!",
-            confirmButtonColor: "#497c5f",
-          }).then((result) => {
-            history.push("/");
-          });
+          history.push("/");
         });
     }
   }, []);
 
   const onSelectProduct = () => {
     const timestamp = new Date();
-    console.log(detail.owner.ownerId);
     props.client.current.publish({
       destination: "/app/send",
       body: JSON.stringify({

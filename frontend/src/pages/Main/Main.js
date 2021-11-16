@@ -20,9 +20,10 @@ const Main = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  let { user, loginFlag } = useSelector(({ user }) => ({
+  let { user, loginFlag, changeLocalFlag } = useSelector(({ user }) => ({
     loginFlag: user.login,
     user: user.user,
+    changeLocalFlag: user.changeLocalFlag,
   }));
 
   const [nearProduct, setNearProduct] = useState([]);
@@ -71,7 +72,7 @@ const Main = () => {
         });
     } else {
       axios
-        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {}, {
+        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
           headers: {
             Authorization: "Bearer " + token,
           },

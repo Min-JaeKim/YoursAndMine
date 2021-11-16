@@ -5,11 +5,17 @@ const selectDate = (date) => {
   };
 };
 
-const rentCancelSuccessFlag = () => {
+const rentCancelSuccess = () => {
   return {
-    type: "RENT_CANCEL_SUCCESS_FLAG",
+    type: "RENT_CANCEL_SUCCESS",
   }
 }
 
-const scheduleActions = { selectDate, rentCancelSuccessFlag };
+const rentCancelInit = () => {
+  return {
+    type: "RENT_CANCEL_INIT",
+  }
+}
+
+const scheduleActions = { selectDate, rentCancelSuccess, rentCancelInit };
 export default scheduleActions;
