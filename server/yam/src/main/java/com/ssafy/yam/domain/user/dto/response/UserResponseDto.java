@@ -138,9 +138,11 @@ public class UserResponseDto {
     @NoArgsConstructor
     public static class Receipt {
         private int dealId;
+        private String dealStatus;
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
         private int dealTotalPrice;
+        private int itemId;
         private String itemName;
         private String itemBuyerNickname;
         private String itemSellerNickname;
