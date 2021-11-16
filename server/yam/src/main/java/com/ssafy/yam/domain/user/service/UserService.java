@@ -366,7 +366,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
         List<UserResponseDto.GetGiveItemResDto> giveItemList = new ArrayList<>();
-        List<Item> itemList = itemRepository.findAllBySeller_UserIdOrderByItemModifiedTime(user.getUserId());
+        List<Item> itemList = itemRepository.findAllBySeller_UserIdOrderByItemModifiedTimeDesc(user.getUserId());
         for (int i = 0; i < itemList.size(); i++) {
             UserResponseDto.GetGiveItemResDto tmp = modelMapper.map(itemList.get(i), UserResponseDto.GetGiveItemResDto.class);
             tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(tmp.getItemId()));
