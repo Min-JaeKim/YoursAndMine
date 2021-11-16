@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         System.out.println(registry);
-        registry.addEndpoint("/chat")
+        registry.addEndpoint("/ws/chat")
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
