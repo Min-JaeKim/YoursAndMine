@@ -14,6 +14,10 @@
   padding-right: 20px;
 }
 
+.chatroom-empty-header {
+  height: 80px;
+}
+
 .chat-item-img {
   height: 60px;
   width: 60px;

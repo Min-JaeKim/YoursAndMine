@@ -5,7 +5,9 @@ import { useParams } from "react-router";
 
 function ReserveButton(props) {
   const openReserve = () => {
-    props.setOpenReserve(true);
+    props.setOpenReserve({
+      type: "reserve",
+    });
   };
 
   return (

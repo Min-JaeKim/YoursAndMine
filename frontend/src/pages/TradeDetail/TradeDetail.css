@@ -15,14 +15,31 @@
   border-radius: 30%;
   margin-right: 30px;
 }
+
+.td-seller-buttons {
+  display: flex;
+}
+
 .trade-cancel-button {
   width: 100%;
   height: 40px;
   border-radius: 8px;
   border: 1px solid #c5d3cc;
   background: white;
-  margin-bottom: 10px;
+  margin: 10px;
+  cursor: pointer;
 }
+
+.td-success-trade-button {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #c5d3cc;
+  background: white;
+  margin: 10px;
+  cursor: pointer;
+}
+
 .trade-item-name,
 .total {
   font-size: x-large;
@@ -47,4 +64,8 @@
   right: 0px;
   position: absolute;
   margin: 20px 0px;
+}
+
+.td-item-address {
+  margin: 10px 0;
 }

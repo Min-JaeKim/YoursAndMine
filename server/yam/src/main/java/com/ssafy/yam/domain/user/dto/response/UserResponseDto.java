@@ -127,6 +127,7 @@ public class UserResponseDto {
     public static class GetItemHistoryResDto {
         private String itemBuyerNickname;
         private String itemBuyerImage;
+        private int dealId;
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
     }
@@ -137,11 +138,14 @@ public class UserResponseDto {
     @NoArgsConstructor
     public static class Receipt {
         private int dealId;
+        private String dealStatus;
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
         private int dealTotalPrice;
+        private int itemId;
         private String itemName;
         private String itemBuyerNickname;
+        private String itemSellerNickname;
         private List<String> itemImage = new ArrayList<>();
         private String itemAddress;
         private int itemPrice;
