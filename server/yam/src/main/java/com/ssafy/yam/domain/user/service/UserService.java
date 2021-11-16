@@ -415,7 +415,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
         List<UserResponseDto.GetItemHistoryResDto> historyList = new ArrayList<>();
-        List<Deal> dealList = dealRepository.findAllByItem_ItemId(itemid);
+        List<Deal> dealList = dealRepository.findAllByItem_ItemIdOrderByDealStartDateDesc(itemid);
         for (int i = 0; i < dealList.size(); i++) {
             UserResponseDto.GetItemHistoryResDto tmp = modelMapper.map(dealList.get(i), UserResponseDto.GetItemHistoryResDto.class);
             tmp.setItemBuyerImage(userRepository.findByUserId(dealList.get(i).getBuyer().getUserId()).get().getUserImageUrl());

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface DealRepository extends JpaRepository<Deal, Integer> {
     Optional<Deal> findByDealId(int dealId);
     List<Deal> findAllByItem_ItemId(int itemId);
+    List<Deal> findAllByItem_ItemIdOrderByDealStartDateDesc(int itemId);
     List<Deal> findByBuyer_UserIdOrSeller_UserId(int buyerId, int sellerId);
     List<Deal> findByBuyer_UserIdOrderByDealStartDateDesc(int userId);
     List<Deal> findByBuyer_UserId(int userId);
