@@ -115,6 +115,7 @@ public class UserResponseDto {
         private int dealId;
         private int dealTotalPrice;
         private String dealStatus;
+        private int itemId;
         private String itemName;
         private List<String> itemImage = new ArrayList<>();
         private String itemAddress;
