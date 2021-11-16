@@ -119,7 +119,7 @@ public class DealCRUDService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약이 존재하지 않습니다."));
     }
 
-    public void returnDeal(String token, int dealId){
+    public void returnDeal(int dealId){
         Deal deal = getDeal(dealId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!deal.getSeller().getUserEmail().equals(tokenEmail)) {
@@ -130,7 +130,7 @@ public class DealCRUDService {
         dealRepository.save(deal);
     }
 
-    public void borrowDeal(String token, int dealId){
+    public void borrowDeal(int dealId){
         Deal deal = getDeal(dealId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
