@@ -48,7 +48,7 @@ const Location = ({ searchPlace }) => {
         userData.userAddress = address;
         window.localStorage.setItem("user", JSON.stringify(userData));
         Swal.fire({
-          title: 'Log out!',
+          title: 'Change!',
           text: '주소가 변경되었습니다.',
           icon: 'success',
           confirmButtonText: 'OK!',

@@ -86,18 +86,18 @@
   justify-content: center;
 }
 
-* {
+/* * {
   margin: 0;
   padding: 0;
-}
+} */
 .wrap {
   margin-top: 20px;
 }
-body {
-  height: 400px;
+.main-body {
+  /* height: 400px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 .line {
   width: 500px;
