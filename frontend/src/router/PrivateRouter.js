@@ -17,7 +17,7 @@ const PrivateRouter = ({ component: Component, client, ...rest }) => {
         !window.localStorage.getItem("token") &&
           Swal.fire({
             title: "Error!",
-            text: "다시 로그인해 주세요",
+            text: "로그인 후 사용 가능합니다.",
             icon: "error",
             confirmButtonText: "OK!",
             confirmButtonColor: "#497c5f",
