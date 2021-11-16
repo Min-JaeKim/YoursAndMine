@@ -3,8 +3,8 @@ import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import DetailCalendar from "./DetailCalendar";
 import React, { useState, useEffect } from "react";
-import { insertMessage } from "../../redux/reducers/ConversationList";
 import { useSelector, useDispatch } from "react-redux";
+import { insertMessage } from "../../redux/reducers/ConversationList";
 
 import "./Detail.css";
 import Slider from "react-slick";
