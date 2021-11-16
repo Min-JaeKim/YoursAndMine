@@ -61,3 +61,12 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.mp-rent-user-button {
+  position: relative;
+  bottom: 20px;
+  border-radius: 30px !important;
+  padding: 10px 10px !important;
+  font-size: 12px !important;
+  width: 90px !important;
+}

@@ -24,17 +24,17 @@ const ConversationList = (state = initialState, action) => {
         timestamp: action.payload.lastMsg.timestamp,
         list: [...action.payload.list],
       };
-      // state[action.payload.partner] = [...action.payload.list];
       return { ...state };
     case NEWMESSAGE:
-      // console.log(action.payload);
-      // state[action.payload.to] = [...state[action.payload.to], action.payload];
       state[action.payload.to].list = [...state[action.payload.to].list, action.payload];
       state[action.payload.to].lastMsg =
         action.payload.type === "message" ? action.payload.message : "거래요청";
       state[action.payload.to].timestamp = action.payload.timestamp;
       return { ...state };
     case RECEIVED:
+      if (!state[action.payload.author]) {
+      }
+
       if (state[action.payload.author] === undefined) {
         state[action.payload.author].list = [action.payload];
       } else {

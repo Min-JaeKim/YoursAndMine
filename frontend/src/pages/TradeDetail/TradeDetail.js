@@ -1,14 +1,16 @@
 import "./TradeDetail.css";
+import Swal from "sweetalert2";
 import noImage from "../../assets/image/no-image.jpg";
 
 import moment from 'moment';
 import axios from "../../api/axios";
-import { useLocation } from "react-router";
 import { useParams } from "react-router-dom";
+import { useHistory, useLocation } from "react-router";
 import React, { useState, useEffect } from "react";
 
 const TradeDetail = () => {
   
+  const history = useHistory();
   const location = useLocation();
   const flag = location.state.flag;
 
@@ -90,6 +92,35 @@ const TradeDetail = () => {
       });
   }
 
+  const onCancelRent = () => {
+    Swal.fire({
+      title: "예약 취소하시겠습니까?",
+      // text: "예약 취소가 되었습니다.",
+      icon: "question",
+      confirmButtonText: "OK!",
+      confirmButtonColor: "#497c5f",
+    }).then(() => {
+        axios
+          .delete(`/deal/${contract.dealId}`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((response) => {
+            history.push(`/rentuser/${contract.itemId}`);
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: 'Error!',
+              text: '대여 취소가 되지 않았습니다.',
+              icon: 'error',
+              confirmButtonText: 'OK!',
+              confirmButtonColor: '#497c5f'
+            })
+          });
+    })
+  }
+
   return (
     <>
     {flag === 1 ?
@@ -104,7 +135,7 @@ const TradeDetail = () => {
         <div className="td-seller-buttons">
           {moment().format('YYYY-MM-DD') < contract.dealStartDate
             ?
-            <button className="trade-cancel-button">대여 취소</button>
+            <button className="trade-cancel-button" onClick={onCancelRent}>대여 취소</button>
             :
             null
           }
