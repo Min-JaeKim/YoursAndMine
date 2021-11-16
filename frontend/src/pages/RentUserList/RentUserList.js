@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import profile from "../../assets/image/defaultuser.png";
-import { useParams } from "react-router-dom";
 import axios from "../../api/axios";
-import "./RentUserList.css";
+import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
+import "./RentUserList.css";
+import profile from "../../assets/image/defaultuser.png";
+
+// 대여자 목록
 const RentUserList = ({ history }) => {
   const { pNo } = useParams();
   const [rentUser, setRentUser] = useState([]);
@@ -25,8 +27,13 @@ const RentUserList = ({ history }) => {
       });
   }, []);
 
-  const goToTradeDetail = (contractId) => {
-    history.push(`/tradedetail/${contractId}`);
+  const goToTradeDetail = (dealId) => {
+    history.push({
+      pathname: `/tradedetail/${dealId}`,
+      state: {
+        flag: 1,
+      },
+    });
   };
 
   return rentUser.map((user) => {
@@ -44,8 +51,8 @@ const RentUserList = ({ history }) => {
           </div>
         </div>
         <div className="rent-user-box">
-          <button onClick={() => goToTradeDetail(user.contract_id)}>대여상세</button>
-          <button>채팅하기</button>
+          <button className="rul-product-detail-button" onClick={() => goToTradeDetail(user.dealId)}>대여상세</button>
+          <button classNam="rul-chat-button">채팅하기</button>
         </div>
       </div>
     );

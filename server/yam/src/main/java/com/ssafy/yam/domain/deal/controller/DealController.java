@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
 import static com.ssafy.yam.utils.ConstantsUtils.DEAL;
 
 @RestController
@@ -19,7 +18,7 @@ public class DealController {
     private final DealCRUDService dealCRUDService;
 
     @PostMapping()
-    public ResponseEntity<?> createDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealCreateRequest dealCreateRequest){
+    public ResponseEntity<?> createDeal(@RequestBody DealCreateRequest dealCreateRequest){
         int res = dealCRUDService.createDeal(dealCreateRequest);
         if(res == 0)
             return new ResponseEntity<>(HttpStatus.OK);
@@ -34,7 +33,7 @@ public class DealController {
     }
 
     @DeleteMapping("/{dealId}")
-    public ResponseEntity<?> deleteDeal(@RequestHeader(AUTH_HEADER) String token, @PathVariable int dealId){
+    public ResponseEntity<?> deleteDeal(@PathVariable int dealId){
         try{
             dealCRUDService.deleteDeal(dealId);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -45,14 +44,14 @@ public class DealController {
     }
 
     @PutMapping()
-    public ResponseEntity<?> returnDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealUpdateRequest dealUpdateRequest){
-        dealCRUDService.returnDeal(token, dealUpdateRequest.getDealId());
+    public ResponseEntity<?> returnDeal(@RequestBody DealUpdateRequest dealUpdateRequest){
+        dealCRUDService.returnDeal(dealUpdateRequest.getDealId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/borrow")
-    public ResponseEntity<?> borrowDeal(@RequestHeader(AUTH_HEADER) String token, @RequestBody DealUpdateRequest dealUpdateRequest){
-        dealCRUDService.borrowDeal(token, dealUpdateRequest.getDealId());
+    public ResponseEntity<?> borrowDeal(@RequestBody DealUpdateRequest dealUpdateRequest){
+        dealCRUDService.borrowDeal(dealUpdateRequest.getDealId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

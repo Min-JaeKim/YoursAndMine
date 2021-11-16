@@ -39,3 +39,11 @@
   border: 1px solid #c5d3cc;
   background: #fff;
 }
+
+.rul-product-detail-button {
+  cursor: pointer;
+}
+
+.rul-chat-button {
+  cursor: pointer;
+}

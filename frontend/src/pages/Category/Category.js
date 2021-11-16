@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
 import './Category.css'
+
 import { useLocation } from "react-router";
+import React, { useState, useCallback } from "react";
 import AllCategory from "../../components/AllCategory/AllCategory";
 
 const Category = ({ flag, category, getCategory }) => {

@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/day-schedule/{userDate}")
-    public ResponseEntity<?> getSchedule(@PathVariable String userDate) {
+    public ResponseEntity<?> getDaySchedule(@PathVariable String userDate) {
         return ResponseEntity.ok().body(userService.getDaySchedule(userDate));
     }
 

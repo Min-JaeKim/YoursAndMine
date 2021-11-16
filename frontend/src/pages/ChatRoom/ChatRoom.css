@@ -33,7 +33,7 @@
 
 .chat-header {
   position: fixed;
-  z-index: 0;
+  z-index: 10;
   top: 0;
   width: 100%;
   max-width: 418px;
@@ -163,8 +163,9 @@
 }
 
 .reserve-btn {
-  position: sticky;
-  bottom: 1%;
+  position: fixed;
+  z-index: 10;
+  bottom: 90px;
   margin-left: 10px;
 }
 
@@ -176,7 +177,7 @@
 .calendar-modal-background {
   position: fixed;
   bottom: 0;
-  width: 420px;
+  width: 100%;
   max-width: 420px;
   height: 100%;
   background-color: #c4c4c47e;
@@ -185,18 +186,38 @@
   -webkit-animation: fadein 0.5s; /* Safari and Chrome */
 }
 
+.calendar-modal-contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .calendar-modal {
+  z-index: 10;
   position: absolute;
-  left: 15%;
   top: 25%;
-  width: 70%;
-  height: 50%;
+  padding: 10px;
   border-radius: 20px;
   background-color: white;
   box-shadow: 0px 4px 4px 0px #00000025;
+  left: 50%;
+  transform: translate(-50%, 0);
 
   animation: fadein 0.5s;
   -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+}
+
+.calendar-close-btn {
+  width: 15px;
+  margin: 3px;
+}
+
+.calendar-request-button {
+  background-color: #497c5f;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  border: solid 1px white;
+  box-shadow: none;
 }
 
 @keyframes fadein {
@@ -216,4 +237,11 @@
   to {
     opacity: 1;
   }
+}
+
+.chat-msg-btn {
+  margin: 10px 20px 5px 20px;
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
 }
