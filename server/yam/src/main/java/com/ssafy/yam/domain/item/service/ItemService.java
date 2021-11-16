@@ -111,20 +111,22 @@ public class ItemService {
 
     private void addItemList(List<ItemListResponse> response, List<Item> itemList) {
         for (Item item : itemList) {
-            ItemListResponse listItem = ItemListResponse.builder()
-                    .itemId(item.getItemId())
-                    .itemName(item.getItemName())
-                    .itemPrice(item.getItemPrice())
-                    .itemAddress(item.getItemAddress())
-                    .itemAreaCode(item.getItemAreaCode())
-                    .itemModifiedTime(item.getItemModifiedTime())
-                    .build();
+            if(item.getItemIsActive().equals("Y")) {
+                ItemListResponse listItem = ItemListResponse.builder()
+                        .itemId(item.getItemId())
+                        .itemName(item.getItemName())
+                        .itemPrice(item.getItemPrice())
+                        .itemAddress(item.getItemAddress())
+                        .itemAreaCode(item.getItemAreaCode())
+                        .itemModifiedTime(item.getItemModifiedTime())
+                        .build();
 
-            Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());
-            if (image != null)
-                listItem.setItemImage(image.getImageUrl());
+                Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());
+                if (image != null)
+                    listItem.setItemImage(image.getImageUrl());
 
-            response.add(listItem);
+                response.add(listItem);
+            }
         }
     }
 

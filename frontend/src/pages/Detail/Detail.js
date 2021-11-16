@@ -43,7 +43,6 @@ export const Detail = (props) => {
           },
         })
         .then((response) => {
-          console.log(response.data);
           setDetail(response.data.item);
           setUnavailableDate(response.data.unavailableDate);
           setLoading(false);
@@ -54,15 +53,7 @@ export const Detail = (props) => {
           }
         })
         .catch((error) => {
-          Swal.fire({
-            title: "Error!",
-            text: "상품 내역이 존재하지 않습니다.",
-            icon: "error",
-            confirmButtonText: "OK!",
-            confirmButtonColor: "#497c5f",
-          }).then((result) => {
-            history.push("/");
-          });
+          history.push("/");
         });
     } else {
       axios
@@ -75,22 +66,13 @@ export const Detail = (props) => {
           // setLike(response.data.bookmark);
         })
         .catch((error) => {
-          Swal.fire({
-            title: "Error!",
-            text: "상품 내역이 존재하지 않습니다.",
-            icon: "error",
-            confirmButtonText: "OK!",
-            confirmButtonColor: "#497c5f",
-          }).then((result) => {
-            history.push("/");
-          });
+          history.push("/");
         });
     }
   }, []);
 
   const onSelectProduct = () => {
     const timestamp = new Date();
-    console.log(detail.owner.ownerId);
     props.client.current.publish({
       destination: "/app/send",
       body: JSON.stringify({
@@ -126,48 +108,46 @@ export const Detail = (props) => {
 
   const onLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    setLike(true);
     axios
-      .post(
-        `/item/bookmark/${detail.itemId}`,
-        {},
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((error) => {
-        Swal.fire({
-          title: "Error!",
-          text: "관심 등록이 불가합니다.",
-          icon: "error",
-          confirmButtonText: "OK!",
-          confirmButtonColor: "#497c5f",
-        });
-      });
+    .post(`/item/bookmark/${detail.itemId}`, {}, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((response) => {
+        setLike(true);
+      })
+    .catch((error) => {
+      Swal.fire({
+        title: 'Error!',
+        text: '관심 등록이 불가합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
+    });
   };
 
   const onUnLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
-    setLike(false);
     axios
-      .delete(`/item/bookmark/${detail.itemId}`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
+    .delete(`/item/bookmark/${detail.itemId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((response) => {
+      setLike(false);      
       })
-      .then((response) => {})
-      .catch((error) => {
-        Swal.fire({
-          title: "Error!",
-          text: "관심 등록 취소 불가합니다.",
-          icon: "error",
-          confirmButtonText: "OK!",
-          confirmButtonColor: "#497c5f",
-        });
-      });
+    .catch((error) => {
+      Swal.fire({
+        title: 'Error!',
+        text: '관심 등록 취소 불가합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
+    });
   };
 
   return (

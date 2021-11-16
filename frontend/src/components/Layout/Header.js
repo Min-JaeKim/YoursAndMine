@@ -14,9 +14,6 @@ import Swal from 'sweetalert2'
 const Header = (props) => {
   const history = useHistory();
 
-  //중요
-  // 로그아웃 시 헤더가 변경되지 않는 오류가 있습니다
-
   let { user, loginFlag } = useSelector(({ user }) => ({
     user: user.user,
     loginFlag: user.login,
@@ -29,7 +26,7 @@ const Header = (props) => {
   useEffect(() => {
     if (token) {
       axios
-      .get(`/user/mypage`, {
+      .get(`/user/me`, {
         headers: {
           Authorization: "Bearer " + token,
         },

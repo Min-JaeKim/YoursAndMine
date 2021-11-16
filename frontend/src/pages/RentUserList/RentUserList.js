@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import profile from "../../assets/image/defaultuser.png";
-import { useParams } from "react-router-dom";
 import axios from "../../api/axios";
-import "./RentUserList.css";
+import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
+import "./RentUserList.css";
+import profile from "../../assets/image/defaultuser.png";
+
+// 대여자 목록
 const RentUserList = ({ history }) => {
   const { pNo } = useParams();
   const [rentUser, setRentUser] = useState([]);

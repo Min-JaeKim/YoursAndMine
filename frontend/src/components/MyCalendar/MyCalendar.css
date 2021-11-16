@@ -80,6 +80,14 @@ body {
   height: auto;
 }
 
+.prev-month-button {
+  cursor: pointer;
+}
+
+.post-month-button {
+  cursor: pointer;
+}
+
 /* html,
 body {
   height: 100%;

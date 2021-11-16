@@ -89,6 +89,7 @@ public class UserResponseDto {
         private String itemName;
         private String itemBuyerNickname;
         private List<String> itemImage = new ArrayList<>();
+        private int dealId;
         private LocalDate dealStartDate;
         private LocalDate dealEndDate;
     }
@@ -168,7 +169,7 @@ public class UserResponseDto {
         private String userNickname;
         private String userAddress;
         private String userAreaCode;
-        private String userImageUrl;
+        private String userImage;
         private int userAuthLevel;
     }
 

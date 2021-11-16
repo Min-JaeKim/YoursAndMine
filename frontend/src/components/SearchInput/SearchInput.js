@@ -25,13 +25,10 @@ const SearchInput = ({ category }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     history.push({
-      pathname: `/searchitem?text=${inputText}`,
-      state: {
-        category: category,
-      },
+      pathname: `/searchitem?category=${searchCategory}&keyword=${inputText}&sort=1`,
     });
     // history.push(`/searchitem?text=${inputText}`);
-    window.location.replace(`/searchitem?text=${inputText}`); //새로고침
+    window.location.replace(`/searchitem?category=${searchCategory}&keyword=${inputText}&sort=1`); //새로고침
   };
 
   const deleteCategory = () => {

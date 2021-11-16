@@ -2,6 +2,8 @@ package com.ssafy.yam.domain.deal.repository;
 
 import com.ssafy.yam.domain.deal.entity.Deal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +15,7 @@ public interface DealRepository extends JpaRepository<Deal, Integer> {
     List<Deal> findByBuyer_UserIdOrderByDealStartDate(int userId);
     List<Deal> findByBuyer_UserId(int userId);
     List<Deal> findBySeller_UserId(int userId);
+
+    @Query(value = "select count(*) from deal where item_id = :itemId", nativeQuery = true)
+    int countByItemId(@Param("itemId") int itemId);
 }

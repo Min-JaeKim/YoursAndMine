@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
-import "./AllCategory.css";
 import { useHistory } from "react-router";
+import React, { useState, useCallback } from "react";
+
+import "./AllCategory.css";
 import art from "../../assets/icons/category/art.png";
 import beach from "../../assets/icons/category/beach.png";
 import camera from "../../assets/icons/category/camera.png";

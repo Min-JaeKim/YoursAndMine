@@ -18,7 +18,7 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping()
-    public ResponseEntity<List<SearchResponse>> searchItem(@RequestParam String category, @RequestParam String keyword){
-        return ResponseEntity.status(200).body(searchService.searchItem(category, keyword));
+    public ResponseEntity<List<SearchResponse>> searchItem(@RequestParam String category, @RequestParam String keyword, @RequestParam int sort){
+        return ResponseEntity.status(200).body(searchService.searchItem(category, keyword, sort));
     }
 }

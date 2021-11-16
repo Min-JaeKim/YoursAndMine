@@ -19,8 +19,9 @@ const MyProduct = (props) => {
 	const [myProducts, setMyProducts] = useState([]);
 	const [giveProducts, setGiveProducts] = useState([]);
 	const [getProducts, setGetProducts] = useState([]);
+	const [updateFlag, setUpdateFlag] = useState(false);
 
-	let {selectDate } = useSelector(({ schedule }) => ({
+	let {selectDate, rentalCancelFlag } = useSelector(({ schedule }) => ({
 		selectDate: schedule.selectDate
   }));
 	// const datas = [
@@ -51,14 +52,14 @@ const MyProduct = (props) => {
 	// ]
 
 	useEffect(() => {
-		if (selectDate) {
+		if (selectDate || updateFlag) {
 
 			setSelectMonth(selectDate.substring(5, 7));
 			setSelectDay(selectDate.substring(8, 10));
 			const token = JSON.parse(window.localStorage.getItem("token"));
 			
 			axios
-			.get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/day-schedule/${selectDate}`, {
+			.get(`/user/day-schedule/${selectDate}`, {
 				headers: {
 					Authorization: "Bearer " + token,
 				},
@@ -71,6 +72,7 @@ const MyProduct = (props) => {
 					} else {
 						setMyProducts(response.data.회수일정);
 					}
+					setUpdateFlag(false);
 				})
 				.catch((error) => {
 					Swal.fire({
@@ -84,7 +86,7 @@ const MyProduct = (props) => {
 					})
 				});
 		}
-	}, [selectDate])
+	}, [selectDate, updateFlag])
 
 	useEffect(() => {
 		setSelectMonth(moment().format('MM'));
@@ -100,6 +102,12 @@ const MyProduct = (props) => {
 		}
   }, [flag]);
 
+	const cancelRentFlag = (flag) => {
+		if (flag) {
+			setUpdateFlag(true);
+		}
+	}
+
 	return (
 		<div className="All2">
 			<div className="mp-selected-date-rent-list">
@@ -112,7 +120,7 @@ const MyProduct = (props) => {
 			)) : (
 				// datas.map((data) => (
 				myProducts.map((data) => (
-					<MyProductDetail flag={false} data={data} key={data.id}></MyProductDetail>
+					<MyProductDetail flag={false} data={data} key={data.id} cancelRentFlag={cancelRentFlag}></MyProductDetail>
 			)))}
 			
 		</div>

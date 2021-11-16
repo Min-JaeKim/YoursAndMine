@@ -18,4 +18,5 @@ public class SearchResponse {
     private String itemAreaCode;
     private LocalDateTime itemModifiedTime;
     private int bookmarkCount;
+    private int dealCount;
 }

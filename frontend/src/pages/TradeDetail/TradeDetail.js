@@ -18,7 +18,6 @@ const TradeDetail = () => {
       })
       .then((response) => {
         setContract(response.data);
-        console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
