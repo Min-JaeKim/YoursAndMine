@@ -16,7 +16,6 @@ const SignIn = ({ history }) => {
   const dispatch = useDispatch();
 
   const signin = (e) => {
-    console.log("로그인");
     e.preventDefault();
     axios
       .post(`/login`, {
@@ -24,7 +23,6 @@ const SignIn = ({ history }) => {
         userPassword: password,
       })
       .then((response) => {
-        console.log(response);
         const token = response.data.accessToken.split(" ")[1];
         window.localStorage.setItem("token", JSON.stringify(token));
         axios

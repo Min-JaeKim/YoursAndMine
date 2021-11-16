@@ -1,7 +1,8 @@
 import React from 'react'
 import moment from 'moment';
 import axios from '../../api/axios';
-import { useSelector } from 'react-redux';
+import allActions from '../../redux/actions';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './MyProduct.css'
 import Swal from 'sweetalert2';
@@ -9,7 +10,10 @@ import { Button } from "semantic-ui-react";
 import tmpPic from '../../assets/icons/borrow.png'
 
 const MyProductDetail = (props) => {
-	console.log(props.data);
+	console.log(props)
+
+	const dispatch = useDispatch();
+
 	const data = props.data;
 	const flag = props.flag;
 
@@ -26,6 +30,7 @@ const MyProductDetail = (props) => {
           },
         })
         .then((response) => {
+					dispatch(allActions.scheduleActions.rentCancelSuccess());
 					props.cancelRentFlag(true);
 					Swal.fire({
 						title: "Cancel!",

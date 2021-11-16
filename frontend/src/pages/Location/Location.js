@@ -42,6 +42,7 @@ const Location = ({ searchPlace }) => {
         }
       )
       .then((response) => {
+        dispatch(allActions.userActions.changeLocalSuccess());
         // window.localStorage.setItem("token", JSON.stringify(response.data.split(" ")[1]));
         const userData = JSON.parse(window.localStorage.getItem("user"));
         userData.userAddress = address;
