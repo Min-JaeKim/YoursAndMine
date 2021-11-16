@@ -71,7 +71,7 @@ function App() {
         // 이전 데이터 불러오기
         axios({
           method: "post",
-          url: process.env.REACT_APP_USER_BASE_URL + "/fetchAllChats",
+          url: process.env.REACT_APP_CHAT_SERVER_BASE_URL + "/fetchAllChats",
           data: {
             userPk: userId,
             token: token,

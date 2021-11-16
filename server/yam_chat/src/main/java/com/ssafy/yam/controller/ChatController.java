@@ -66,7 +66,7 @@ public class ChatController {
         simpMessagingTemplate.convertAndSend("/topic/"+msg.getTo() , msg);
     }
 
-    @PostMapping("/fetchAllChats")
+    @PostMapping("/chat-api/fetchAllChats")
     public ResponseEntity<?> fetchAll(@RequestBody UserInfoRequest userInfoRequest){
         logger.info("user info : " + userInfoRequest.getToken());
         String userPk = userInfoRequest.getUserPk();
