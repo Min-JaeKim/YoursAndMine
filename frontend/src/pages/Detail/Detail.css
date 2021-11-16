@@ -48,6 +48,15 @@
   margin-top: 0;
 }
 
+.detail-owner-button {
+}
+
+.detail-put-product {
+}
+
+.detail-delete-product {
+}
+
 .detail-like {
   display: flex;
   flex-direction: column;

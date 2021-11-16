@@ -108,6 +108,26 @@ const Main = () => {
 
   }, [loginFlag])
 
+  useEffect(() => {
+    axios
+        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          setNearProduct(response.data);
+          if (response.data.length >= 3) {
+            setNearProdcutCount(3);
+          } else {
+            setNearProdcutCount(response.data.length);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }, [changeLocalFlag])
+
   // const NextArrow = (props) => {
   //   const { className, style, onClick } = props;
   //   return (
@@ -197,36 +217,86 @@ const Main = () => {
     });
   }
 
+  window.addEventListener('mousemove', handleMouseMove);
+  window.addEventListener('resize', handleWindowResize);
+
+  const spansSlow = document.querySelectorAll('.spanSlow');
+  const spansFast = document.querySelectorAll('.spanFast');
+
+  let width = window.innerWidth;
+
+  function handleMouseMove(e) {
+    let normalizedPosition = e.pageX / (width/2) - 1;
+    let speedSlow = 100 * normalizedPosition;
+    let speedFast = 200 * normalizedPosition;
+    spansSlow.forEach((span) => {
+      span.style.transform = `translate(${speedSlow}px)`;
+    });
+    spansFast.forEach((span) => {
+      span.style.transform = `translate(${speedFast}px)`
+    })
+  }
+  //we need to recalculate width when the window is resized
+  function handleWindowResize() {
+    width = window.innerWidth;
+  }
+
   return (
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
       <SearchInput />
-      <Slider {...settings}>
-        <div className="carousel-page">
-          <img alt="thumb-nail" src="https://picsum.photos/1000?random=1" />
-          {/* <h3>한 번 쓰고 말건데</h3> */}
+    <div className="main-body">
+      <div class="wrap">
+      <div class="line">
+        <div class="main-left">
+          <div class="content">
+            <span class="spanFast">YOURS</span>
+          </div>
         </div>
-        <div className="carousel-page">
-          <img alt="thumb-nail" src="https://picsum.photos/1000?random=2" />
-
-          {/* <h3>사기는 아깝고</h3> */}
+        <div class="main-right">
+          <div class="content">
+            <span class="spanFast">YOURS</span>
+          </div>
         </div>
-        <div className="carousel-page">
-          <img alt="thumb-nail" src="https://picsum.photos/1000?random=3" />
-
-          {/* <h3>안쓰는 물건인데</h3> */}
+      </div>
+      <div class="line">
+        <div class="main-left">
+          <div class="content">
+            <span class="spanFast">AND</span>
+          </div>
         </div>
-        <div className="carousel-page">
-          <img alt="thumb-nail" src="https://picsum.photos/1000?random=4" />
-
-          {/* <h3>버리기는 아까울 때</h3> */}
+        <div class="main-right">
+          <div class="content">
+            <span class="spanFast">AND</span>
+          </div>
         </div>
-        <div className="carousel-page">
-          <img alt="thumb-nail" src="https://picsum.photos/1000?random=5" />
-
-          {/* <h3>빌리지하세요</h3> */}
         </div>
-      </Slider>
+        <div class="line">
+            <div class="main-left">
+              <div class="content">
+                <span class="spanFast">MINE</span>
+              </div>
+            </div>
+            <div class="main-right">
+              <div class="content">
+                <span class="spanFast">MINE</span>
+              </div>
+            </div>
+          </div>
+          {/* <div class="line">
+              <div class="left">
+                <div class="content">
+                  <span class="spanSlow">want</span>
+                </div>
+              </div>
+              <div class="right">
+                <div class="content">
+                  <span class="spanSlow">want</span>
+                </div>
+              </div>
+            </div> */}
+        </div>
+    </div>
 
       { !loginFlag || !user?.userAddress ?
       // {!user?.userAddress || (user?.userAddress && !user.userAddress) ?
@@ -234,9 +304,9 @@ const Main = () => {
         <div className="main-current-rent">
           <div className="main-current-rent-header">
             <h4>최근 등록된 물건 ✌🏻</h4>
-            <Link to="/tradelog" className="rent-header-link">
-              {"대여내역 보기 >"}
-            </Link>
+            {/* <Link to="/product" className="rent-header-link">
+               {"전체 상품보기 >"}
+             </Link> */}
           </div>
           <div className="main-non-member-product">
             {nonMemberCarousel(nonMemberProduct, "3")}

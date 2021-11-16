@@ -26,6 +26,7 @@
   color: white;
   border: none;
   margin-top: 15%;
+  cursor: pointer;
 }
 
 .profile-title {
@@ -46,4 +47,12 @@
 .profile_preview {
   width: 40%;
   border-radius: 30%;
+}
+
+.ue-profile-img img {
+  height: 100px;
+  width: 100px;
+  border-radius: 75px;
+  object-fit: cover;
+  margin: 10px;
 }

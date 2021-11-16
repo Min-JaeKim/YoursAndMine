@@ -35,6 +35,7 @@
   position: relative;
   left: 104px;
   width: 6%;
+  cursor: pointer;
 }
 
 /* .header-location img {

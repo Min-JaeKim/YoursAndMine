@@ -83,4 +83,54 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+} */
+.wrap {
+  margin-top: 20px;
+}
+.main-body {
+  /* height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+.line {
+  width: 500px;
+}
+.main-left,
+.main-right {
+  width: 200px;
+  overflow: hidden;
+  display: inline-block;
+}
+.main-left {
+  color: #497c5f;
+  transform: skew(0deg, -15deg);
+}
+.main-right {
+  color: #c5d3cc;
+  transform: skew(0deg, 15deg);
+}
+.main-left .content {
+  width: 450px;
+  /* width: 300px; */
+  text-align: center;
+}
+.main-right .content {
+  width: 155px;
+  text-align: center;
+  transform: translate(-50px);
+}
+.spanFast {
+  display: inline-block;
+  font-family: "Montserrat", sans-serif;
+  font-size: 27px;
+  text-transform: uppercase;
+  line-height: 1.5;
+  transition: ease-out 0.6s;
 }

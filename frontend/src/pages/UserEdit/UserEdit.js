@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
-import profile from "../../assets/image/user.png";
 import "./UserEdit.css";
-import axios from "axios";
+import Swal from "sweetalert2";
+import profile from "../../assets/image/user.png";
+
+import axios from "../../api/axios";
+import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router';
 
 const UserEdit = () => {
@@ -12,6 +14,7 @@ const UserEdit = () => {
   const [file, setFile] = useState('');
   const [previewURL, setPreviewURL] = useState('');
   const [updateFlag, setUpdateFlag] = useState(false);
+  const [profilePreview, setProfilePreview] = useState(null);
 
   let profile_preview = null;
   if(file !=='') {
@@ -20,18 +23,25 @@ const UserEdit = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/me`, {
+      .get(`/user/me`, {
         headers: {
-          Authentication: "Bearer " + token,
+          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
         setUser(response.data);
+        setPreviewURL(response.data.userImage);
         profile_preview=response.data.userImage;
         setUpdateFlag(false);
       })
       .catch((error) => {
-        alert("다시 로그인하세요.")
+        Swal.fire({
+          title: 'Error!',
+          text: '다시 로그인하세요.',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        })
       });
   }, [updateFlag]);
 
@@ -51,17 +61,29 @@ const UserEdit = () => {
       formData.append("userImage", file);
 
     axios
-      .put(`${process.env.REACT_APP_SERVER_BASE_URL}/api/user/modify/profile`, formData, {
+      .put(`/user/profile`, formData, {
         headers: {
-          Authentication: "Bearer " + token,
+          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
-        alert("수정이 완료되었습니다.")
+        Swal.fire({
+          title: 'Success!',
+          text: '회원 정보 수정이 되었습니다.',
+          icon: 'success',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        })
 				history.push('/mypage');
       })
       .catch((error) => {
-        alert("다시 수정해 주세요.")
+        Swal.fire({
+          title: 'Error!',
+          text: '수정이 취소되었습니다.',
+          icon: 'error',
+          confirmButtonText: 'OK!',
+          confirmButtonColor: '#497c5f'
+        })
       });
   }
 
@@ -71,7 +93,7 @@ const UserEdit = () => {
         <span className="profile-title">프로필 이미지 변경</span>
       </div>
       <br /><br />
-      <div className="profile-img">
+      <div className="ue-profile-img">
         <div>
           {profile_preview}
         </div>

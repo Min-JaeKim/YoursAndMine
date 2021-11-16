@@ -37,7 +37,7 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
           </div>
         )
       ) : null}
-      {msg.type === "reserve" ? (
+      {msg.type === "reserve" ? ( // 예약 메시지
         parseInt(msg.author) !== myId ? ( // 예약 요청 수신
           <div className="receive-msg-box">
             <div className="receive-profile-img">
@@ -52,7 +52,6 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
               <button onClick={openCalendar} className="chat-msg-btn">
                 확인하기
               </button>
-              {/* {msg.message} */}
             </div>
             <div className="receive-msg-time">{msg.timestamp}</div>
           </div>

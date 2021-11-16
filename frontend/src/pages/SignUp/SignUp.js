@@ -2,7 +2,7 @@ import "./SignUp.css";
 import Swal from 'sweetalert2'
 import axios from "../../api/axios";
 import React, { useState, useRef } from "react";
-import check from "../../assets/icons/check.png";
+import check from "../../assets/icons/check2.png";
 import { Button, Input } from "semantic-ui-react";
 import { useForm, Controller } from "react-hook-form";
 import checkOn from "../../assets/icons/check-on.png";
@@ -47,7 +47,7 @@ const SignUp = ({ history }) => {
           confirmButtonText: 'OK!',
           confirmButtonColor: '#497c5f'
         })
-        history.push('/signin')
+        history.push('/join')
 
       }).catch((error) => {
         console.log(error)

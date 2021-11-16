@@ -3,8 +3,8 @@ import { useHistory } from "react-router";
 import { useParams } from "react-router-dom";
 import DetailCalendar from "./DetailCalendar";
 import React, { useState, useEffect } from "react";
-import { insertMessage } from "../../redux/reducers/ConversationList";
 import { useSelector, useDispatch } from "react-redux";
+import { insertMessage } from "../../redux/reducers/ConversationList";
 
 import "./Detail.css";
 import Slider from "react-slick";
@@ -77,7 +77,12 @@ export const Detail = (props) => {
       destination: "/app/send",
       body: JSON.stringify({
         type: "create",
-        message: "",
+        message: JSON.stringify({
+          name: detail.owner.ownerNickName,
+          userImg: detail.owner.ownerImageUrl,
+          itemImg: detail.itemImage[0],
+          itemName: detail.itemName,
+        }),
         author: userId, // 내이름
         to: detail.owner.ownerId,
         itemPk: pNo,
@@ -87,67 +92,73 @@ export const Detail = (props) => {
 
     const m = {
       type: "create",
-      message: "",
+      message: JSON.stringify({
+        name: detail.owner.ownerNickName,
+        userImg: detail.owner.ownerImageUrl,
+        itemImg: detail.itemImage[0],
+        itemName: detail.itemName,
+      }),
       author: userId, // 내이름
       to: detail.owner.ownerId,
       itemPk: pNo,
       timestamp: timestamp.getTime(),
-      // timestamp:
-      //   timestamp.getHours().toString().padStart(2, "0") +
-      //   ":" +
-      //   timestamp.getMinutes().toString().padStart(2, "0"),
     };
     console.log(m);
     // dispatch(insertMessage(m));
 
-    history.push({
+    history.replace({
       pathname: "/chat",
-      state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
+      state: { userPK: detail.owner.ownerId },
+      // state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
     });
   };
 
   const onLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
-    .post(`/item/bookmark/${detail.itemId}`, {}, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-    .then((response) => {
+      .post(
+        `/item/bookmark/${detail.itemId}`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((response) => {
         setLike(true);
       })
-    .catch((error) => {
-      Swal.fire({
-        title: 'Error!',
-        text: '관심 등록이 불가합니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      })
-    });
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: "관심 등록이 불가합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        });
+      });
   };
 
   const onUnLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
-    .delete(`/item/bookmark/${detail.itemId}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-    .then((response) => {
-      setLike(false);      
+      .delete(`/item/bookmark/${detail.itemId}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       })
-    .catch((error) => {
-      Swal.fire({
-        title: 'Error!',
-        text: '관심 등록 취소 불가합니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
+      .then((response) => {
+        setLike(false);
       })
-    });
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: "관심 등록 취소 불가합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        });
+      });
   };
 
   return (
@@ -175,6 +186,17 @@ export const Detail = (props) => {
               <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
             {token ? (
+              detail.owner.ownerId === userId 
+              ?
+              <div className="detail-owner-button">
+                <Button className="detail-put-product">
+                  수정
+                </Button>
+                <Button className="detail-delete-product">
+                  삭제
+                </Button>
+              </div>
+              :
               <div className="detail-like">
                 {like ? (
                   <img
