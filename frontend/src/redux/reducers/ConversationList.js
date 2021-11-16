@@ -32,7 +32,17 @@ const ConversationList = (state = initialState, action) => {
       state[action.payload.to].timestamp = action.payload.timestamp;
       return { ...state };
     case RECEIVED:
-      if (!state[action.payload.author]) {
+      if (action.payload.type === "create") {
+        const tmp = JSON.parse(action.payload.message);
+        state[action.payload.author] = {
+          name: tmp.name,
+          itemPk: action.payload.itemPk,
+          userImg: tmp.userImg,
+          itemImg: tmp.itemImg,
+          itemName: tmp.itemName,
+          lastMsg: null,
+          list: [],
+        };
       }
 
       if (state[action.payload.author] === undefined) {
