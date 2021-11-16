@@ -9,7 +9,14 @@ import ReserveButton from "./ReserveButton";
 
 function ChatRoom(props, { location }) {
   const mList = useSelector((state) => state.conversationlist[props.to].list);
-  const [OpenReserve, setOpenReserve] = useState(false);
+  const [OpenReserve, setOpenReserve] = useState({
+    type: null,
+    selectionRange: {
+      startDate: null,
+      endDate: null,
+      key: "selection",
+    },
+  });
   const scrollRef = useRef();
   const itemInfo = {
     itemPk: useSelector((state) => state.conversationlist[props.to].itemPk),
@@ -30,15 +37,29 @@ function ChatRoom(props, { location }) {
     <div className="chat-room">
       <ChatHeader to={props.to} setChatOpen={props.setChatOpen} />
       <ChatItemHeader itemInfo={itemInfo} />
+      <div className="chatroom-empty-header"></div>
       {mList.map((msg, idx) => (
-        <ChatMessage profileImg={""} msg={msg} to={props.to} key={idx} />
+        <ChatMessage
+          profileImg={""}
+          isOpen={OpenReserve}
+          setOpenReserve={setOpenReserve}
+          msg={msg}
+          to={props.to}
+          key={idx}
+        />
       ))}
       <div className="input-bottom">
         <ChatInput client={props.client} to={props.to} />
       </div>
       <div ref={scrollRef}></div>
       <ReserveButton setOpenReserve={setOpenReserve} />
-      <CalendarModal isOpen={OpenReserve} setOpenReserve={setOpenReserve} />
+      <CalendarModal
+        to={props.to}
+        client={props.client}
+        itemPk={itemInfo.itemPk}
+        isOpen={OpenReserve}
+        setOpenReserve={setOpenReserve}
+      />
     </div>
   );
 }
