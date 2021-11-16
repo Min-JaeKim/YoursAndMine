@@ -27,7 +27,7 @@ function ChatInput(props) {
     props.client.current.publish({
       destination: "/app/send",
       body: JSON.stringify({
-        type: "send",
+        type: "message",
         message: msg,
         author: userId,
         to: to,
@@ -35,7 +35,7 @@ function ChatInput(props) {
       }),
     });
     const m = {
-      type: "send",
+      type: "message",
       message: msg,
       author: userId,
       to: to,

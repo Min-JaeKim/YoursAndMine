@@ -21,7 +21,9 @@ export const Detail = (props) => {
   const [loading, setLoading] = useState(true);
   const [like, setLike] = useState(false);
   const dispatch = useDispatch();
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
+  const userId = JSON.parse(localStorage.getItem("user"))
+    ? JSON.parse(localStorage.getItem("user")).userId
+    : null;
 
   const settings = {
     dots: true,
@@ -34,8 +36,6 @@ export const Detail = (props) => {
 
   useEffect(() => {
     if (token !== null) {
-      console.log(4546465465465465);
-      console.log(token);
       axios
         .get(`/item/${pNo}`, {
           headers: {
