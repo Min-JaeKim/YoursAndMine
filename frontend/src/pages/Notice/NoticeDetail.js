@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./Notice.css";
 import defaultUserImage from "../../assets/image/defaultuser.png";
 
 function NoticeDetail({ notice }) {
@@ -14,10 +14,8 @@ function NoticeDetail({ notice }) {
       </div>
       <div className="user-info">
         <div className="user-header">
-          <div className="user-name">{notice.username}</div>
-          <div className="user-location">{notice.location}</div>
+          <div className="notice-msg">{notice.msg}</div>
         </div>
-        <div className="user-footer">{notice.msg}</div>
       </div>
       <div className="chat-product-img">
         {notice.productImg ? (

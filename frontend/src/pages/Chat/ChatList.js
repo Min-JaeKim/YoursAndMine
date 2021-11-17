@@ -13,17 +13,28 @@ function ChatList(props) {
   return (
     <div>
       {chatOpen ? <ChatRoom client={props.client} to={chatOpen} setChatOpen={setChatOpen} /> : null}
-      {Object.keys(conversationList).map((key) => (
-        <>
-          <ChatDetail
-            key={key}
-            client={props.client}
-            conversation={conversationList[key]}
-            user={key}
-            setChatOpen={setChatOpen}
-          />
-        </>
-      ))}
+      {Object.keys(conversationList)
+        .sort(function (a, b) {
+          return (
+            new Date(
+              conversationList[b].list[conversationList[b].list.length - 1].timestamp
+            ).getTime() -
+            new Date(
+              conversationList[a].list[conversationList[a].list.length - 1].timestamp
+            ).getTime()
+          );
+        })
+        .map((key) => (
+          <>
+            <ChatDetail
+              key={key}
+              client={props.client}
+              conversation={conversationList[key]}
+              user={key}
+              setChatOpen={setChatOpen}
+            />
+          </>
+        ))}
     </div>
   );
 }

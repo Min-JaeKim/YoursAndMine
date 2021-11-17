@@ -10,6 +10,7 @@ function ProductList() {
     axios
       .get(`/item`)
       .then((response) => {
+        console.log(response.data);
         setProducts(response.data);
       })
       .catch((error) => {
