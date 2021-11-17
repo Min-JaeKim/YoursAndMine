@@ -31,7 +31,7 @@ public class SearchService {
         List<SearchResponse> response = new ArrayList<>();
 
         if(category.equals("undefined") || category.equals("")){
-            System.out.println("카테고리 없음");
+//            System.out.println("카테고리 없음");
             List<Item> nameList = itemRepository.findAllByItemNameContains(keyword);
             List<Item> contentList = itemRepository.findAllByItemContentContains(keyword);
 
@@ -48,7 +48,7 @@ public class SearchService {
                 Collections.sort(response, new Comparator<SearchResponse>() {
                     @Override
                     public int compare(SearchResponse o1, SearchResponse o2) {
-                        return -o1.getItemModifiedTime().compareTo(o2.getItemModifiedTime());
+                        return -(o1.getItemModifiedTime().compareTo(o2.getItemModifiedTime()));
                     }
                 });
             }else if(sort == 2){
@@ -67,7 +67,7 @@ public class SearchService {
                 });
             }
         }else{
-//            System.out.println("카테고리 있음");
+//            System.out.println("카테고리 있음" + category);
             List<Item> nameList = itemRepository.findAllByItemCategoryAndItemNameContains(category, keyword);
             List<Item> contentList = itemRepository.findAllByItemCategoryAndItemContentContains(category, keyword);
 
