@@ -98,17 +98,13 @@ public class ItemService {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
 
         if(tokenEmail.equals("anonymousUser") ) {
-            System.out.println("유저 조회 안됨!!!!!!!");
             List<Item> itemList = itemRepository.findAllBy(pageable);
             addItemList(response, itemList);
         }else{
             User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
             int areaCode = user.getUserAreaCode();
-            System.out.println(areaCode);
             List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode);
-            for(Item item : itemList){
-                System.out.println(item.toString());
-            }
+
             addItemList(response, itemList);
         }
         return response;
