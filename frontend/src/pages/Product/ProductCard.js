@@ -4,6 +4,9 @@ import likeIcon from "../../assets/icons/like.png";
 import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
+
+  console.log(product);
+
   return (
     <Link to={{ pathname: `/detail/` + product.itemId, state: {} }}>
       <div>
