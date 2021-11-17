@@ -20,7 +20,7 @@ public class ItemResponse {
     private String itemAddress;
     private Owner owner;
     private List<String> itemImage = new ArrayList<>();
-    private String itemAreaCode;
+    private int itemAreaCode;
     private LocalDateTime itemModifiedTime;
     private int bookmarkCount;
     private String bookmark;
