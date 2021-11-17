@@ -245,7 +245,24 @@ const Main = () => {
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
       <SearchInput />
-    <div className="main-body">
+      <Slider {...settings}>
+        <div className="carousel-page">
+          <h3>한 번 쓰고 말건데</h3>
+        </div>
+        <div className="carousel-page">
+          <h3>사기는 아깝고</h3>
+        </div>
+        <div className="carousel-page">
+          <h3>안쓰는 물건인데</h3>
+        </div>
+        <div className="carousel-page">
+          <h3>버리기는 아까울 때</h3>
+        </div>
+        <div className="carousel-page">
+          <h3>Yours And Mine!</h3>
+        </div>
+      </Slider>
+    {/* <div className="main-body">
       <div class="wrap">
       <div class="line">
         <div class="main-left">
@@ -283,20 +300,8 @@ const Main = () => {
               </div>
             </div>
           </div>
-          {/* <div class="line">
-              <div class="left">
-                <div class="content">
-                  <span class="spanSlow">want</span>
-                </div>
-              </div>
-              <div class="right">
-                <div class="content">
-                  <span class="spanSlow">want</span>
-                </div>
-              </div>
-            </div> */}
         </div>
-    </div>
+    </div> */}
 
       { !loginFlag || !user?.userAddress ?
       // {!user?.userAddress || (user?.userAddress && !user.userAddress) ?
@@ -304,9 +309,9 @@ const Main = () => {
         <div className="main-current-rent">
           <div className="main-current-rent-header">
             <h4>최근 등록된 물건 ✌🏻</h4>
-            {/* <Link to="/product" className="rent-header-link">
+            <Link to="/product" className="rent-header-link">
                {"전체 상품보기 >"}
-             </Link> */}
+             </Link>
           </div>
           <div className="main-non-member-product">
             {nonMemberCarousel(nonMemberProduct, "3")}
