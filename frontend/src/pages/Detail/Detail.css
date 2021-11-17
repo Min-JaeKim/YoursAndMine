@@ -58,9 +58,16 @@
 .detail-put-product {
 }
 
+.detail-product-info-and-button {
+  display: flex;
+  align-items: center;
+}
+
 .detail-delete-product {
   background-color: #eb3223 !important;
   color: white !important;
+  width: 72px !important;
+  margin-right: 10px !important;
 }
 
 .detail-like {
