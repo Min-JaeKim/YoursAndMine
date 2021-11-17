@@ -53,9 +53,16 @@ const MyProductDetail = (props) => {
 				<div className="mpd-product-name">
 					{data.itemName}
 					{selectDate === data.dealEndDate ?
+					flag 
+					?
+					<div className="mpd-product-rent-falg">
+							반납예정
+					</div> 
+					:
 					<div className="mpd-product-rent-falg">
 							회수예정
-					</div> :
+					</div>
+					  :
 					null
 						}
 				</div>

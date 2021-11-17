@@ -139,7 +139,7 @@ const TradeDetail = () => {
             :
             null
           }
-          {contract.dealEndDate < moment().format('YYYY-MM-DD') && contract.dealStatus !== "반납완료"
+          {contract.dealEndDate <= moment().format('YYYY-MM-DD') && contract.dealStatus !== "반납완료"
             ?
             <button className="td-success-trade-button" onClick={onCompleteReturn}>반납 완료</button>
             :

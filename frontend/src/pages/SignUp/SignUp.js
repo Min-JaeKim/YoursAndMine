@@ -83,6 +83,8 @@ const SignUp = ({ history }) => {
               userEmail: watch('email', ''),
             })
             .then((response) => {
+              // 꼭 지워야할 log
+              console.log(response.data);
               setCode(response.data.certificationNumber);
               setSendEmail(true);
               Swal.fire({
@@ -267,7 +269,8 @@ const SignUp = ({ history }) => {
               required: { value: true, message: "필수 항목입니다" },
               pattern: {
                 value:
-                  /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
+                /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/i,
+                  // /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
                 message: "이메일 형식에 맞게 입력해주세요",
               },
             }}

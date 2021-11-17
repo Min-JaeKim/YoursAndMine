@@ -78,6 +78,7 @@ body {
 .date-check {
   width: 8px;
   height: auto;
+  pointer-events: none;
 }
 
 .prev-month-button {
