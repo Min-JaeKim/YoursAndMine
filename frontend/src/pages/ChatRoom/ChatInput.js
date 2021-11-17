@@ -114,8 +114,8 @@ function ChatInput(props) {
       {/* <button className="send-img-btn" onClick={sendImg}>
         <img alt="send-img" src={ImageSendBtn}></img>
       </button> */}
-      <div class="button-wrapper">
-        <span class="label">+</span>
+      <div className="button-wrapper">
+        <span className="label">+</span>
         <input
           id="img-send-btn"
           name="img-send-btn"

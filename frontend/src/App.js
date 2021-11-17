@@ -87,37 +87,6 @@ function App() {
               });
             }
 
-            // mergeData.sort(function (a, b) {
-            //   return (
-            //     Date.parse(
-            //       a.conversation.messageList[a.conversation.messageList.length - 1].timestamp
-            //     ) <
-            //     Date.parse(
-            //       b.conversation.messageList[b.conversation.messageList.length - 1].timestamp
-            //     )
-            //   );
-            // });
-
-            // console.log(mergeData);
-
-            // for (const key in mergeData) {
-            //   console.log(key);
-            //   dispatch(
-            //     insertPartner({
-            //       partner: mergeData.conversation[key].partnerPk,
-            //       partnerNickname: mergeData.chatRoomInfo[key].userNickname,
-            //       partnerImg: mergeData.chatRoomInfo[key].userImageUrl,
-            //       itemName: mergeData.chatRoomInfo[key].itemName,
-            //       itemPk: mergeData.chatRoomInfo[key].itemId,
-            //       itemImg: mergeData.chatRoomInfo[key].itemImage[0],
-            //       lastMsg:
-            //         mergeData.conversation[key].messageList[
-            //           mergeData.conversation[key].messageList.length - 1
-            //         ],
-            //       list: [...mergeData.conversation[key].messageList],
-            //     })
-            //   );
-            // }
             console.log(response.data.conversation);
             for (const key in response.data.conversation) {
               console.log(key);
