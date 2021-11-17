@@ -4,6 +4,7 @@ import SendMsgBtn from "../../assets/icons/msg-send-btn.png";
 import "./ChatRoom.css";
 import { useSelector, useDispatch } from "react-redux";
 import { insertMessage } from "../../redux/reducers/ConversationList";
+import axios from "../../api/axios";
 
 function ChatInput(props) {
   const [msg, setMsg] = useState("");
@@ -11,6 +12,56 @@ function ChatInput(props) {
   const userId = JSON.parse(localStorage.getItem("user")).userId;
 
   // const client = useRef({});
+
+  const [file, setFile] = useState("");
+
+  const handleFileOnChange = (e) => {
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      setFile(file);
+      // setPreviewURL(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const token = JSON.parse(window.localStorage.getItem("token"));
+    axios
+      .post(`/image/save`, formData, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        const timestamp = new Date();
+
+        props.client.current.publish({
+          destination: "/app/send",
+          body: JSON.stringify({
+            type: "image",
+            message: response.data,
+            author: userId,
+            to: props.to,
+            timestamp: timestamp.getTime(),
+          }),
+        });
+        const m = {
+          type: "image",
+          message: response.data,
+          author: userId,
+          to: props.to,
+          timestamp: timestamp.toISOString(),
+        };
+        dispatch(insertMessage(m));
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleChange = ({ target: { value } }) => setMsg(value);
 
@@ -40,17 +91,13 @@ function ChatInput(props) {
       author: userId,
       to: to,
       timestamp: timestamp.toISOString(),
-      // timestamp:
-      //   timestamp.getHours().toString().padStart(2, "0") +
-      //   ":" +
-      //   timestamp.getMinutes().toString().padStart(2, "0"),
     };
-    console.log(m);
     dispatch(insertMessage(m));
     setMsg("");
   };
 
   const sendImg = () => {
+    let reader = new FileReader();
     console.log("send Img");
   };
 
@@ -63,9 +110,22 @@ function ChatInput(props) {
   return (
     <>
       {/* <input type="file" name="file" onChange={null} /> */}
-      <button className="send-img-btn" onClick={sendImg}>
+
+      {/* <button className="send-img-btn" onClick={sendImg}>
         <img alt="send-img" src={ImageSendBtn}></img>
-      </button>
+      </button> */}
+      <div class="button-wrapper">
+        <span class="label">+</span>
+        <input
+          id="img-send-btn"
+          name="img-send-btn"
+          className="img-send-btn"
+          type="file"
+          accept="image/jpg,impge/png,image/jpeg,image/gif"
+          onChange={handleFileOnChange}
+        ></input>
+      </div>
+
       <input
         className="msg-input"
         placeholder="메시지를 입력해주세요."
