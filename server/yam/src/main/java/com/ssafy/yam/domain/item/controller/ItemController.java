@@ -36,6 +36,7 @@ public class ItemController {
 
     @GetMapping()
     public ResponseEntity<List<ItemListResponse>> getItemList(Pageable pageable){
+        System.out.println("아이템 조회");
         return ResponseEntity.status(200).body(itemService.getItemList(pageable));
     }
 

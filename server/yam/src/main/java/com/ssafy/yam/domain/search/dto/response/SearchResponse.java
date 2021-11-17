@@ -15,7 +15,7 @@ public class SearchResponse {
     private int itemPrice;
     private String itemAddress;
     private String itemImage;
-    private String itemAreaCode;
+    private int itemAreaCode;
     private LocalDateTime itemModifiedTime;
     private int bookmarkCount;
     private int dealCount;

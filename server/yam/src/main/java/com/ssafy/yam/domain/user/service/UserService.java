@@ -90,7 +90,7 @@ public class UserService {
 
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         String userAddress = userRepository.findByUserEmail(tokenEmail).get().getUserAddress();
-        String userAreaCode = userRepository.findByUserEmail(tokenEmail).get().getUserAreaCode();
+        int userAreaCode = userRepository.findByUserEmail(tokenEmail).get().getUserAreaCode();
 
         return new UserResponseDto.LoginResDto(TOKEN_TYPE + jwt, userAddress, userAreaCode);
     }

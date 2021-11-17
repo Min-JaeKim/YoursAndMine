@@ -29,7 +29,7 @@ public class Item {
     private int itemPrice;
     private String itemCategory;
     private String itemAddress;
-    private String itemAreaCode;
+    private int itemAreaCode;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
