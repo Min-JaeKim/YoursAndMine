@@ -73,7 +73,7 @@ public class ItemService {
 
 
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
-        System.out.println(tokenEmail);
+//        System.out.println(tokenEmail);
         if(tokenEmail.equals("anonymousUser") ) {
             ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
             return itemDetail;
@@ -126,6 +126,8 @@ public class ItemService {
                 if (image != null)
                     listItem.setItemImage(image.getImageUrl());
 
+                int bookmarkCnt = bookmarkRepository.countByItemId(item.getItemId());
+                listItem.setBookmarkCount(bookmarkCnt);
                 response.add(listItem);
             }
         }
