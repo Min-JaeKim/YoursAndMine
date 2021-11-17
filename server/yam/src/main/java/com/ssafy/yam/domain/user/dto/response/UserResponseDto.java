@@ -16,7 +16,7 @@ public class UserResponseDto {
         private String accessToken;
         //        private String refreshToken;
         private String userAddress;
-        private String userAreaCode;
+        private int userAreaCode;
     }
 
     @Getter
@@ -47,7 +47,7 @@ public class UserResponseDto {
         private String userNickname;
         private String userImage;
         private String userAddress;
-        private String userAreaCode;
+        private int userAreaCode;
         private int userAuthLevel;
     }
 
@@ -173,7 +173,7 @@ public class UserResponseDto {
         private String userEmail;
         private String userNickname;
         private String userAddress;
-        private String userAreaCode;
+        private int userAreaCode;
         private String userImage;
         private int userAuthLevel;
     }

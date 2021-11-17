@@ -14,13 +14,15 @@ function ChatList(props) {
     <div>
       {chatOpen ? <ChatRoom client={props.client} to={chatOpen} setChatOpen={setChatOpen} /> : null}
       {Object.keys(conversationList).map((key) => (
-        <ChatDetail
-          key={key}
-          client={props.client}
-          conversation={conversationList[key]}
-          user={key}
-          setChatOpen={setChatOpen}
-        />
+        <>
+          <ChatDetail
+            key={key}
+            client={props.client}
+            conversation={conversationList[key]}
+            user={key}
+            setChatOpen={setChatOpen}
+          />
+        </>
       ))}
     </div>
   );
