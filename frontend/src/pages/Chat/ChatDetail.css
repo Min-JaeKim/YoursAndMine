@@ -58,6 +58,14 @@
   padding: 10px;
 }
 
+.new-msg {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 100px;
+  margin-right: 5px;
+}
+
 .profile-img img {
   height: 50px;
   width: 50px;
