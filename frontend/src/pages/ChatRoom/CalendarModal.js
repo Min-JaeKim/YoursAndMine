@@ -72,12 +72,10 @@ function CalendarModal(props) {
 
   const confirmReserve = () => {
     // db 저장
-    console.log(typeof selectionRange.startDate);
-    console.log(selectionRange.startDate);
 
     const formatDate = (date) => {
       let d = new Date(date),
-        month = "" + (d.getMonth() + 1),
+        month = "" + d.getMonth(),
         day = "" + d.getDate(),
         year = d.getFullYear();
 
@@ -87,12 +85,12 @@ function CalendarModal(props) {
       return [year, month, day].join("-");
     };
 
-    console.log(formatDate(selectionRange.startDate));
+    console.log(formatDate(props.isOpen.selectionRange.startDate));
 
     console.log({
       itemId: props.itemPk,
-      dealStartDate: formatDate(selectionRange.startDate),
-      dealEndDate: formatDate(selectionRange.endDate),
+      dealStartDate: formatDate(props.isOpen.selectionRange.startDate),
+      dealEndDate: formatDate(props.isOpen.selectionRange.endDate),
     });
     console.log({
       headers: {
@@ -104,8 +102,8 @@ function CalendarModal(props) {
         `/deal`,
         {
           itemId: props.itemPk,
-          dealStartDate: formatDate(selectionRange.startDate),
-          dealEndDate: formatDate(selectionRange.endDate),
+          dealStartDate: formatDate(props.isOpen.selectionRange.startDate),
+          dealEndDate: formatDate(props.isOpen.selectionRange.endDate),
         },
         {
           headers: {
