@@ -34,14 +34,18 @@ const TradeLog = ({ history }) => {
     });
   };
 
+  const goToProductDetail = (itemId) => {
+    history.push(`/detail/${itemId}`)
+  }
+
   return product.map((item) => {
     return (
       <div>
         <div className="wish-item-list">
           <img src={item.itemImage == null ? noImage : item.itemImage} className="wish-item-icon" alt="item-image"></img>
-          <div className="wish-item-vertical">
+          <div className="wish-item-vertical" onClick={() => goToProductDetail(item.itemId)}>
             <div className="wish-item-title">
-              <Link to={`/detail/${item.dealId}`}>{item.itemName}</Link>
+              <Link to={`/detail/${item.itemId}`}>{item.itemName}</Link>
               {item.dealStatus === "예약완료" ? 
                 <div className="tl-deal-status-pre">{item.dealStatus}</div>
                 :

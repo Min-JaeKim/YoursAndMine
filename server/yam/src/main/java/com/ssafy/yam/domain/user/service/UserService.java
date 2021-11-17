@@ -400,6 +400,7 @@ public class UserService {
         List<Deal> dealList = dealRepository.findByBuyer_UserIdOrderByDealStartDateDesc(user.getUserId());
         for (int i = 0; i < dealList.size(); i++) {
             UserResponseDto.GetTakeItemResDto tmp = modelMapper.map(dealList.get(i), UserResponseDto.GetTakeItemResDto.class);
+            tmp.setItemId(dealList.get(i).getItem().getItemId());
             tmp.setItemImage(imageRepository.findAllImageUrlByItem_ItemId(dealList.get(i).getItem().getItemId()));
             tmp.setItemAddress(itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId()).getItemAddress());
             tmp.setItemName(itemRepository.findItemByItemId(dealList.get(i).getItem().getItemId()).getItemName());
