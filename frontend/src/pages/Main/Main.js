@@ -246,7 +246,7 @@ const Main = () => {
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
       <SearchInput />
-      <div className="main-body">
+      {/* <div className="main-body">
         <div class="stage">
           <div class="layer"></div>
           <div class="layer"></div>
@@ -269,8 +269,8 @@ const Main = () => {
           <div class="layer"></div>
           <div class="layer"></div>
         </div>
-      </div>
-      {/* <Slider {...settings}>
+      </div> */}
+      <Slider {...settings}>
         <div className="carousel-page">
           <h3>한 번 쓰고 말건데</h3>
         </div>
@@ -286,7 +286,7 @@ const Main = () => {
         <div className="carousel-page">
           <h3>Yours And Mine!</h3>
         </div>
-      </Slider> */}
+      </Slider>
     {/* <div className="main-body">
       <div class="wrap">
       <div class="line">
