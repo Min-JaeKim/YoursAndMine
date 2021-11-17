@@ -217,35 +217,60 @@ const Main = () => {
     });
   }
 
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('resize', handleWindowResize);
+  // window.addEventListener('mousemove', handleMouseMove);
+  // window.addEventListener('resize', handleWindowResize);
 
-  const spansSlow = document.querySelectorAll('.spanSlow');
-  const spansFast = document.querySelectorAll('.spanFast');
+  // const spansSlow = document.querySelectorAll('.spanSlow');
+  // const spansFast = document.querySelectorAll('.spanFast');
 
-  let width = window.innerWidth;
+  // let width = window.innerWidth;
 
-  function handleMouseMove(e) {
-    let normalizedPosition = e.pageX / (width/2) - 1;
-    let speedSlow = 100 * normalizedPosition;
-    let speedFast = 200 * normalizedPosition;
-    spansSlow.forEach((span) => {
-      span.style.transform = `translate(${speedSlow}px)`;
-    });
-    spansFast.forEach((span) => {
-      span.style.transform = `translate(${speedFast}px)`
-    })
-  }
-  //we need to recalculate width when the window is resized
-  function handleWindowResize() {
-    width = window.innerWidth;
-  }
+  // function handleMouseMove(e) {
+  //   let normalizedPosition = e.pageX / (width/2) - 1;
+  //   let speedSlow = 100 * normalizedPosition;
+  //   let speedFast = 200 * normalizedPosition;
+  //   spansSlow.forEach((span) => {
+  //     span.style.transform = `translate(${speedSlow}px)`;
+  //   });
+  //   spansFast.forEach((span) => {
+  //     span.style.transform = `translate(${speedFast}px)`
+  //   })
+  // }
+  // //we need to recalculate width when the window is resized
+  // function handleWindowResize() {
+  //   width = window.innerWidth;
+  // }
+
 
   return (
     <div className="main">
       {/* <Input className="main-search" icon="search" iconPosition="left" /> */}
       <SearchInput />
-      <Slider {...settings}>
+      <div className="main-body">
+        <div class="stage">
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+          <div class="layer"></div>
+        </div>
+      </div>
+      {/* <Slider {...settings}>
         <div className="carousel-page">
           <h3>한 번 쓰고 말건데</h3>
         </div>
@@ -261,7 +286,7 @@ const Main = () => {
         <div className="carousel-page">
           <h3>Yours And Mine!</h3>
         </div>
-      </Slider>
+      </Slider> */}
     {/* <div className="main-body">
       <div class="wrap">
       <div class="line">
