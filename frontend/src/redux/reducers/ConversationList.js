@@ -1,12 +1,12 @@
 const NEWPARTNER = "conversationlist/NEWPARTNER";
 const NEWMESSAGE = "conversationlist/NEWMESSAGE";
 const RECEIVED = "conversationlist/RECEIVED";
-const LEAVECHAT = "conversationlist/LEAVECHAT";
+const READ = "conversationlist/READ";
 
 export const insertPartner = (partner) => ({ type: NEWPARTNER, payload: partner });
 export const insertMessage = (msg) => ({ type: NEWMESSAGE, payload: msg });
 export const receive = (msg) => ({ type: RECEIVED, payload: msg });
-export const leaveChat = (partner) => ({ type: LEAVECHAT, payload: partner });
+export const read = (partner) => ({ type: READ, payload: partner });
 
 const initialState = [];
 
@@ -23,6 +23,7 @@ const ConversationList = (state = initialState, action) => {
           action.payload.lastMsg.type === "message" ? action.payload.lastMsg.message : "거래 요청",
         timestamp: action.payload.lastMsg.timestamp,
         list: [...action.payload.list],
+        newmsg: false,
       };
       return { ...state };
     case NEWMESSAGE:
@@ -36,6 +37,7 @@ const ConversationList = (state = initialState, action) => {
           itemName: tmp.itemName,
           lastMsg: null,
           list: [],
+          newmsg: false,
         };
       }
       state[action.payload.to].list = [...state[action.payload.to].list, action.payload];
@@ -54,6 +56,7 @@ const ConversationList = (state = initialState, action) => {
           itemName: tmp.itemName,
           lastMsg: null,
           list: [],
+          newmsg: true,
         };
       }
 
@@ -63,12 +66,13 @@ const ConversationList = (state = initialState, action) => {
         state[action.payload.author].list = [...state[action.payload.author].list, action.payload];
       }
       state[action.payload.author].timestamp = action.payload.timestamp;
+      state[action.payload.author].newmsg = true;
       state[action.payload.author].lastMsg =
         action.payload.type === "message" ? action.payload.message : "거래요청";
 
       return { ...state };
-    case LEAVECHAT:
-      delete state[action.payload];
+    case READ:
+      state[action.payload.room].newmsg = false;
       return { ...state };
     default:
       return state;
