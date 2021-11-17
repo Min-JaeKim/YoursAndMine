@@ -43,11 +43,11 @@ public class DealCRUDService {
             return 1;
         }
 
-        List<Deal> dealList = dealRepository.findAllByItem_ItemId(item.getItemId());
-        for(Deal deal : dealList){
-            if(deal.getDealStatus().equals("대여중"))
-                return 1;
-        }
+//        List<Deal> dealList = dealRepository.findAllByItem_ItemId(item.getItemId());
+//        for(Deal deal : dealList){
+//            if(deal.getDealStatus().equals("대여중"))
+//                return 1;
+//        }
 
         // 대여가능한 날짜인지 검사
         LocalDate start = dealRequest.getDealStartDate();
@@ -108,7 +108,7 @@ public class DealCRUDService {
     public void deleteDeal(int dealId) {
         Deal deal = getDeal(dealId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
-        if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
+        if (!deal.getSeller().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("예약을 취소할 권한이 없습니다.");
         }
         dealRepository.delete(deal);
@@ -119,10 +119,10 @@ public class DealCRUDService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약이 존재하지 않습니다."));
     }
 
-    public void returnDeal(String token, int dealId){
+    public void returnDeal(int dealId){
         Deal deal = getDeal(dealId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
-        if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {
+        if (!deal.getSeller().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("반납을 완료할 권한이 없습니다.");
         }
 
@@ -130,7 +130,7 @@ public class DealCRUDService {
         dealRepository.save(deal);
     }
 
-    public void borrowDeal(String token, int dealId){
+    public void borrowDeal(int dealId){
         Deal deal = getDeal(dealId);
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
         if (!deal.getBuyer().getUserEmail().equals(tokenEmail)) {

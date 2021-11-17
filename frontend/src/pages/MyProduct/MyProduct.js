@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
-import noImage from "../../assets/image/no-image.jpg";
-import { Link } from "react-router-dom";
-import "../Wish/Wish.css";
 import "./MyProduct.css";
-import axios from "../../api/axios";
+import "../Wish/Wish.css";
+import { useHistory } from "react-router";
+import { Button } from "semantic-ui-react";
+import noImage from "../../assets/image/no-image.jpg";
 
+import axios from "../../api/axios";
+import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
+// 등록한 대여제품
 const MyProduct = (props) => {
+
+  const history = useHistory();
   const [product, setProduct] = useState([]);
   const [radioGroups, setRadioGroups] = useState({});
   const [loading, setLoading] = useState(true);
@@ -13,16 +19,17 @@ const MyProduct = (props) => {
 
   useEffect(() => {
     axios
-      .get(`/item`, {
+      .get(`/user/item/give`, {
         headers: {
-          Authentication: "Bearer " + token,
+          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
+        console.log(response)
         setProduct(response.data);
         const groups = {};
         response.data.forEach((p) => {
-          groups[p.itemId] = p.status === "Y" ? true : false;
+          groups[p.itemId] = p.itemActive === "Y" ? true : false;
         });
         setRadioGroups(groups);
         setLoading(false);
@@ -34,7 +41,6 @@ const MyProduct = (props) => {
 
   const isActive = (idx) => {
     const p = product[idx];
-    console.log(p);
     setRadioGroups({ ...radioGroups, [p.itemId]: !radioGroups[p.itemId] });
     // console.log(product[idx])
     // if (product[idx].status == "Y")
@@ -42,17 +48,16 @@ const MyProduct = (props) => {
     // else product[idx].status = "Y";
     itemOnOff(idx);
     // console.log(product);
-    console.log(radioGroups);
   };
 
   const itemOnOff = (idx) => {
     axios
       .put(
-        `item/active/${product[idx].itemId}`,
+        `user/item/give/switch/${product[idx].itemId}`,
         {},
         {
           headers: {
-            Authentication: "Bearer " + token,
+            Authorization: "Bearer " + token,
           },
         }
       )
@@ -64,6 +69,14 @@ const MyProduct = (props) => {
       });
   };
 
+  const goToRentUserPage = (itemId) => {
+    history.push(`/rentuser/${itemId}`);
+  }
+  
+  const goToProductDetail = (itemId) => {
+    history.push(`/detail/${itemId}`);
+  }
+
   return (
     <div>
       {loading ? (
@@ -74,18 +87,20 @@ const MyProduct = (props) => {
             return (
               <div className="wish-item-list" key={idx}>
                 <img
-                  src={item.image == null ? noImage : item.image}
+                  src={item.itemImage == null ? noImage : item.itemImage}
                   className="wish-item-icon"
                   alt="profile"
                 ></img>
-                <div className="wish-item-vertical">
+                <div className="wish-item-vertical" onClick={()=>goToProductDetail(item.itemId)}>
                   <div className="wish-item-title">
-                    <Link to={`/rentuser/${item.itemId}`}>{item.itemname}</Link>
+                    <Link to={`/rentuser/${item.itemId}`}>{item.itemName}</Link>
                   </div>
-                  <span>{item.position}</span>
-                  <div className="wish-item-price">{item.price} BLI</div>
+                  <span>{item.itemAddress}</span>
+                  <div className="wish-item-price">{item.itemPrice} 원</div>
                 </div>
                 <div>
+                  <Button className="mp-rent-user-button" onClick={()=>goToRentUserPage(item.itemId)}>대여자 보기</Button>
+                  {/* <button>대여자 보기?</button> */}
                   <label className="switch">
                     <input
                       type="checkbox"

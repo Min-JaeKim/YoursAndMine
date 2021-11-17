@@ -1,6 +1,6 @@
 import "./MyCalendar.css";
 import { useHistory } from "react-router";
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import allActions from '../../redux/actions';
 import React, { useState, useEffect } from 'react'
 
@@ -19,6 +19,10 @@ const MyCalendar = (props) => {
 
 	const history = useHistory();
 	const dispatch = useDispatch();
+
+	let { rentalCancelFlag } = useSelector(({ schedule }) => ({
+		rentalCancelFlag: schedule.rentalCancelFlag
+  }));
 
 	let flag = props.flag;
 	
@@ -50,37 +54,37 @@ const MyCalendar = (props) => {
 		const token = JSON.parse(window.localStorage.getItem("token"));
     
     axios
-    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/user/month-schedule/${today.format('YYYY-MM-DD')}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      })
-      .then((response) => {
-				setGiveDay(response.data.반납날짜);
-				setGiveDays(response.data.반납일정);
-				setGetDay(response.data.회수날짜);
-				setGetDays(response.data.회수일정);
-				if (flag) {
-					setRedDay(response.data.반납날짜);
-					setGrayDay(response.data.반납일정);
-				} else {
-					setRedDay(response.data.회수날짜);
-					setGrayDay(response.data.회수일정);
-				}
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: 'Error!',
-          text: '일정 불러오기 실패!',
-          icon: 'error',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
-        }).then((result) => {
-          history.push('/signin');
-        })
-      });
-
-	}, [getMoment])
+    .get(`/user/month-schedule/${today.format('YYYY-MM-DD')}`, {
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		})
+		.then((response) => {
+			setGiveDay(response.data.반납날짜);
+			setGiveDays(response.data.반납일정);
+			setGetDay(response.data.회수날짜);
+			setGetDays(response.data.회수일정);
+			if (flag) {
+				setRedDay(response.data.반납날짜);
+				setGrayDay(response.data.반납일정);
+			} else {
+				setRedDay(response.data.회수날짜);
+				setGrayDay(response.data.회수일정);
+			}
+		})
+		.catch((error) => {
+			Swal.fire({
+				title: 'Error!',
+				text: '일정 불러오기 실패!',
+				icon: 'error',
+				confirmButtonText: 'OK!',
+				confirmButtonColor: '#497c5f'
+			}).then((result) => {
+				history.push('/signin');
+			})
+		});
+		dispatch(allActions.scheduleActions.rentCancelInit());
+	}, [getMoment, rentalCancelFlag])
 
 	useEffect(() => {
 		if (flag) {

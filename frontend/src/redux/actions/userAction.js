@@ -1,8 +1,9 @@
 const loginUser = (user) => {
+  // console.log("이것이 data ", user);
 
   return {
     type: "LOGIN",
-    user
+    user,
   };
 };
 
@@ -12,5 +13,17 @@ const logoutUser = () => {
   };
 };
 
-const userActions = { loginUser, logoutUser };
+const changeLocalInit = () => {
+  return {
+    type: "CHANGE_LOCAL_INIT",
+  }
+}
+
+const changeLocalSuccess = () => {
+  return {
+    type: "CHANGE_LOCAL_SUCCESS",
+  }
+}
+
+const userActions = { loginUser, logoutUser, changeLocalSuccess, changeLocalInit };
 export default userActions;

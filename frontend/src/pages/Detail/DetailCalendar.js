@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import { DateRange } from "react-date-range";
 
 function DetailCalendar(props) {
-  
   const [unavailableDates, setUnavailableDates] = useState([]);
 
   useEffect(() => {
@@ -14,7 +13,7 @@ function DetailCalendar(props) {
       let tmp = props.unavailableDate.map((x) => dayjs(x).toDate());
       setUnavailableDates(tmp);
     }
-  }, [])
+  }, []);
 
   //   useEffect(() => {
   //   if (unavailableDates.length !== 0) {
@@ -25,12 +24,12 @@ function DetailCalendar(props) {
 
   return (
     <>
-       <DateRange
+      <DateRange
         editableDateInputs={false}
         showPreview={false}
         minDate={new Date()}
         disabledDates={unavailableDates}
-        />
+      />
     </>
   );
 }

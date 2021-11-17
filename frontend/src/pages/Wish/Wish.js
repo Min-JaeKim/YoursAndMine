@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import likeIcon from "../../assets/icons/wish-on.png";
-import unlikeIcon from "../../assets/icons/wish.png";
-import noImage from "../../assets/image/no-image.jpg";
 import axios from "../../api/axios";
+import React, { useEffect, useState } from "react";
 
 import "./Wish.css";
+import Swal from "sweetalert2";
+import unlikeIcon from "../../assets/icons/wish.png";
+import noImage from "../../assets/image/no-image.jpg";
+import likeIcon from "../../assets/icons/wish-on.png";
+
 const Wish = ({ history }) => {
   const [wishProduct, setWishProduct] = useState([]);
   const [likeFalg, setLikeFlag] = useState(false);
@@ -14,56 +16,63 @@ const Wish = ({ history }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/bookmark`, {
+      .get(`/user/wishlist`, {
         headers: {
-          Authentication: "BEARER " + token,
+          Authorization: "Bearer " + token,
         },
       })
       .then((response) => {
         setWishProduct(response.data);
         setLikeList(new Array(response.data.length).fill(true));
         setLikeFlag(false);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [likeFalg]);
+  }, []);
 
   const addBookmark = (itemId, idx) => {
     axios
-      .post(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/api/bookmark/${itemId}`,
-        {},
-        {
-          headers: {
-            Authentication: "Bearer " + token,
-          },
-        }
-      )
-      .then((response) => {
-        likeList[idx] = !likeList[idx];
-        setLikeFlag(true);
+    .post(`/item/bookmark/${itemId}`, {}, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((response) => {
+      likeList[idx] = !likeList[idx];
+      setLikeFlag(false);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+    .catch((error) => {
+      Swal.fire({
+        title: 'Error!',
+        text: '관심 등록이 불가합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      })
+    });
   };
 
   const cancelBookmark = (itemId, idx) => {
     axios
-      .delete(`${process.env.REACT_APP_SERVER_BASE_URL}/api/bookmark/${itemId}`, {
-        headers: {
-          Authentication: "BEARER " + token,
-        },
+    .delete(`/item/bookmark/${itemId}`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((response) => {
+      likeList[idx] = !likeList[idx];
+      setLikeFlag(true);
       })
-      .then((response) => {
-        likeList[idx] = !likeList[idx];
-        setLikeFlag(true);
+    .catch((error) => {
+      Swal.fire({
+        title: 'Error!',
+        text: '관심 등록 취소 불가합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
       })
-      .catch((error) => {
-        console.log(error);
-      });
+    });
   };
 
   const goToDetail = (itemId) => {
@@ -79,7 +88,7 @@ const Wish = ({ history }) => {
       <div key={idx}>
         <div className="wish-item-list">
           <img
-            src={product.image ? product.image : noImage}
+            src={product.itemImage ? product.itemImage : noImage}
             className="wish-item-icon"
             alt="product-image"
             onClick={() => {
@@ -92,9 +101,9 @@ const Wish = ({ history }) => {
               goToDetail(product.itemId);
             }}
           >
-            <div className="wish-item-title">{product.itemname}</div>
-            <span>{product.position}</span>
-            <div className="wish-item-price">{product.price} BLI</div>
+            <div className="wish-item-title">{product.itemName}</div>
+            <span>{product.itemAddress}</span>
+            <div className="wish-item-price">{product.itemPrice} 원</div>
           </div>
           <div>
             {likeList[idx] ? (

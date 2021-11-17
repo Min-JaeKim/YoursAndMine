@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.ssafy.yam.utils.ConstantsUtils.AUTH_HEADER;
-
 @RestController
 @RequestMapping("/api")
 public class AuthController {

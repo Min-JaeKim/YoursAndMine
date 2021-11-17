@@ -1,6 +1,7 @@
 import axios from "../../api/axios";
-import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import React, { useState, useEffect } from "react";
 import Category from "../Category/Category";
 
 import "./Write.css";
@@ -8,13 +9,12 @@ import Swal from "sweetalert2";
 import { Input, Button, Form, TextArea, Grid } from "semantic-ui-react";
 
 const Write = () => {
+
+  let { user } = useSelector(({ user }) => ({
+    user: user.user
+  }));
+
   const userdata = JSON.parse(window.localStorage.getItem("user"));
-  let address = userdata ? userdata.userAddress : '서울시 강남구'
-  if (address !== '서울시 강남구') {
-    let addressArray = address.split(' ');
-    address = addressArray[0] + ' ' + addressArray[1] + ' ' + addressArray[2];
-    // console.log(address)
-  }
 
   const history = useHistory();
   const [itemname, setItemName] = useState('')
@@ -26,8 +26,6 @@ const Write = () => {
 
   let profile_preview = null;
   if(file !=='') {
-    console.log('file')
-    console.log(file)
     profile_preview = <img className='profile_preview' src={previewURL}></img>
   }
 
@@ -86,37 +84,26 @@ const Write = () => {
       })
       return;
     }
-      // const itemImage = new FormData();
-      // itemImage.append("itemImage", file);
 
-      const tmp = {
-        "itemName": "비모피규어",
-          "itemContent": "비모피규어 내용",
-          "itemCategory": "가전제품",
-          "itemPrice": 4000
+      const itemData = {
+        "itemName": itemname,
+        "itemContent": description,
+        "itemCategory": category,
+        "itemPrice": itemPrice
         }
-      const itemData = new FormData();
-      // itemData.append("itemName", itemname);
-      itemData.append("itemImage", file);
-      itemData.append("itemData",  new Blob([JSON.stringify(tmp)], {type: "application/json"}));
-      // itemData.append("itemContent", description);
-      // itemData.append("itemCategory", category);
-      // itemData.append("itemPrice", itemPrice);
 
-      // const tmp = new FormData
-
-      // formData.append('showInfoUpdatePatchReq', new Blob([JSON.stringify(showInfoUpdatePatchReq)], {type: "application/json"}))
+      const formData = new FormData();
+      formData.append("itemImage", file);
+      formData.append("itemData",  new Blob([JSON.stringify(itemData)], {type: "application/json"}));
 
       const token = JSON.parse(window.localStorage.getItem("token"));
-      console.log(token);
       axios
-        .post(`/item`, itemData, {
+        .post(`/item`, formData, {
           headers: {
             Authorization: "Bearer " + token,
           },
         })
         .then((response) => {
-          console.log(4654664864)
           history.push('/myproduct');
         })
         .catch((error) => {
@@ -146,6 +133,20 @@ const Write = () => {
     }
     reader.readAsDataURL(file);
   }
+
+  useEffect(() => {
+    if (!user?.userAddress) {
+      Swal.fire({
+        title: 'Error!',
+        text: '주소 지정을 해주셔야 합니다.',
+        icon: 'error',
+        confirmButtonText: 'OK!',
+        confirmButtonColor: '#497c5f'
+      }).then(()=>{
+        history.push('/searchplace');
+      })
+    }
+  }, [])
 
 
   return (
