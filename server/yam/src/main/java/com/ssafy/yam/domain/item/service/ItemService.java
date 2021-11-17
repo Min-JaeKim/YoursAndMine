@@ -119,6 +119,7 @@ public class ItemService {
                         .itemAddress(item.getItemAddress())
                         .itemAreaCode(item.getItemAreaCode())
                         .itemModifiedTime(item.getItemModifiedTime())
+                        .bookmarkCount(bookmarkRepository.countByItemId(item.getItemId()))
                         .build();
 
                 Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());
