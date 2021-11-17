@@ -104,7 +104,7 @@ export const Detail = (props) => {
       timestamp: timestamp.getTime(),
     };
     console.log(m);
-    // dispatch(insertMessage(m));
+    dispatch(insertMessage(m));
 
     history.replace({
       pathname: "/chat",
@@ -186,35 +186,31 @@ export const Detail = (props) => {
               <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
             {token ? (
-              detail.owner.ownerId === userId 
-              ?
-              <div className="detail-owner-button">
-                <Button className="detail-put-product">
-                  수정
-                </Button>
-                <Button className="detail-delete-product">
-                  삭제
-                </Button>
-              </div>
-              :
-              <div className="detail-like">
-                {like ? (
-                  <img
-                    src={likeIcon}
-                    alt="likeIcon"
-                    className="detail-like-icon"
-                    onClick={onUnLike}
-                  />
-                ) : (
-                  <img
-                    src={unlikeIcon}
-                    alt="likeIcon"
-                    className="detail-like-icon"
-                    onClick={onLike}
-                  />
-                )}
-                <div>관심 등록</div>
-              </div>
+              detail.owner.ownerId === userId ? (
+                <div className="detail-owner-button">
+                  <Button className="detail-put-product">수정</Button>
+                  <Button className="detail-delete-product">삭제</Button>
+                </div>
+              ) : (
+                <div className="detail-like">
+                  {like ? (
+                    <img
+                      src={likeIcon}
+                      alt="likeIcon"
+                      className="detail-like-icon"
+                      onClick={onUnLike}
+                    />
+                  ) : (
+                    <img
+                      src={unlikeIcon}
+                      alt="likeIcon"
+                      className="detail-like-icon"
+                      onClick={onLike}
+                    />
+                  )}
+                  <div>관심 등록</div>
+                </div>
+              )
             ) : null}
           </div>
           <div className="detail-product-header">

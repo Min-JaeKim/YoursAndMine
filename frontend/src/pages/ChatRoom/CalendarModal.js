@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ChatRoomCalendar from "./ChatRoomCalendar";
 import "./ChatRoom.css";
 import CloseModal from "../../assets/icons/close.png";
+
 import axios from "../../api/axios";
 import { Swal } from "sweetalert2";
 import { useHistory } from "react-router";
@@ -66,6 +67,37 @@ function CalendarModal(props) {
   }, [props.isOpen]);
 
   const closeModal = () => {
+    props.setOpenReserve({
+      type: null,
+    });
+  };
+
+  const confirmReserve = () => {
+    // db 저장
+
+    // 메시지 전송
+    const timestamp = new Date();
+
+    props.client.current.publish({
+      destination: "/app/send",
+      body: JSON.stringify({
+        type: "confirm",
+        message: "거래를 수락하였습니다.",
+        author: userId,
+        to: props.to,
+        timestamp: timestamp.getTime(),
+      }),
+    });
+
+    const m = {
+      type: "confirm",
+      message: "거래를 수락하였습니다.",
+      author: userId,
+      to: props.to,
+      timestamp: timestamp.toISOString(),
+    };
+    console.log(m);
+    dispatch(insertMessage(m));
     props.setOpenReserve({
       type: null,
     });
@@ -143,7 +175,7 @@ function CalendarModal(props) {
                 unavailableDate={unavailableDate}
               />
               <p>거래를 수락하시겠습니까?</p>
-              <button className="calendar-request-button" onClick={requestReserve}>
+              <button className="calendar-request-button" onClick={confirmReserve}>
                 거래 수락
               </button>
             </div>

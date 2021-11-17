@@ -26,6 +26,18 @@ const ConversationList = (state = initialState, action) => {
       };
       return { ...state };
     case NEWMESSAGE:
+      if (action.payload.type === "create") {
+        const tmp = JSON.parse(action.payload.message);
+        state[action.payload.to] = {
+          name: tmp.name,
+          itemPk: action.payload.itemPk,
+          userImg: tmp.userImg,
+          itemImg: tmp.itemImg,
+          itemName: tmp.itemName,
+          lastMsg: null,
+          list: [],
+        };
+      }
       state[action.payload.to].list = [...state[action.payload.to].list, action.payload];
       state[action.payload.to].lastMsg =
         action.payload.type === "message" ? action.payload.message : "거래요청";

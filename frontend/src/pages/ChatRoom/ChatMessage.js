@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import chatProfile from "../../assets/icons/chat-profile.png";
+import ChatCheck from "../../assets/icons/chat-check.png";
 
 function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
   const myId = JSON.parse(localStorage.getItem("user")).userId;
 
+  console.log(msg);
   const openCalendar = () => {
     setOpenReserve({
       type: "check",
@@ -15,10 +17,14 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
     });
   };
 
-  return (
-    <>
-      {msg.type === "send" || msg.type === "message" ? (
-        parseInt(msg.author) !== myId ? ( // 받은 메시지
+  const drawMessage = (type) => {
+    const author = parseInt(msg.author);
+
+    if (type === "send" || type === "message") {
+      // 기본 대화 메시지
+      if (author !== myId) {
+        // 내 메시지
+        return (
           <div className="receive-msg-box">
             <div className="receive-profile-img">
               {profileImg ? (
@@ -30,15 +36,20 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
             <div className="receive-msg-content">{msg.message}</div>
             <div className="receive-msg-time">{msg.timestamp}</div>
           </div>
-        ) : (
+        );
+      } else {
+        // 상대방 메시지
+        return (
           <div className="send-msg-box">
             <div className="send-msg-time">{msg.timestamp}</div>
             <div className="send-msg-content">{msg.message}</div>
           </div>
-        )
-      ) : null}
-      {msg.type === "reserve" ? ( // 예약 메시지
-        parseInt(msg.author) !== myId ? ( // 예약 요청 수신
+        );
+      }
+    } else if (type === "reserve") {
+      // 예약 요청 메시지
+      if (author !== myId) {
+        return (
           <div className="receive-msg-box">
             <div className="receive-profile-img">
               {profileImg ? (
@@ -47,7 +58,7 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
                 <img src={chatProfile} alt="profile"></img>
               )}
             </div>
-            <div className="receive-msg-content">
+            <div className="receive-reserve-content">
               거래를 요청하였습니다.
               <button onClick={openCalendar} className="chat-msg-btn">
                 확인하기
@@ -55,11 +66,12 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
             </div>
             <div className="receive-msg-time">{msg.timestamp}</div>
           </div>
-        ) : (
-          // 송신
+        );
+      } else {
+        return (
           <div className="send-msg-box">
             <div className="send-msg-time">{msg.timestamp}</div>
-            <div className="send-msg-content">
+            <div className="send-reserve-content">
               거래를 요청하였습니다.
               <button onClick={openCalendar} className="chat-msg-btn">
                 확인하기
@@ -67,10 +79,44 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
               {/* {msg.message} */}
             </div>
           </div>
-        )
-      ) : null}
-    </>
-  );
+        );
+      }
+    } else if (type === "confirm") {
+      // 거래 성사 메시지
+      if (author !== myId) {
+        return (
+          <div>
+            <div className="receive-msg-box">
+              <div className="receive-profile-img">
+                {profileImg ? (
+                  <img src={profileImg} alt="profile"></img>
+                ) : (
+                  <img src={chatProfile} alt="profile"></img>
+                )}
+              </div>
+              <div className="receive-check-content">
+                <img alt="chat-check" src={ChatCheck} />
+                거래가 수락되었습니다.
+              </div>
+              <div className="receive-msg-time">{msg.timestamp}</div>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div className="send-msg-box">
+            <div className="send-msg-time">{msg.timestamp}</div>
+            <div className="send-check-content">
+              <img alt="chat-check" src={ChatCheck} />
+              거래가 수락되었습니다.
+            </div>
+          </div>
+        );
+      }
+    }
+  };
+
+  return <>{drawMessage(msg.type)}</>;
 }
 
 export default ChatMessage;
