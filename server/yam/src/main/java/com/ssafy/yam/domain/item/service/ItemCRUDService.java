@@ -1,5 +1,7 @@
 package com.ssafy.yam.domain.item.service;
 
+import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
+import com.ssafy.yam.domain.deal.repository.DealRepository;
 import com.ssafy.yam.domain.deal.service.DealService;
 import com.ssafy.yam.domain.image.entity.Image;
 import com.ssafy.yam.domain.image.repository.ImageRepository;
@@ -37,6 +39,8 @@ public class ItemCRUDService {
     private final UserRepository userRepository;
     private final DealService dealService;
     private final ItemService itemService;
+    private final BookmarkRepository bookmarkRepository;
+    private final DealRepository dealRepository;
 
     public void saveItem(List<MultipartFile> itemImages, ItemCreateRequest itemCreateRequest) {
         Item item = modelMapper.map(itemCreateRequest, Item.class);
@@ -66,6 +70,9 @@ public class ItemCRUDService {
         if (!item.getSeller().getUserEmail().equals(tokenEmail)) {
             throw new IllegalArgumentException("물품을 삭제할 권한이 없습니다.");
         }
+        bookmarkRepository.deleteAllByBookmarkId_ItemId(itemId);
+        imageRepository.deleteAllByItem_ItemId(itemId);
+        dealRepository.deleteAllByItem_ItemId(itemId);
         itemRepository.deleteById(itemId);
     }
 
