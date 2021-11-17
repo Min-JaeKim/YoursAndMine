@@ -43,10 +43,12 @@
   position: relative;
   left: 175px !important;
   bottom: 5px !important; */
+
   position: absolute;
   left: 166px;
   top: 66px;
-  border-radius: 30px;
+  border-radius: 30px !important;
+  width: 98px !important;
 }
 
 .mpd-product-name-rent-flag {
