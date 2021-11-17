@@ -47,9 +47,9 @@ const ConversationList = (state = initialState, action) => {
       if (action.payload.type === "create") {
         const tmp = JSON.parse(action.payload.message);
         state[action.payload.author] = {
-          name: tmp.name,
+          name: tmp.author.name,
           itemPk: action.payload.itemPk,
-          userImg: tmp.userImg,
+          userImg: tmp.author.userImg,
           itemImg: tmp.itemImg,
           itemName: tmp.itemName,
           lastMsg: null,

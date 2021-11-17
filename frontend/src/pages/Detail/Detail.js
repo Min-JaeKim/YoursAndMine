@@ -73,6 +73,8 @@ export const Detail = (props) => {
 
   const onSelectProduct = () => {
     const timestamp = new Date();
+    const author = JSON.parse(localStorage.getItem("user"));
+
     props.client.current.publish({
       destination: "/app/send",
       body: JSON.stringify({
@@ -82,6 +84,10 @@ export const Detail = (props) => {
           userImg: detail.owner.ownerImageUrl,
           itemImg: detail.itemImage[0],
           itemName: detail.itemName,
+          author: {
+            userImg: author.userImage,
+            name: author.userNickname,
+          },
         }),
         author: userId, // 내이름
         to: detail.owner.ownerId,

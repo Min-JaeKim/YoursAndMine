@@ -31,7 +31,6 @@ function CalendarModal(props) {
           },
         })
         .then((response) => {
-          console.log(response.data);
           setUnavailableDate(response.data.unavailableDate);
         })
         .catch((error) => {
@@ -63,7 +62,6 @@ function CalendarModal(props) {
           });
         });
     }
-    console.log(props.isOpen);
   }, [props.isOpen]);
 
   const closeModal = () => {
@@ -74,6 +72,53 @@ function CalendarModal(props) {
 
   const confirmReserve = () => {
     // db 저장
+    console.log(typeof selectionRange.startDate);
+    console.log(selectionRange.startDate);
+
+    const formatDate = (date) => {
+      let d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
+    };
+
+    console.log(formatDate(selectionRange.startDate));
+
+    console.log({
+      itemId: props.itemPk,
+      dealStartDate: formatDate(selectionRange.startDate),
+      dealEndDate: formatDate(selectionRange.endDate),
+    });
+    console.log({
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    axios
+      .post(
+        `/deal`,
+        {
+          itemId: props.itemPk,
+          dealStartDate: formatDate(selectionRange.startDate),
+          dealEndDate: formatDate(selectionRange.endDate),
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("거래 등록 완료");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     // 메시지 전송
     const timestamp = new Date();
@@ -96,7 +141,6 @@ function CalendarModal(props) {
       to: props.to,
       timestamp: timestamp.toISOString(),
     };
-    console.log(m);
     dispatch(insertMessage(m));
     props.setOpenReserve({
       type: null,
@@ -157,6 +201,7 @@ function CalendarModal(props) {
         </div>
       );
     } else if (props.isOpen.type === "check") {
+      // 요청 확인
       return (
         <div className="calendar-modal-background">
           <div className="calendar-modal">
@@ -169,7 +214,6 @@ function CalendarModal(props) {
             <div className="calendar-modal-contents">
               <ChatRoomCalendar
                 selectionRange={selectionRange}
-                setSelectionRange={setSelectionRange}
                 isOpen={props.isOpen}
                 client={props.client}
                 unavailableDate={unavailableDate}
