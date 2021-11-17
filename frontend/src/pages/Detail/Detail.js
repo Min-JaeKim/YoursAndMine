@@ -92,13 +92,14 @@ export const Detail = (props) => {
           icon: "error",
           confirmButtonText: "OK!",
           confirmButtonColor: "#497c5f",
-        })
-        .then(() => {
+        }).then(() => {
           history.push("/searchplace");
-        })
+        });
       }
     } else {
       const timestamp = new Date();
+      const author = JSON.parse(localStorage.getItem("user"));
+
       props.client.current.publish({
         destination: "/app/send",
         body: JSON.stringify({
@@ -108,6 +109,10 @@ export const Detail = (props) => {
             userImg: detail.owner.ownerImageUrl,
             itemImg: detail.itemImage[0],
             itemName: detail.itemName,
+            author: {
+              userImg: author.userImage,
+              name: author.userNickname,
+            },
           }),
           author: userId, // 내이름
           to: detail.owner.ownerId,
@@ -115,7 +120,7 @@ export const Detail = (props) => {
           timestamp: timestamp.getTime(),
         }),
       });
-  
+
       const m = {
         type: "create",
         message: JSON.stringify({
@@ -130,8 +135,8 @@ export const Detail = (props) => {
         timestamp: timestamp.getTime(),
       };
       console.log(m);
-      // dispatch(insertMessage(m));
-  
+      dispatch(insertMessage(m));
+
       history.replace({
         pathname: "/chat",
         state: { userPK: detail.owner.ownerId },
@@ -213,35 +218,31 @@ export const Detail = (props) => {
               <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
             {token ? (
-              detail.owner.ownerId === userId 
-              ?
-              <div className="detail-owner-button">
-                <Button className="detail-put-product">
-                  수정
-                </Button>
-                <Button className="detail-delete-product">
-                  삭제
-                </Button>
-              </div>
-              :
-              <div className="detail-like">
-                {like ? (
-                  <img
-                    src={likeIcon}
-                    alt="likeIcon"
-                    className="detail-like-icon"
-                    onClick={onUnLike}
-                  />
-                ) : (
-                  <img
-                    src={unlikeIcon}
-                    alt="likeIcon"
-                    className="detail-like-icon"
-                    onClick={onLike}
-                  />
-                )}
-                <div>관심 등록</div>
-              </div>
+              detail.owner.ownerId === userId ? (
+                <div className="detail-owner-button">
+                  <Button className="detail-put-product">수정</Button>
+                  <Button className="detail-delete-product">삭제</Button>
+                </div>
+              ) : (
+                <div className="detail-like">
+                  {like ? (
+                    <img
+                      src={likeIcon}
+                      alt="likeIcon"
+                      className="detail-like-icon"
+                      onClick={onUnLike}
+                    />
+                  ) : (
+                    <img
+                      src={unlikeIcon}
+                      alt="likeIcon"
+                      className="detail-like-icon"
+                      onClick={onLike}
+                    />
+                  )}
+                  <div>관심 등록</div>
+                </div>
+              )
             ) : null}
           </div>
           <div className="detail-product-header">
