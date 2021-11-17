@@ -193,6 +193,50 @@ export const Detail = (props) => {
       });
   };
 
+  const onDeleteProduct = () => {
+    Swal.fire({
+      title: "상품을 삭제하시겠습니까?",
+      // text: "관심 등록 취소 불가합니다.",
+      icon: "question",
+      confirmButtonText: "OK!",
+      confirmButtonColor: "#497c5f",
+      showCancelButton: true,
+      cancelButtonText: 'No, cancel!',
+      cancelButtonColor: "#C4C4C4",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axios
+          .delete(`/item/${detail.itemId}`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((response) => {
+            Swal.fire({
+              title: "Success!",
+              text: "상품이 삭제되었습니다.",
+              icon: "success",
+              confirmButtonText: "OK!",
+              confirmButtonColor: "#497c5f",
+            }).then(()=>{
+              history.push("/");
+            })
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: "Error!",
+              text: "삭제가 정상적으로 이루어지지 않았습니다.",
+              icon: "error",
+              confirmButtonText: "OK!",
+              confirmButtonColor: "#497c5f",
+            });
+          });
+      } else {
+
+      }
+    })
+  }
+
   return (
     <div>
       {loading ? (
@@ -218,12 +262,7 @@ export const Detail = (props) => {
               <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
             {token ? (
-              detail.owner.ownerId === userId ? (
-                <div className="detail-owner-button">
-                  <Button className="detail-put-product">수정</Button>
-                  <Button className="detail-delete-product">삭제</Button>
-                </div>
-              ) : (
+              (
                 <div className="detail-like">
                   {like ? (
                     <img
@@ -245,9 +284,18 @@ export const Detail = (props) => {
               )
             ) : null}
           </div>
-          <div className="detail-product-header">
-            <div className="detail-product-name">{detail.itemName}</div>
-            <div className="detail-product-category-time">{detail.itemCategory}</div>
+          <div className="detail-product-info-and-button">
+            <div className="detail-product-header">
+              <div className="detail-product-name">{detail.itemName}</div>
+              <div className="detail-product-category-time">{detail.itemCategory}</div>
+            </div>
+            {detail.owner.ownerId === userId ? (
+                <div className="detail-owner-button">
+                  {/* <Button className="detail-put-product">수정</Button> */}
+                  <Button className="detail-delete-product" onClick={onDeleteProduct}>삭제</Button>
+                </div>
+              ) : null}
+            {/* <Button className="detail-delete-product">삭제</Button> */}
           </div>
           <div className="detail-inquire-buy">
             <div className="detail-oneday-price">
