@@ -6,7 +6,6 @@
   justify-content: space-between;
   margin: 15px;
 }
-
 .recent-search-item {
   display: inline-block;
   width: 40%;
@@ -18,4 +17,17 @@
 }
 .recent-search-word img {
   margin: 3px;
+}
+.search-sort-group{
+  display: flex;
+  justify-content: space-around;
+  margin-left: 20px;
+}
+.search-type{
+  margin: 0 6px;
+}
+.search-type-selected{
+  color: #497C5F;
+  margin: 0 6px;
+  font-weight: bold;
 }
