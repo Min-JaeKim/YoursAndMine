@@ -178,6 +178,7 @@ function App() {
             <PublicRouter path="/findpwd" component={FindPwd} exact />
             <PublicRouter path="/category" component={Category} exact />
             <PublicRouter path="/join" component={Join} exact />
+            <PublicRouter path="/product" component={Product} exact />
 
             <PrivateRouter path="/rent" component={Rent} exact />
             <PrivateRouter path="/mypage" component={MyPage} exact />
@@ -187,7 +188,6 @@ function App() {
             {/* <PrivateRouter path="/charge" component={Charge} exact /> */}
             <PrivateRouter path="/wish" component={Wish} exact />
             <PrivateRouter path="/notice" component={Notice} exact />
-            <PrivateRouter path="/product" component={Product} exact />
             <PrivateRouter path="/write" component={Write} exact />
             <PrivateRouter path="/chat" client={client} component={Chat} exact />
             <PrivateRouter path="/chat/:name" component={ChatRoom} exact />

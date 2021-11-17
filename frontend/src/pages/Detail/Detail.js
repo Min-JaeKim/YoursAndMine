@@ -8,7 +8,7 @@ import { insertMessage } from "../../redux/reducers/ConversationList";
 
 import "./Detail.css";
 import Slider from "react-slick";
-import { Swal } from "sweetalert2";
+import Swal from "sweetalert2";
 import { Button } from "semantic-ui-react";
 import unlikeIcon from "../../assets/icons/wish.png";
 import likeIcon from "../../assets/icons/wish-on.png";
@@ -72,51 +72,77 @@ export const Detail = (props) => {
   }, []);
 
   const onSelectProduct = () => {
-    const timestamp = new Date();
-    const author = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
+    // console.log(user.userAddress);
+    if (!user || !user.userAddress) {
+      if (token === null) {
+        Swal.fire({
+          title: "Error!",
+          text: "로그인 후 이용 가능합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        }).then((res) => {
+          history.push("/signin");
+        });
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "주소 지정 후 이용 가능합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        }).then(() => {
+          history.push("/searchplace");
+        });
+      }
+    } else {
+      const timestamp = new Date();
+      const author = JSON.parse(localStorage.getItem("user"));
 
-    props.client.current.publish({
-      destination: "/app/send",
-      body: JSON.stringify({
+      props.client.current.publish({
+        destination: "/app/send",
+        body: JSON.stringify({
+          type: "create",
+          message: JSON.stringify({
+            name: detail.owner.ownerNickName,
+            userImg: detail.owner.ownerImageUrl,
+            itemImg: detail.itemImage[0],
+            itemName: detail.itemName,
+            author: {
+              userImg: author.userImage,
+              name: author.userNickname,
+            },
+          }),
+          author: userId, // 내이름
+          to: detail.owner.ownerId,
+          itemPk: pNo,
+          timestamp: timestamp.getTime(),
+        }),
+      });
+
+      const m = {
         type: "create",
         message: JSON.stringify({
           name: detail.owner.ownerNickName,
           userImg: detail.owner.ownerImageUrl,
           itemImg: detail.itemImage[0],
           itemName: detail.itemName,
-          author: {
-            userImg: author.userImage,
-            name: author.userNickname,
-          },
         }),
         author: userId, // 내이름
         to: detail.owner.ownerId,
         itemPk: pNo,
         timestamp: timestamp.getTime(),
-      }),
-    });
+      };
+      console.log(m);
+      dispatch(insertMessage(m));
 
-    const m = {
-      type: "create",
-      message: JSON.stringify({
-        name: detail.owner.ownerNickName,
-        userImg: detail.owner.ownerImageUrl,
-        itemImg: detail.itemImage[0],
-        itemName: detail.itemName,
-      }),
-      author: userId, // 내이름
-      to: detail.owner.ownerId,
-      itemPk: pNo,
-      timestamp: timestamp.getTime(),
-    };
-    console.log(m);
-    dispatch(insertMessage(m));
-
-    history.replace({
-      pathname: "/chat",
-      state: { userPK: detail.owner.ownerId },
-      // state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
-    });
+      history.replace({
+        pathname: "/chat",
+        state: { userPK: detail.owner.ownerId },
+        // state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
+      });
+    }
   };
 
   const onLike = (e) => {

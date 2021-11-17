@@ -73,7 +73,7 @@ public class ItemService {
 
 
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
-        System.out.println(tokenEmail);
+//        System.out.println(tokenEmail);
         if(tokenEmail.equals("anonymousUser") ) {
             ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
             return itemDetail;
@@ -98,12 +98,17 @@ public class ItemService {
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
 
         if(tokenEmail.equals("anonymousUser") ) {
+            System.out.println("유저 조회 안됨!!!!!!!");
             List<Item> itemList = itemRepository.findAllBy(pageable);
             addItemList(response, itemList);
         }else{
             User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-            String areaCode = user.getUserAreaCode();
-            List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);
+            int areaCode = user.getUserAreaCode();
+            System.out.println(areaCode);
+            List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode);
+            for(Item item : itemList){
+                System.out.println(item.toString());
+            }
             addItemList(response, itemList);
         }
         return response;
@@ -119,6 +124,7 @@ public class ItemService {
                         .itemAddress(item.getItemAddress())
                         .itemAreaCode(item.getItemAreaCode())
                         .itemModifiedTime(item.getItemModifiedTime())
+                        .bookmarkCount(bookmarkRepository.countByItemId(item.getItemId()))
                         .build();
 
                 Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());

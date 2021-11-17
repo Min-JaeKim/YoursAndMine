@@ -1,6 +1,6 @@
-/* .main .slick-slider {
+.main .slick-slider {
   background-color: rgb(73, 124, 95);
-} */
+}
 
 .main .carousel-page {
   height: 150px;
@@ -25,10 +25,10 @@
   z-index: 10;
 }
 
-/* .main .slick-dots li.slick-active button:before {
+.main .slick-dots li.slick-active button:before {
   color: white;
   opacity: 1;
-} */
+}
 
 .main .main-near-product .slick-slider,
 .main-current-rent .slick-slider {
@@ -37,7 +37,7 @@
   justify-content: space-around;
   background-color: white;
 }
-/* .main .main-near-product .slick-next:before,
+.main .main-near-product .slick-next:before,
 .main-current-rent .slick-next:before {
   color: #939597 !important;
 }
@@ -45,7 +45,7 @@
 .main .main-near-product .slick-next,
 .main-current-rent .slick-next {
   right: -15px !important;
-} */
+}
 
 .main .main-near-product .slick-list,
 .main-current-rent .slick-list {

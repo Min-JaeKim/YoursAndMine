@@ -32,9 +32,8 @@ const AllCategory = ( props ) => {
         // this.props.onCreate(category);
         props.funcSetCategory(category);
       } else {
-
+        history.push(`/searchItem?category=${category}&keyword=&sort=1`);
       }
-      history.push(`/searchItem?category=${category}&keyword=&sort=1`);
 	}
 
 	return ( 

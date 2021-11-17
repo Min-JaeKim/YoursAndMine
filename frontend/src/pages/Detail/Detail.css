@@ -51,10 +51,16 @@
 .detail-owner-button {
 }
 
+.detail-owner-button > Button {
+  border-radius: 30px !important;
+}
+
 .detail-put-product {
 }
 
 .detail-delete-product {
+  background-color: #eb3223 !important;
+  color: white !important;
 }
 
 .detail-like {
@@ -66,6 +72,7 @@
 
 .detail-like-icon {
   width: 50%;
+  cursor: pointer;
 }
 
 .detail-product-detail {
