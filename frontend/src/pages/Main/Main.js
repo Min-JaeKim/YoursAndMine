@@ -70,12 +70,13 @@ const Main = () => {
         });
     } else {
       axios
-        .get(`/item?page=0&size=3&sort=itemModifiedTime,DESC`, {
+        .get(`/item?page=0&size=12&sort=itemModifiedTime,DESC`, {
           headers: {
             Authorization: "Bearer " + token,
           },
         })
         .then((response) => {
+          console.log(response);
           setNearProduct(response.data);
           if (response.data.length >= 3) {
             setNearProdcutCount(3);
