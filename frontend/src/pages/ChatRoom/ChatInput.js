@@ -65,12 +65,7 @@ function ChatInput(props) {
 
   const handleChange = ({ target: { value } }) => setMsg(value);
 
-  // useEffect(() => {
-  //   console.log(props.client);
-  // }, []);
-  // 서버로 메시지 전송
   const sendMsg = () => {
-    const author = "test";
     const to = props.to;
     const timestamp = new Date();
 
@@ -102,7 +97,7 @@ function ChatInput(props) {
   };
 
   const sendKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (msg !== "" && e.key === "Enter") {
       sendMsg();
     }
   };
