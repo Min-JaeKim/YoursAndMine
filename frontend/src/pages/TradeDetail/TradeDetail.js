@@ -112,7 +112,7 @@ const TradeDetail = () => {
           .catch((error) => {
             Swal.fire({
               title: 'Error!',
-              text: '대여 취소가 되지 않았습니다.',
+              text: '예약 취소가 되지 않았습니다.',
               icon: 'error',
               confirmButtonText: 'OK!',
               confirmButtonColor: '#497c5f'
@@ -135,7 +135,7 @@ const TradeDetail = () => {
         <div className="td-seller-buttons">
           {moment().format('YYYY-MM-DD') < contract.dealStartDate
             ?
-            <button className="trade-cancel-button" onClick={onCancelRent}>대여 취소</button>
+            <button className="trade-cancel-button" onClick={onCancelRent}>예약 취소</button>
             :
             null
           }
