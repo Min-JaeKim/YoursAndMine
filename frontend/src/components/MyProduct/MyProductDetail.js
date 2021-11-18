@@ -10,8 +10,6 @@ import { Button } from "semantic-ui-react";
 import tmpPic from "../../assets/icons/borrow.png";
 
 const MyProductDetail = (props) => {
-  const dispatch = useDispatch();
-
   const data = props.data;
   const flag = props.flag;
 

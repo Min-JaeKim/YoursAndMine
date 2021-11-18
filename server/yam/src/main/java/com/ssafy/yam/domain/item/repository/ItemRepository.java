@@ -11,7 +11,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     Item findItemByItemId(int itemId);
     List<Item> findAllBy(Pageable pageable);
     List<Item> findAllBySeller_UserIdOrderByItemModifiedTimeDesc(int userId);
-    List<Item> findAllByItemAreaCode(int itemAreaCode);
+    List<Item> findAllByItemAreaCode(int itemAreaCode, Pageable pageable);
     List<Item> findAllByItemCategoryAndItemName(String category, String name);
     List<Item> findAllByItemCategoryAndItemContent(String category, String content);
     List<Item> findAllByItemNameContains(String name);

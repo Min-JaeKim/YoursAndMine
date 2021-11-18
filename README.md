@@ -13,7 +13,9 @@
 <br/>
 
 
-![StyleCI](https://img.shields.io/badge/React-17.0.2-brightgreen)  
+![StyleCI](https://img.shields.io/badge/React-17.0.2-brightgreen)
+![StyleCI](https://img.shields.io/badge/Redux-7.2.5-7248B6)
+![StyleCI](https://img.shields.io/badge/semantic/ui-2.0.3-00ACA3)   
 ![StyleCI](https://img.shields.io/badge/SpringBoot-2.5.5-blue)  
 ![StyleCI](https://img.shields.io/badge/MySQL-8.0.23-yellow)  
 ![StyleCI](https://img.shields.io/badge/ec2(ubuntu)-20.0.4-orange) 
@@ -35,8 +37,14 @@
 <br/><br/>
 
 ## 🛠 Architecture & 기술스택/배포
-![architecture](#)
+![architecture](https://user-images.githubusercontent.com/60912550/142353099-0677ca1c-46b2-42be-b47a-b1112e538b47.jpg)
 <br/><br/>
+
+## 🏋️‍ 협업툴
+- Git
+- Jira
+- notion
+- Discord
 
 ## 🤙 Git Convention
 > [세부사항](https://jade-puffin-ae5.notion.site/Convention-d58fdb6a3b1b46e9b2582f8db560685b)

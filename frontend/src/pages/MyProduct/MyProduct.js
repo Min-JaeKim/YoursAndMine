@@ -38,12 +38,7 @@ const MyProduct = (props) => {
   const isActive = (idx) => {
     const p = product[idx];
     setRadioGroups({ ...radioGroups, [p.itemId]: !radioGroups[p.itemId] });
-    // console.log(product[idx])
-    // if (product[idx].status == "Y")
-    //   product[idx].status = "N";
-    // else product[idx].status = "Y";
     itemOnOff(idx);
-    // console.log(product);
   };
 
   const itemOnOff = (idx) => {
@@ -58,7 +53,9 @@ const MyProduct = (props) => {
         }
       )
       .then((response) => {})
-      .catch((err) => {});
+      .catch((err) => {
+        console.log("fail");
+      });
   };
 
   const goToRentUserPage = (itemId) => {

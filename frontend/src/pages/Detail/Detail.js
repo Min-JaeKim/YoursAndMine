@@ -59,11 +59,9 @@ export const Detail = (props) => {
       axios
         .get(`/item/${pNo}`, {})
         .then((response) => {
-          // console.log(response.data);
           setDetail(response.data.item);
           setUnavailableDate(response.data.unavailableDate);
           setLoading(false);
-          // setLike(response.data.bookmark);
         })
         .catch((error) => {
           history.push("/");
@@ -73,7 +71,6 @@ export const Detail = (props) => {
 
   const onSelectProduct = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    // console.log(user.userAddress);
     if (!user || !user.userAddress) {
       if (token === null) {
         Swal.fire({

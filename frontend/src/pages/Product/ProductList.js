@@ -14,14 +14,11 @@ const ProductList = () => {
   // let loadingFlag = true;
 
   useEffect(() => {
-    // console.log('length');
-    // console.log(prevCnt, itemLists.length);
     if (prevCnt !== itemLists.length) {
       setPrevCnt(itemLists.length);
     } else {
       setLoadingFlag(false);
     }
-    // console.log(itemLists);
   }, [itemLists]);
 
   const getMoreItem = async () => {
@@ -32,7 +29,7 @@ const ProductList = () => {
 
     if (token != null && token != "") {
       axios
-        .get(`/item?page=${cnt}&size=3&sort=itemModifiedTime,DESC`, {
+        .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -41,14 +38,18 @@ const ProductList = () => {
           setItemLists((itemLists) => itemLists.concat(response.data));
           // setItemLists((response.data) => itemLists.concat(response.data));
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       axios
-        .get(`/item?page=${cnt}&size=3&sort=itemModifiedTime,DESC`)
+        .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`)
         .then((response) => {
           setItemLists((itemLists) => itemLists.concat(response.data));
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
     }
     setIsLoaded(false);
     // setItemLists((itemLists) => itemLists.concat(Items));
