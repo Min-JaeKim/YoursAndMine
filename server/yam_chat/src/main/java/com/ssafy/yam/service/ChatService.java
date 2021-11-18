@@ -19,7 +19,8 @@ public class ChatService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String chatInfoApiUrl = "https://k5a102.p.ssafy.io:8080/api/user/chat-info";
+    private static final String chatInfoApiUrl8080 = "https://k5a102.p.ssafy.io:8080/api/user/chat-info";
+    private static final String chatInfoApiUrl8090 = "https://k5a102.p.ssafy.io:8090/api/user/chat-info";
 
     public Map<String, Object> getChatInfo(Collection<Conversation> res, String token) {
         log.info("res : ", res);
@@ -36,11 +37,18 @@ public class ChatService {
         headers.add("Authorization", "Bearer "+token);
 
         HttpEntity<List<Map<String, String>>> httpEntity = new HttpEntity<>(chatInfoList, headers);
+        List<Map<String, String>> fetchUserlist = null;
 
-        List<Map<String, String>> fetchUserlist = restTemplate
-                .exchange(chatInfoApiUrl, HttpMethod.POST, httpEntity, List.class)
-                .getBody();
-
+        // 무중단 배포시 포트번호가 바뀌기 때문에 8080이 실패하면 8090으로 보내는 로직 추가
+        try {
+            fetchUserlist = restTemplate
+                    .exchange(chatInfoApiUrl8080, HttpMethod.POST, httpEntity, List.class)
+                    .getBody();
+        } catch (Exception e) {
+            fetchUserlist = restTemplate
+                    .exchange(chatInfoApiUrl8090, HttpMethod.POST, httpEntity, List.class)
+                    .getBody();
+        }
         Map<String, Object> fetchResult = new HashMap<>();
         fetchResult.put("conversation", res);
         fetchResult.put("chatRoomInfo", fetchUserlist);
