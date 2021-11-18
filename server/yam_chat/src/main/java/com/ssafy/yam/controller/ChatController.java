@@ -77,4 +77,9 @@ public class ChatController {
 
         return new ResponseEntity<>(chatInfo, HttpStatus.OK);
     }
+
+    @GetMapping("/healthCheck")
+    public ResponseEntity<?> check(){
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
+    }
 }
