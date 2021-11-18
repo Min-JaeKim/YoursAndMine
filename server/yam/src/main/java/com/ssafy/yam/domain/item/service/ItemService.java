@@ -103,7 +103,7 @@ public class ItemService {
         }else{
             User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
             int areaCode = user.getUserAreaCode();
-            List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode);
+            List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);
 
             addItemList(response, itemList);
         }
