@@ -37,7 +37,7 @@
 <br/><br/>
 
 ## 🛠 Architecture & 기술스택/배포
-![architecture](#)
+![architecture](https://user-images.githubusercontent.com/60912550/142353099-0677ca1c-46b2-42be-b47a-b1112e538b47.jpg)
 <br/><br/>
 
 ## 🏋️‍ 협업툴
