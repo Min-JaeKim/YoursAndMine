@@ -21,9 +21,7 @@ const RentUserList = ({ history }) => {
       .then((res) => {
         setRentUser(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   const goToTradeDetail = (dealId) => {
@@ -50,7 +48,12 @@ const RentUserList = ({ history }) => {
           </div>
         </div>
         <div className="rent-user-box">
-          <button className="rul-product-detail-button" onClick={() => goToTradeDetail(user.dealId)}>대여상세</button>
+          <button
+            className="rul-product-detail-button"
+            onClick={() => goToTradeDetail(user.dealId)}
+          >
+            대여상세
+          </button>
           <button classNam="rul-chat-button">채팅하기</button>
         </div>
       </div>

@@ -39,7 +39,6 @@ function ChatRoom(props, { location }) {
         room: props.to,
       })
     );
-    console.log("채팅창 열림");
   }, []);
 
   useEffect(() => {

@@ -22,7 +22,6 @@ function Notice() {
   const drawNoticeDetail = () => {
     let noticeList = [];
 
-    console.log(conversationList);
     for (let key in conversationList) {
       let notice = {};
 
@@ -52,8 +51,6 @@ function Notice() {
         });
       }
     }
-
-    console.log(noticeList);
 
     return (
       <>

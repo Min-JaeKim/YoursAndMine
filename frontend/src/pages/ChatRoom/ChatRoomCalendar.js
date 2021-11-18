@@ -32,7 +32,6 @@ function ChatRoomCalendar(props) {
   }, [props.unavailableDate]);
 
   const handleSelect = (ranges) => {
-    console.log(ranges);
     props.setSelectionRange({
       startDate: ranges.selection.startDate,
       endDate: ranges.selection.endDate,

@@ -26,7 +26,7 @@ const SearchItem = ({ location, match }) => {
   let [isOneSelected, isTwoSelected, isThreeSelected] = useState(false);
   const [oneStyle, setOneStyle] = useState("search-type-selected");
   const [twoStyle, setTwoStyle] = useState("search-type");
-  const [threeStyle, setThreeStyle] = useState("search-type")
+  const [threeStyle, setThreeStyle] = useState("search-type");
 
   // console.log("keyword : " + keyword)
   // console.log("category : " + category)
@@ -38,48 +38,44 @@ const SearchItem = ({ location, match }) => {
         params: {
           category: category,
           keyword: keyword,
-          sort: sort
+          sort: sort,
         },
       })
       .then((response) => {
         // console.log(response);
         setProducts(response.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [inputText]);
 
   const funcSort = (searchType) => {
     axios
-        .get(`/search`, {
-          params: {
-            category: category,
-            keyword: keyword,
-            sort: searchType
-          },
-        })
-        .then((response) => {
-          setProducts(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      .get(`/search`, {
+        params: {
+          category: category,
+          keyword: keyword,
+          sort: searchType,
+        },
+      })
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {});
 
-    if(searchType == 1){
-        setOneStyle("search-type-selected")
-        setTwoStyle("search-type")
-        setThreeStyle("search-type")
-    }else if(searchType == 2) {
-        setOneStyle("search-type")
-        setTwoStyle("search-type-selected")
-        setThreeStyle("search-type")
-    }else{
-        setOneStyle("search-type")
-        setTwoStyle("search-type")
-        setThreeStyle("search-type-selected")
+    if (searchType == 1) {
+      setOneStyle("search-type-selected");
+      setTwoStyle("search-type");
+      setThreeStyle("search-type");
+    } else if (searchType == 2) {
+      setOneStyle("search-type");
+      setTwoStyle("search-type-selected");
+      setThreeStyle("search-type");
+    } else {
+      setOneStyle("search-type");
+      setTwoStyle("search-type");
+      setThreeStyle("search-type-selected");
     }
-  }
+  };
 
   return (
     <>
@@ -92,17 +88,38 @@ const SearchItem = ({ location, match }) => {
         <FontAwesomeIcon className="search-filter-icon" icon={faFilter} />
         <h4 className="search-filter-text">정렬</h4>
         <div className="search-sort-group">
-          <div className={oneStyle} onClick={() => {funcSort(1)}}>최신순</div>
-          <div className={twoStyle} onClick={() => {funcSort(2)}}>북마크순</div>
-          <div className={threeStyle} onClick={() => {funcSort(3)}}>대여순</div>
+          <div
+            className={oneStyle}
+            onClick={() => {
+              funcSort(1);
+            }}
+          >
+            최신순
+          </div>
+          <div
+            className={twoStyle}
+            onClick={() => {
+              funcSort(2);
+            }}
+          >
+            북마크순
+          </div>
+          <div
+            className={threeStyle}
+            onClick={() => {
+              funcSort(3);
+            }}
+          >
+            대여순
+          </div>
         </div>
       </div>
       <div>
         {products
-            ? products.map((product, idx) => (
-                <ProductCard product={product} key={product.itemId}></ProductCard>
+          ? products.map((product, idx) => (
+              <ProductCard product={product} key={product.itemId}></ProductCard>
             ))
-            : null}
+          : null}
       </div>
     </>
   );
