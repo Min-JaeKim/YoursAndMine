@@ -61,9 +61,7 @@ function App() {
       connectHeaders: {
         "auth-token": "spring-chat-auth-token",
       },
-      debug: function (str) {
-        console.log(str);
-      },
+      debug: function (str) {},
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -78,7 +76,6 @@ function App() {
           },
         })
           .then((response) => {
-            console.log(response.data);
             let mergeData = [];
             for (const key in response.data.conversation) {
               mergeData.push({
@@ -87,9 +84,7 @@ function App() {
               });
             }
 
-            console.log(response.data.conversation);
             for (const key in response.data.conversation) {
-              console.log(key);
               dispatch(
                 insertPartner({
                   partner: response.data.conversation[key].partnerPk,
@@ -125,9 +120,7 @@ function App() {
   const subscribe = () => {
     // 새롭게 들어오는 데이터는 이곳으로
     client.current.subscribe(`/topic/` + userId, ({ body }) => {
-      // console.log(JSON.parse(body));
       const m = JSON.parse(body);
-      console.log(m);
       dispatch(receive(m));
     });
   };

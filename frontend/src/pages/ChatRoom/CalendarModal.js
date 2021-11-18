@@ -85,18 +85,6 @@ function CalendarModal(props) {
       return [year, month, day].join("-");
     };
 
-    console.log(formatDate(props.isOpen.selectionRange.startDate));
-
-    console.log({
-      itemId: props.itemPk,
-      dealStartDate: formatDate(props.isOpen.selectionRange.startDate),
-      dealEndDate: formatDate(props.isOpen.selectionRange.endDate),
-    });
-    console.log({
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
     axios
       .post(
         `/deal`,
@@ -111,12 +99,8 @@ function CalendarModal(props) {
           },
         }
       )
-      .then((response) => {
-        console.log("거래 등록 완료");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
 
     // 메시지 전송
     const timestamp = new Date();
@@ -165,7 +149,6 @@ function CalendarModal(props) {
       to: props.to,
       timestamp: timestamp.toISOString(),
     };
-    console.log(m);
     dispatch(insertMessage(m));
     props.setOpenReserve({
       type: null,

@@ -17,8 +17,6 @@ function ChatMessage({ setOpenReserve, profileImg, msg, to }) {
   };
 
   const openCalendar = () => {
-    console.log(JSON.parse(msg.message).startDate);
-    console.log(JSON.parse(msg.message).endDate);
     setOpenReserve({
       type: "check",
       selectionRange: {

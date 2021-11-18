@@ -10,7 +10,6 @@ import React, { useEffect, useState } from "react";
 
 // 등록한 대여제품
 const MyProduct = (props) => {
-
   const history = useHistory();
   const [product, setProduct] = useState([]);
   const [radioGroups, setRadioGroups] = useState({});
@@ -25,7 +24,6 @@ const MyProduct = (props) => {
         },
       })
       .then((response) => {
-        console.log(response)
         setProduct(response.data);
         const groups = {};
         response.data.forEach((p) => {
@@ -34,9 +32,7 @@ const MyProduct = (props) => {
         setRadioGroups(groups);
         setLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   const isActive = (idx) => {
@@ -61,21 +57,17 @@ const MyProduct = (props) => {
           },
         }
       )
-      .then((response) => {
-        console.log("success");
-      })
-      .catch((err) => {
-        console.log("fail");
-      });
+      .then((response) => {})
+      .catch((err) => {});
   };
 
   const goToRentUserPage = (itemId) => {
     history.push(`/rentuser/${itemId}`);
-  }
-  
+  };
+
   const goToProductDetail = (itemId) => {
     history.push(`/detail/${itemId}`);
-  }
+  };
 
   return (
     <div>
@@ -91,7 +83,7 @@ const MyProduct = (props) => {
                   className="wish-item-icon"
                   alt="profile"
                 ></img>
-                <div className="wish-item-vertical" onClick={()=>goToProductDetail(item.itemId)}>
+                <div className="wish-item-vertical" onClick={() => goToProductDetail(item.itemId)}>
                   <div className="wish-item-title">
                     <Link to={`/rentuser/${item.itemId}`}>{item.itemName}</Link>
                   </div>
@@ -99,7 +91,12 @@ const MyProduct = (props) => {
                   <div className="wish-item-price">{item.itemPrice} 원</div>
                 </div>
                 <div>
-                  <Button className="mp-rent-user-button" onClick={()=>goToRentUserPage(item.itemId)}>대여자 보기</Button>
+                  <Button
+                    className="mp-rent-user-button"
+                    onClick={() => goToRentUserPage(item.itemId)}
+                  >
+                    대여자 보기
+                  </Button>
                   {/* <button>대여자 보기?</button> */}
                   <label className="switch">
                     <input
