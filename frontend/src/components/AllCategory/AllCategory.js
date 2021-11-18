@@ -48,7 +48,13 @@ const AllCategory = (props) => {
               <img
                 src={cutlery}
                 alt="cutlery"
-                className={selectCategory === "식기" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "식기"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>식기</p>
             </div>
@@ -58,7 +64,13 @@ const AllCategory = (props) => {
               <img
                 src={clothes}
                 alt="clothes"
-                className={selectCategory === "의복" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "의복"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>의복</p>
             </div>
@@ -68,7 +80,13 @@ const AllCategory = (props) => {
               <img
                 src={computer}
                 alt="computer"
-                className={selectCategory === "가전제품" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "가전제품"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>가전제품</p>
             </div>
@@ -78,7 +96,13 @@ const AllCategory = (props) => {
               <img
                 src={study}
                 alt="study"
-                className={selectCategory === "서적" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "서적"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>서적</p>
             </div>
@@ -88,7 +112,13 @@ const AllCategory = (props) => {
               <img
                 src={hair}
                 alt="hair"
-                className={selectCategory === "미용" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "미용"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>미용</p>
             </div>
@@ -100,7 +130,13 @@ const AllCategory = (props) => {
               <img
                 src={camera}
                 alt="cutlery"
-                className={selectCategory === "사진" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "사진"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>사진</p>
             </div>
@@ -110,7 +146,13 @@ const AllCategory = (props) => {
               <img
                 src={drill}
                 alt="clothes"
-                className={selectCategory === "공구" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "공구"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>공구</p>
             </div>
@@ -120,7 +162,13 @@ const AllCategory = (props) => {
               <img
                 src={gamepad}
                 alt="gamepad"
-                className={selectCategory === "게임" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "게임"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>게임</p>
             </div>
@@ -130,7 +178,13 @@ const AllCategory = (props) => {
               <img
                 src={music}
                 alt="music "
-                className={selectCategory === "음악" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "음악"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>음악</p>
             </div>
@@ -140,7 +194,13 @@ const AllCategory = (props) => {
               <img
                 src={art}
                 alt="art"
-                className={selectCategory === "예술" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "예술"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>예술</p>
             </div>
@@ -152,7 +212,13 @@ const AllCategory = (props) => {
               <img
                 src={feeding}
                 alt="feeding"
-                className={selectCategory === "육아" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "육아"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>육아</p>
             </div>
@@ -162,7 +228,13 @@ const AllCategory = (props) => {
               <img
                 src={dog}
                 alt="dog"
-                className={selectCategory === "동물" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "동물"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>동물</p>
             </div>
@@ -172,7 +244,13 @@ const AllCategory = (props) => {
               <img
                 src={beach}
                 alt="beach "
-                className={selectCategory === "야외" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "야외"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>야외</p>
             </div>
@@ -182,7 +260,13 @@ const AllCategory = (props) => {
               <img
                 src={diamond}
                 alt="diamond "
-                className={selectCategory === "명품" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "명품"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>명품</p>
             </div>
@@ -192,7 +276,13 @@ const AllCategory = (props) => {
               <img
                 src={etc}
                 alt="etc"
-                className={selectCategory === "기타" ? "category-color" : "category-gray"}
+                className={
+                  props.flag !== "1"
+                    ? "category-color"
+                    : selectCategory === "기타"
+                    ? "category-color"
+                    : "category-gray"
+                }
               />
               <p>기타</p>
             </div>
