@@ -26,41 +26,11 @@ const TradeDetail = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setContract(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
-    // if (flag === 1){
-    //   axios
-    //     .get(`user/item/receipt/${cNo}`, {
-    //       headers: {
-    //         Authorization: "Bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       console.log(response);
-    //       setContract(response.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // } else {
-      // axios
-      //   .get(`user/item/receipt/${cNo}`, {
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //     },
-      //   })
-      //   .then((response) => {
-      //     console.log(response);
-      //     setContract(response.data);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-    // }
   }, []);
 
   const onCompleteReturn = () => {

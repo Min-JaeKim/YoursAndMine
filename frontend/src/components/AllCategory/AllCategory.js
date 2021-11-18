@@ -26,12 +26,10 @@ const AllCategory = (props) => {
 
   const onClickCategory = (e) => {
     const category = e.currentTarget.getAttribute("value");
-    console.log("AllCategory : " + category);
     setSelectCategory(category);
 
     if (props.flag === "1") {
       e.preventDefault();
-      console.log(category);
       // this.props.onCreate(category);
       props.funcSetCategory(category);
     } else {

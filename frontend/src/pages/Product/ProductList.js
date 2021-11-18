@@ -16,14 +16,11 @@ const ProductList = () => {
 
 
   useEffect(() => {
-    // console.log('length');
-    // console.log(prevCnt, itemLists.length);
     if (prevCnt !== itemLists.length) {
       setPrevCnt(itemLists.length)
     } else {
       setLoadingFlag(false);
     }
-    // console.log(itemLists);
   }, [itemLists]);
 
   const getMoreItem = async () => {
@@ -71,7 +68,6 @@ const ProductList = () => {
   useEffect(() => {
     let observer;
     if (target) {
-      console.log(55555555555555);
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0.4,
       });

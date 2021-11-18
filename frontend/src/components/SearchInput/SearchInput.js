@@ -23,10 +23,8 @@ const SearchInput = () => {
       setSearchCategory(historyState.category);
     }
     category = query.category;
-    // console.log(category)
     if(category !== "undefined")
       setSearchCategory(category);
-    // console.log(searchCategory)
   }, []);
 
   const onChange = (e) => {
@@ -34,10 +32,6 @@ const SearchInput = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // history.push({
-    //   pathname: `/searchitem?category=${searchCategory}&keyword=${inputText}&sort=1`,
-    // });
-    // history.push(`/searchitem?text=${inputText}`);
     window.location.replace(`/searchitem?category=${searchCategory}&keyword=${inputText}&sort=1`); //새로고침
   };
 

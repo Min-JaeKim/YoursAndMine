@@ -83,8 +83,6 @@ const SignUp = ({ history }) => {
               userEmail: watch('email', ''),
             })
             .then((response) => {
-              // 꼭 지워야할 log
-              console.log(response.data);
               setCode(response.data.certificationNumber);
               setSendEmail(true);
               Swal.fire({
