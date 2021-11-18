@@ -163,7 +163,7 @@ function App() {
             <PrivateRouter path="/rentuser/:pNo" component={RentUserList} exact />
             <PrivateRouter path="/tradedetail/:cNo" component={TradeDetail} exact />
             <PrivateRouter path="/myschedule" component={MySchedule} exact />
-            <PrivateRouter path="/test" component={Test} exact />
+            {/* <PrivateRouter path="/test" component={Test} exact /> */}
           </Layout>
         </Switch>
       </Router>
