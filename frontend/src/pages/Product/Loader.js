@@ -1,7 +1,11 @@
 import { memo } from "react";
+import './Product.css'
 
 const Loader = () => {
-  return <>로딩</>;
+  return( 
+  <>
+    <div className="product-loader">loading...</div>
+  </>);
 };
 
 export default memo(Loader);
