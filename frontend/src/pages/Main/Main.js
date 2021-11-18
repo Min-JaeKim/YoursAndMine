@@ -65,9 +65,7 @@ const Main = () => {
         .then((response) => {
           setNonMemberProduct(response.data);
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     } else {
       axios
         .get(`/item?page=0&size=12&sort=itemModifiedTime,DESC`, {
@@ -76,7 +74,6 @@ const Main = () => {
           },
         })
         .then((response) => {
-          console.log(response);
           setNearProduct(response.data);
           if (response.data.length >= 3) {
             setNearProdcutCount(3);
@@ -84,9 +81,7 @@ const Main = () => {
             setNearProdcutCount(response.data.length);
           }
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
 
       axios
         .get(`/user/item/take`, {
@@ -121,9 +116,7 @@ const Main = () => {
           setNearProdcutCount(response.data.length);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [changeLocalFlag]);
 
   // const NextArrow = (props) => {

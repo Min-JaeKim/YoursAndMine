@@ -17,9 +17,7 @@ const WebSocket = (state = initialState, action) => {
         connectHeaders: {
           "auth-token": "spring-chat-auth-token",
         },
-        debug: function (str) {
-          console.log(str);
-        },
+        debug: function (str) {},
         reconnectDelay: 5000,
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,

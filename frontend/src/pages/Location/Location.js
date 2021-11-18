@@ -9,7 +9,6 @@ import Swal from "sweetalert2";
 const { kakao } = window;
 
 const Location = ({ searchPlace }) => {
-
   const dispatch = useDispatch();
   const history = useHistory();
   // 검색결과 배열에 담아줌
@@ -25,7 +24,8 @@ const Location = ({ searchPlace }) => {
       })
       .then((res) => {
         const location = res.data.documents[0];
-        sigungu = location?.address?.b_code !== undefined ? location?.address?.b_code.slice(0, 5) : null;
+        sigungu =
+          location?.address?.b_code !== undefined ? location?.address?.b_code.slice(0, 5) : null;
       });
     const token = JSON.parse(window.localStorage.getItem("token"));
     const second = await axios
@@ -48,18 +48,16 @@ const Location = ({ searchPlace }) => {
         userData.userAddress = address;
         window.localStorage.setItem("user", JSON.stringify(userData));
         Swal.fire({
-          title: 'Change!',
-          text: '주소가 변경되었습니다.',
-          icon: 'success',
-          confirmButtonText: 'OK!',
-          confirmButtonColor: '#497c5f'
+          title: "Change!",
+          text: "주소가 변경되었습니다.",
+          icon: "success",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
         }).then((result) => {
-          history.push('/');
-        })
+          history.push("/");
+        });
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
@@ -119,11 +117,17 @@ const Location = ({ searchPlace }) => {
               </h5>
               {item.road_address_name ? (
                 <div>
-                  <span style={{ cursor: "pointer" }} onClick={() => handleClick(item.road_address_name)}>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleClick(item.road_address_name)}
+                  >
                     {item.road_address_name}
                   </span>
                   <br />
-                  <span style={{ cursor: "pointer" }} onClick={() => handleClick(item.address_name)}>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleClick(item.address_name)}
+                  >
                     {item.address_name}
                   </span>
                 </div>

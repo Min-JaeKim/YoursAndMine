@@ -3,7 +3,6 @@ import axios from "../../api/axios";
 import Loader from "./Loader";
 import ProductCard from "./ProductCard";
 
-
 const ProductList = () => {
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -14,10 +13,9 @@ const ProductList = () => {
   let cnt = -1;
   // let loadingFlag = true;
 
-
   useEffect(() => {
     if (prevCnt !== itemLists.length) {
-      setPrevCnt(itemLists.length)
+      setPrevCnt(itemLists.length);
     } else {
       setLoadingFlag(false);
     }
@@ -29,29 +27,29 @@ const ProductList = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     // let Items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    if(token != null && token != ""){
+    if (token != null && token != "") {
       axios
-          .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          })
-          .then((response) => {
-            setItemLists((itemLists) => itemLists.concat(response.data));
-            // setItemLists((response.data) => itemLists.concat(response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    } else{
+        .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          setItemLists((itemLists) => itemLists.concat(response.data));
+          // setItemLists((response.data) => itemLists.concat(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
       axios
-          .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`)
-          .then((response) => {
-            setItemLists((itemLists) => itemLists.concat(response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`)
+        .then((response) => {
+          setItemLists((itemLists) => itemLists.concat(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     setIsLoaded(false);
     // setItemLists((itemLists) => itemLists.concat(Items));
@@ -79,24 +77,17 @@ const ProductList = () => {
   return (
     <>
       {/* <AppWrap> */}
-        {itemLists.map((v, i) => {
-          return <ProductCard product={v} key={v.itemId} />
-          // return <Item number={i + 1} key={i} />;
-        })}
-        {loadingFlag ?
-        <div ref={setTarget}>{isLoaded && <Loader />}</div>
-        : null
-        }
+      {itemLists.map((v, i) => {
+        return <ProductCard product={v} key={v.itemId} />;
+        // return <Item number={i + 1} key={i} />;
+      })}
+      {loadingFlag ? <div ref={setTarget}>{isLoaded && <Loader />}</div> : null}
       {/* </AppWrap> */}
     </>
   );
 };
 
 export default memo(ProductList);
-
-
-
-
 
 // import React, { useEffect, useState, useRef } from "react";
 // import userActions from "../../redux/actions/userAction";
@@ -168,7 +159,6 @@ export default memo(ProductList);
 //     }
 //     return () => observer && observer.disconnect();
 //       }, [target]);
-
 
 //   return (
 //     <div>

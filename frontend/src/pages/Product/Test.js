@@ -32,42 +32,7 @@ const Test = () => {
   const token = JSON.parse(window.localStorage.getItem("token"));
   let cnt = -1;
 
-  // useEffect(() => {
-  //   setIsLoaded(true);
-  //   setCnt(cnt+1);
-  //   if(token != null && token != ""){
-  //     axios
-  //         .get(`/item?page=${cnt}&size=3&sort=itemModifiedTime,DESC`, {
-  //           headers: {
-  //             Authorization: "Bearer " + token,
-  //           },
-  //         })
-  //         .then((response) => {
-  //           setItemLists((itemLists) => itemLists.concat(response.data));
-  //           console.log('itemLists');
-  //           console.log(itemLists);
-  //           // setItemLists((response.data) => itemLists.concat(response.data));
-  //         })
-  //         .catch((error) => {
-  //           console.log(error);
-  //         });
-  //   } else{
-  //     axios
-  //         .get(`/item?page=0&size=5&sort=itemModifiedTime,DESC`)
-  //         .then((response) => {
-  //           setItemLists((itemLists) => itemLists.concat(response.data));
-  //         })
-  //         .catch((error) => {
-  //           console.log(error);
-  //         });
-  //       }
-  //       setIsLoaded(false);
-  // }, []);
-
-
-  useEffect(() => {
-    console.log(itemLists);
-  }, [itemLists]);
+  useEffect(() => {}, [itemLists]);
 
   const getMoreItem = async () => {
     setIsLoaded(true);
@@ -75,29 +40,25 @@ const Test = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     // let Items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    if(token != null && token != ""){
+    if (token != null && token != "") {
       axios
-          .get(`/item?page=${cnt}&size=3&sort=itemModifiedTime,DESC`, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          })
-          .then((response) => {
-            setItemLists((itemLists) => itemLists.concat(response.data));
-            // setItemLists((response.data) => itemLists.concat(response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    } else{
+        .get(`/item?page=${cnt}&size=3&sort=itemModifiedTime,DESC`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((response) => {
+          setItemLists((itemLists) => itemLists.concat(response.data));
+          // setItemLists((response.data) => itemLists.concat(response.data));
+        })
+        .catch((error) => {});
+    } else {
       axios
-          .get(`/item?page=0&size=5&sort=itemModifiedTime,DESC`)
-          .then((response) => {
-            setItemLists((itemLists) => itemLists.concat(response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        .get(`/item?page=0&size=5&sort=itemModifiedTime,DESC`)
+        .then((response) => {
+          setItemLists((itemLists) => itemLists.concat(response.data));
+        })
+        .catch((error) => {});
     }
 
     // setItemLists((itemLists) => itemLists.concat(Items));
@@ -115,7 +76,6 @@ const Test = () => {
   useEffect(() => {
     let observer;
     if (target) {
-      console.log(55555555555555);
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0.4,
       });
@@ -127,11 +87,11 @@ const Test = () => {
   return (
     <>
       {/* <AppWrap> */}
-        {itemLists.map((v, i) => {
-          return <ProductCard product={v} key={v.itemId} />
-          // return <Item number={i + 1} key={i} />;
-        })}
-        <div ref={setTarget}>{isLoaded && <Loader />}</div>
+      {itemLists.map((v, i) => {
+        return <ProductCard product={v} key={v.itemId} />;
+        // return <Item number={i + 1} key={i} />;
+      })}
+      <div ref={setTarget}>{isLoaded && <Loader />}</div>
       {/* </AppWrap> */}
     </>
   );

@@ -56,11 +56,8 @@ function ChatInput(props) {
           timestamp: timestamp.toISOString(),
         };
         dispatch(insertMessage(m));
-        console.log(response);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const handleChange = ({ target: { value } }) => setMsg(value);
@@ -69,7 +66,6 @@ function ChatInput(props) {
     const to = props.to;
     const timestamp = new Date();
 
-    console.log(msg);
     props.client.current.publish({
       destination: "/app/send",
       body: JSON.stringify({
@@ -93,7 +89,6 @@ function ChatInput(props) {
 
   const sendImg = () => {
     let reader = new FileReader();
-    console.log("send Img");
   };
 
   const sendKeyPress = (e) => {
