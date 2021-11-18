@@ -6,8 +6,10 @@ import ChatHeader from "./ChatHeader";
 import ChatItemHeader from "./ChatItemHeader";
 import { useSelector, useDispatch } from "react-redux";
 import ReserveButton from "./ReserveButton";
+import { read } from "../../redux/reducers/ConversationList";
 
 function ChatRoom(props, { location }) {
+  const dispatch = useDispatch();
   const mList = useSelector((state) => state.conversationlist[props.to].list);
   const [OpenReserve, setOpenReserve] = useState({
     type: null,
@@ -30,6 +32,15 @@ function ChatRoom(props, { location }) {
   const scrollToBottom = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
   };
+
+  useEffect(() => {
+    dispatch(
+      read({
+        room: props.to,
+      })
+    );
+    console.log("채팅창 열림");
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
