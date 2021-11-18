@@ -3,7 +3,7 @@
 <div align="center">
   <img width="600" src="https://user-images.githubusercontent.com/60912550/142337946-2506d87a-b9bf-480a-8817-e6156a51518d.png" />
 
-|[이진호](https://github.com/jinho-pca)|[황성현](https://github.com/jinho-pca)|[권영린](https://github.com/)|[김민재](https://github.com/)|[윤영은](https://github.com/)|
+|[이진호](https://github.com/jinho-pca)|[황성현](https://github.com/hsh0321)|[권영린](https://github.com/)|[김민재](https://github.com/)|[윤영은](https://github.com/)|
 |:-:|:-:|:-:|:-:|:-:|
 |<img src="https://user-images.githubusercontent.com/60912550/136307383-a06166e6-2c28-4626-9723-6696e0d7ae9d.png" width="150" height="200" />|<img src="https://user-images.githubusercontent.com/60912550/142337719-ee6b2be5-fbbc-4e96-b24e-1df0dc9de1ad.jpeg" width="150" height="200" />|<img src="https://user-images.githubusercontent.com/60912550/142339921-5c44a30a-c75f-4f73-8aac-602b8fde1594.jpeg" width="150" height="200" />|<img src="https://user-images.githubusercontent.com/60912550/142338138-c29fc7c5-08b5-4e91-9772-ec0386be23d5.jpeg" width="150" height="200"  />|<img src="https://user-images.githubusercontent.com/60912550/142337551-3c46a4ff-c939-4ba7-9023-2575c1147adc.jpeg" width="150" height="200"  />|
 |Back-End <br/> |Front-End <br/>|Back-End  <br/>|Front-End <br/>|Back-End <br/>|
