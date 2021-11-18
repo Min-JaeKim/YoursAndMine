@@ -25,7 +25,6 @@ const MyProduct = (props) => {
         },
       })
       .then((response) => {
-        console.log(response)
         setProduct(response.data);
         const groups = {};
         response.data.forEach((p) => {
@@ -42,12 +41,7 @@ const MyProduct = (props) => {
   const isActive = (idx) => {
     const p = product[idx];
     setRadioGroups({ ...radioGroups, [p.itemId]: !radioGroups[p.itemId] });
-    // console.log(product[idx])
-    // if (product[idx].status == "Y")
-    //   product[idx].status = "N";
-    // else product[idx].status = "Y";
     itemOnOff(idx);
-    // console.log(product);
   };
 
   const itemOnOff = (idx) => {
@@ -62,7 +56,6 @@ const MyProduct = (props) => {
         }
       )
       .then((response) => {
-        console.log("success");
       })
       .catch((err) => {
         console.log("fail");
