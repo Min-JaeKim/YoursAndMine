@@ -49,6 +49,7 @@
 
 .main-non-member-item-box {
   margin: 10px;
+  max-width: 100px;
 }
 
 .main-non-member-img {
