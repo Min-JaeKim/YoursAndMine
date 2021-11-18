@@ -31,7 +31,7 @@ const ProductList = () => {
 
     if(token != null && token != ""){
       axios
-          .get(`/item?page=${cnt}&size=3&sort=itemModifiedTime,DESC`, {
+          .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`, {
             headers: {
               Authorization: "Bearer " + token,
             },
@@ -45,7 +45,7 @@ const ProductList = () => {
           });
     } else{
       axios
-          .get(`/item?page=${cnt}&size=3&sort=itemModifiedTime,DESC`)
+          .get(`/item?page=${cnt}&size=5&sort=itemModifiedTime,DESC`)
           .then((response) => {
             setItemLists((itemLists) => itemLists.concat(response.data));
           })
