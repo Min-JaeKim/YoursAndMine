@@ -29,7 +29,7 @@ public class User {
 
     private String userAddress;
 
-    private String userAreaCode;
+    private int userAreaCode;
 
     private String userImageUrl;
 

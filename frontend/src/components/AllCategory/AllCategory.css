@@ -28,9 +28,37 @@
   display: flex;
   justify-content: space-between;
 }
-
+/* 
 .category-row img {
   padding: 5px;
+  filter: grayscale(100%);
+} */
+
+.category-color {
+  padding: 5px;
+  width: 50px;
+  height: 50px;
+  transform: scale(1.2);
+  cursor: pointer;
+  animation: bounce-in 1s ease;
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+.category-gray {
+  padding: 5px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  filter: grayscale(100%);
 }
 
 .category-name {

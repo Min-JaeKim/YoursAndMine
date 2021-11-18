@@ -6,8 +6,10 @@ import ChatHeader from "./ChatHeader";
 import ChatItemHeader from "./ChatItemHeader";
 import { useSelector, useDispatch } from "react-redux";
 import ReserveButton from "./ReserveButton";
+import { read } from "../../redux/reducers/ConversationList";
 
 function ChatRoom(props, { location }) {
+  const dispatch = useDispatch();
   const mList = useSelector((state) => state.conversationlist[props.to].list);
   const [OpenReserve, setOpenReserve] = useState({
     type: null,
@@ -24,10 +26,20 @@ function ChatRoom(props, { location }) {
     itemName: useSelector((state) => state.conversationlist[props.to].itemName),
   };
 
+  const userImg = useSelector((state) => state.conversationlist[props.to].userImg);
+
   // 로드 시 스크롤 제일 아래로
   const scrollToBottom = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
   };
+
+  useEffect(() => {
+    dispatch(
+      read({
+        room: props.to,
+      })
+    );
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
@@ -40,7 +52,7 @@ function ChatRoom(props, { location }) {
       <div className="chatroom-empty-header"></div>
       {mList.map((msg, idx) => (
         <ChatMessage
-          profileImg={""}
+          profileImg={userImg}
           isOpen={OpenReserve}
           setOpenReserve={setOpenReserve}
           msg={msg}

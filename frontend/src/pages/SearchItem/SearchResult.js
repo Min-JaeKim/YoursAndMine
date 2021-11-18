@@ -7,7 +7,6 @@ const SearchResult = ({ text }) => {
   const onClickFilter = () => {
     setVisible(!visible);
   };
-  console.log(text);
   return (
     <>
       {!visible && (

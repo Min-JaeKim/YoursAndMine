@@ -1,0 +1,56 @@
+spring:
+  datasource:
+    url: jdbc:mysql://yam-db.ccvrsozs6waf.ap-northeast-2.rds.amazonaws.com:3306/yam
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: admin
+    password: yam2021!
+  devtools:
+    restart:
+      enabled: true
+  #
+  #  jackson:
+  #    serialization:
+  #      fail-on-empty-beans: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yam2021@gmail.com
+    password: pcnilrwgfsmsedzx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 3000
+          starttls:
+            enable: true
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA5NZTALAJS2BOEROS
+      secretKey: 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
+    stack:
+      auto: true
+    s3:
+      bucket: yam-s3
+      url: https://s3.ap-northeast-2.amazonaws.com/yam-s3
+    region:
+      static: ap-northeast-2
+
+jwt:
+  header: Authorization
+  #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+  #echo 'ssafy-5th-3rd-project-yam(YoursAndMine)-leejinho-kimminjae-hwangseonghyun-yoonyoungeun-kwonyoungrin-jwt-secret-key' |base64
+  secret: c3NhZnktNXRoLTNyZC1wcm9qZWN0LXlhbShZb3Vyc0FuZE1pbmUpLWxlZWppbmhvLWtpbW1pbmphZS1od2FuZ3Nlb25naHl1bi15b29ueW91bmdldW4ta3dvbnlvdW5ncmluLWp3dC1zZWNyZXQta2V5Cg==
+  token-validity-in-seconds: 86400
+
+server:
+  servlet:
+    encoding:
+      force-response: true

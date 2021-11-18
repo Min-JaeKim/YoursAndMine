@@ -53,7 +53,7 @@ public class UserRequestDto {
     @Setter
     public static class ModifyAddress {
         private String userAddress;
-        private String userAreaCode;
+        private int userAreaCode;
     }
 
     @Getter

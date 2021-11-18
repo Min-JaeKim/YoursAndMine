@@ -9,24 +9,23 @@ import Swal from "sweetalert2";
 import { Input, Button, Form, TextArea, Grid } from "semantic-ui-react";
 
 const Write = () => {
-
   let { user } = useSelector(({ user }) => ({
-    user: user.user
+    user: user.user,
   }));
 
   const userdata = JSON.parse(window.localStorage.getItem("user"));
 
   const history = useHistory();
-  const [itemname, setItemName] = useState('')
-  const [itemPrice, setItemPrice] = useState('')
-  const [description, setDescription] = useState('')
-  const [category, setCategory] = useState('test');
-  const [file, setFile] = useState('');
-  const [previewURL, setPreviewURL] = useState('');
+  const [itemname, setItemName] = useState("");
+  const [itemPrice, setItemPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("test");
+  const [file, setFile] = useState("");
+  const [previewURL, setPreviewURL] = useState("");
 
   let profile_preview = null;
-  if(file !=='') {
-    profile_preview = <img className='profile_preview' src={previewURL}></img>
+  if (file !== "") {
+    profile_preview = <img className="profile_preview" src={previewURL}></img>;
   }
 
   const getCategory = (category) => {
@@ -34,82 +33,82 @@ const Write = () => {
   };
 
   const writeProduct = () => {
-    if (file === ''){
+    if (file === "") {
       Swal.fire({
-        title: 'Error!',
-        text: '사진은 필수입니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      })
+        title: "Error!",
+        text: "사진은 필수입니다.",
+        icon: "error",
+        confirmButtonText: "OK!",
+        confirmButtonColor: "#497c5f",
+      });
       return;
     }
-    if (category === 'test') {
+    if (category === "test") {
       Swal.fire({
-        title: 'Error!',
-        text: '카테고리는 필수입니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      })
+        title: "Error!",
+        text: "카테고리는 필수입니다.",
+        icon: "error",
+        confirmButtonText: "OK!",
+        confirmButtonColor: "#497c5f",
+      });
       return;
     }
-    if (itemname === ''){
+    if (itemname === "") {
       Swal.fire({
-        title: 'Error!',
-        text: '상품명은 필수입니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      })
+        title: "Error!",
+        text: "상품명은 필수입니다.",
+        icon: "error",
+        confirmButtonText: "OK!",
+        confirmButtonColor: "#497c5f",
+      });
       return;
     }
-    if (itemPrice === ''){
+    if (itemPrice === "") {
       Swal.fire({
-        title: 'Error!',
-        text: '상품가격은 필수입니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      })
+        title: "Error!",
+        text: "상품가격은 필수입니다.",
+        icon: "error",
+        confirmButtonText: "OK!",
+        confirmButtonColor: "#497c5f",
+      });
       return;
     }
-    if (description === '') {
+    if (description === "") {
       Swal.fire({
-        title: 'Error!',
-        text: '상품 설명은 필수입니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      })
+        title: "Error!",
+        text: "상품 설명은 필수입니다.",
+        icon: "error",
+        confirmButtonText: "OK!",
+        confirmButtonColor: "#497c5f",
+      });
       return;
     }
 
-      const itemData = {
-        "itemName": itemname,
-        "itemContent": description,
-        "itemCategory": category,
-        "itemPrice": itemPrice
-        }
+    const itemData = {
+      itemName: itemname,
+      itemContent: description,
+      itemCategory: category,
+      itemPrice: itemPrice,
+    };
 
-      const formData = new FormData();
-      formData.append("itemImage", file);
-      formData.append("itemData",  new Blob([JSON.stringify(itemData)], {type: "application/json"}));
+    const formData = new FormData();
+    formData.append("itemImage", file);
+    formData.append("itemData", new Blob([JSON.stringify(itemData)], { type: "application/json" }));
 
-      const token = JSON.parse(window.localStorage.getItem("token"));
-      axios
-        .post(`/item`, formData, {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((response) => {
-          history.push('/myproduct');
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-  }
+    const token = JSON.parse(window.localStorage.getItem("token"));
+    axios
+      .post(`/item`, formData, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        history.push("/myproduct");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const onChangeItemName = (e) => {
     setItemName(e.target.value);
@@ -120,8 +119,8 @@ const Write = () => {
   };
 
   const onChangeDesc = (e) => {
-    setDescription(e.target.value)
-  }
+    setDescription(e.target.value);
+  };
 
   const handleFileOnChange = (e) => {
     e.preventDefault();
@@ -130,24 +129,23 @@ const Write = () => {
     reader.onloadend = () => {
       setFile(file);
       setPreviewURL(reader.result);
-    }
+    };
     reader.readAsDataURL(file);
-  }
+  };
 
   useEffect(() => {
     if (!user?.userAddress) {
       Swal.fire({
-        title: 'Error!',
-        text: '주소 지정을 해주셔야 합니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      }).then(()=>{
-        history.push('/searchplace');
-      })
+        title: "Error!",
+        text: "주소 지정을 해주셔야 합니다.",
+        icon: "error",
+        confirmButtonText: "OK!",
+        confirmButtonColor: "#497c5f",
+      }).then(() => {
+        history.push("/searchplace");
+      });
     }
-  }, [])
-
+  }, []);
 
   return (
     <div className="write">
@@ -163,12 +161,12 @@ const Write = () => {
       <div className="upload">
         {/* <Button className="upload-button"><h2>+</h2></Button> */}
         {profile_preview}
-        <input type='file' 
-          accept='image/jpg,impge/png,image/jpeg,image/gif' 
-          name='profile_img' 
+        <input
+          type="file"
+          accept="image/jpg,impge/png,image/jpeg,image/gif"
+          name="profile_img"
           onChange={handleFileOnChange}
-          >
-      </input>
+        ></input>
       </div>
       <div className="write-category">
         <Category flag="1" category={category} getCategory={getCategory} />

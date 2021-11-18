@@ -1,5 +1,6 @@
 package com.ssafy.yam.domain.bookmark.service;
 
+import com.ssafy.yam.domain.bookmark.dto.request.BookmarkRequest;
 import com.ssafy.yam.domain.bookmark.entity.Bookmark;
 import com.ssafy.yam.domain.bookmark.entity.BookmarkId;
 import com.ssafy.yam.domain.bookmark.repository.BookmarkRepository;
@@ -19,11 +20,13 @@ public class BookmarkService {
     private final UserRepository userRepository;
 
     public void addBookmark(int itemId) {
-        // 토큰 유효성 검사 필요
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
+        System.out.println("북마크 서비스 : " + tokenEmail);
         User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         int userId = user.getUserId();
+        System.out.println("북마크 서비스 : " + userId);
 
+        //int itemId = bookmarkRequest.getItemId();
         BookmarkId bookmarkId = new BookmarkId(userId, itemId);
         Bookmark bookmark = new Bookmark(bookmarkId);
         bookmarkRepository.save(bookmark);

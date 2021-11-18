@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./ChatDetail.css";
 import { Link } from "react-router-dom";
+import Newmsg from "../../assets/icons/new-msg.png";
 
 import defaultUserImage from "../../assets/image/defaultuser.png";
 // 채팅방 버튼
@@ -42,7 +43,10 @@ function ChatDetail(props) {
           <div className="user-name">{props.conversation.name}</div>
           <div className="user-footer">{props.conversation.lastMsg}</div>
         </div>
-        <div className="msg-time">{convertTime(msgTime)}</div>
+        <div className="msg-time">
+          {props.conversation.newmsg ? <div className="new-msg"></div> : null}
+          {convertTime(msgTime)}
+        </div>
       </div>
 
       <div className="chat-product-img">

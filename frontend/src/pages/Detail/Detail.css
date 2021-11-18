@@ -48,6 +48,30 @@
   margin-top: 0;
 }
 
+.detail-owner-button {
+}
+
+.detail-owner-button > Button {
+  border-radius: 30px !important;
+}
+
+.detail-put-product {
+}
+
+.detail-product-info-and-button {
+  display: flex;
+  align-items: center;
+}
+
+.detail-delete-product {
+  background-color: #eb3223 !important;
+  color: white !important;
+  width: 45px !important;
+  margin-right: 10px !important;
+  padding: 8px 0px !important;
+  font-size: 12px !important;
+}
+
 .detail-like {
   display: flex;
   flex-direction: column;
@@ -57,6 +81,7 @@
 
 .detail-like-icon {
   width: 50%;
+  cursor: pointer;
 }
 
 .detail-product-detail {

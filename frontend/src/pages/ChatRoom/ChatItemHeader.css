@@ -1,4 +1,5 @@
 .chat-item-header {
+  z-index: 20;
   display: flex;
   position: fixed;
   width: 420px;

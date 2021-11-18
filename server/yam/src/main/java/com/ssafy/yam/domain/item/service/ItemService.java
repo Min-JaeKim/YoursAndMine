@@ -73,7 +73,7 @@ public class ItemService {
 
 
         String tokenEmail = SecurityUtils.getCurrentUsername().get();
-        System.out.println(tokenEmail);
+//        System.out.println(tokenEmail);
         if(tokenEmail.equals("anonymousUser") ) {
             ItemDetailResponse itemDetail = new ItemDetailResponse(response, deal);
             return itemDetail;
@@ -102,8 +102,9 @@ public class ItemService {
             addItemList(response, itemList);
         }else{
             User user = userRepository.findByUserEmail(tokenEmail).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-            String areaCode = user.getUserAreaCode();
+            int areaCode = user.getUserAreaCode();
             List<Item> itemList = itemRepository.findAllByItemAreaCode(areaCode, pageable);
+
             addItemList(response, itemList);
         }
         return response;
@@ -119,6 +120,7 @@ public class ItemService {
                         .itemAddress(item.getItemAddress())
                         .itemAreaCode(item.getItemAreaCode())
                         .itemModifiedTime(item.getItemModifiedTime())
+                        .bookmarkCount(bookmarkRepository.countByItemId(item.getItemId()))
                         .build();
 
                 Image image = imageRepository.findAllByItem_ItemIdLimit1(item.getItemId());

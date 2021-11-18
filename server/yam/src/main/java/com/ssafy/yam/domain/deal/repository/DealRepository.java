@@ -16,6 +16,7 @@ public interface DealRepository extends JpaRepository<Deal, Integer> {
     List<Deal> findByBuyer_UserIdOrderByDealStartDateDesc(int userId);
     List<Deal> findByBuyer_UserId(int userId);
     List<Deal> findBySeller_UserId(int userId);
+    void deleteAllByItem_ItemId(int itemId);
 
     @Query(value = "select count(*) from deal where item_id = :itemId", nativeQuery = true)
     int countByItemId(@Param("itemId") int itemId);

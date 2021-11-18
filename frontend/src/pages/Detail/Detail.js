@@ -8,7 +8,7 @@ import { insertMessage } from "../../redux/reducers/ConversationList";
 
 import "./Detail.css";
 import Slider from "react-slick";
-import { Swal } from "sweetalert2";
+import Swal from "sweetalert2";
 import { Button } from "semantic-ui-react";
 import unlikeIcon from "../../assets/icons/wish.png";
 import likeIcon from "../../assets/icons/wish-on.png";
@@ -59,11 +59,9 @@ export const Detail = (props) => {
       axios
         .get(`/item/${pNo}`, {})
         .then((response) => {
-          // console.log(response.data);
           setDetail(response.data.item);
           setUnavailableDate(response.data.unavailableDate);
           setLoading(false);
-          // setLike(response.data.bookmark);
         })
         .catch((error) => {
           history.push("/");
@@ -72,83 +70,169 @@ export const Detail = (props) => {
   }, []);
 
   const onSelectProduct = () => {
-    const timestamp = new Date();
-    props.client.current.publish({
-      destination: "/app/send",
-      body: JSON.stringify({
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.userAddress) {
+      if (token === null) {
+        Swal.fire({
+          title: "Error!",
+          text: "로그인 후 이용 가능합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        }).then((res) => {
+          history.push("/signin");
+        });
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "주소 지정 후 이용 가능합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        }).then(() => {
+          history.push("/searchplace");
+        });
+      }
+    } else {
+      const timestamp = new Date();
+      const author = JSON.parse(localStorage.getItem("user"));
+
+      props.client.current.publish({
+        destination: "/app/send",
+        body: JSON.stringify({
+          type: "create",
+          message: JSON.stringify({
+            name: detail.owner.ownerNickName,
+            userImg: detail.owner.ownerImageUrl,
+            itemImg: detail.itemImage[0],
+            itemName: detail.itemName,
+            author: {
+              userImg: author.userImage,
+              name: author.userNickname,
+            },
+          }),
+          author: userId, // 내이름
+          to: detail.owner.ownerId,
+          itemPk: pNo,
+          timestamp: timestamp.getTime(),
+        }),
+      });
+
+      const m = {
         type: "create",
-        message: "",
+        message: JSON.stringify({
+          name: detail.owner.ownerNickName,
+          userImg: detail.owner.ownerImageUrl,
+          itemImg: detail.itemImage[0],
+          itemName: detail.itemName,
+        }),
         author: userId, // 내이름
         to: detail.owner.ownerId,
         itemPk: pNo,
         timestamp: timestamp.getTime(),
-      }),
-    });
+      };
+      console.log(m);
+      dispatch(insertMessage(m));
 
-    const m = {
-      type: "create",
-      message: "",
-      author: userId, // 내이름
-      to: detail.owner.ownerId,
-      itemPk: pNo,
-      timestamp: timestamp.getTime(),
-      // timestamp:
-      //   timestamp.getHours().toString().padStart(2, "0") +
-      //   ":" +
-      //   timestamp.getMinutes().toString().padStart(2, "0"),
-    };
-    console.log(m);
-    // dispatch(insertMessage(m));
-
-    history.push({
-      pathname: "/chat",
-      state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
-    });
+      history.replace({
+        pathname: "/chat",
+        state: { userPK: detail.owner.ownerId },
+        // state: { userPK: detail.owner.ownerId + "-" + detail.itemId },
+      });
+    }
   };
 
   const onLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
-    .post(`/item/bookmark/${detail.itemId}`, {}, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-    .then((response) => {
+      .post(
+        `/item/bookmark/${detail.itemId}`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((response) => {
         setLike(true);
       })
-    .catch((error) => {
-      Swal.fire({
-        title: 'Error!',
-        text: '관심 등록이 불가합니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
-      })
-    });
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: "관심 등록이 불가합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        });
+      });
   };
 
   const onUnLike = (e) => {
     const token = JSON.parse(window.localStorage.getItem("token"));
     axios
-    .delete(`/item/bookmark/${detail.itemId}`, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-    .then((response) => {
-      setLike(false);      
+      .delete(`/item/bookmark/${detail.itemId}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       })
-    .catch((error) => {
-      Swal.fire({
-        title: 'Error!',
-        text: '관심 등록 취소 불가합니다.',
-        icon: 'error',
-        confirmButtonText: 'OK!',
-        confirmButtonColor: '#497c5f'
+      .then((response) => {
+        setLike(false);
       })
-    });
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: "관심 등록 취소 불가합니다.",
+          icon: "error",
+          confirmButtonText: "OK!",
+          confirmButtonColor: "#497c5f",
+        });
+      });
   };
+
+  const onDeleteProduct = () => {
+    Swal.fire({
+      title: "상품을 삭제하시겠습니까?",
+      // text: "관심 등록 취소 불가합니다.",
+      icon: "question",
+      confirmButtonText: "OK!",
+      confirmButtonColor: "#497c5f",
+      showCancelButton: true,
+      cancelButtonText: 'No, cancel!',
+      cancelButtonColor: "#C4C4C4",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axios
+          .delete(`/item/${detail.itemId}`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((response) => {
+            Swal.fire({
+              title: "Success!",
+              text: "상품이 삭제되었습니다.",
+              icon: "success",
+              confirmButtonText: "OK!",
+              confirmButtonColor: "#497c5f",
+            }).then(()=>{
+              history.push("/");
+            })
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: "Error!",
+              text: "삭제가 정상적으로 이루어지지 않았습니다.",
+              icon: "error",
+              confirmButtonText: "OK!",
+              confirmButtonColor: "#497c5f",
+            });
+          });
+      } else {
+
+      }
+    })
+  }
 
   return (
     <div>
@@ -175,29 +259,40 @@ export const Detail = (props) => {
               <div className="detail-user-address">{detail.owner.ownerAddress}</div>
             </div>
             {token ? (
-              <div className="detail-like">
-                {like ? (
-                  <img
-                    src={likeIcon}
-                    alt="likeIcon"
-                    className="detail-like-icon"
-                    onClick={onUnLike}
-                  />
-                ) : (
-                  <img
-                    src={unlikeIcon}
-                    alt="likeIcon"
-                    className="detail-like-icon"
-                    onClick={onLike}
-                  />
-                )}
-                <div>관심 등록</div>
-              </div>
+              (
+                <div className="detail-like">
+                  {like ? (
+                    <img
+                      src={likeIcon}
+                      alt="likeIcon"
+                      className="detail-like-icon"
+                      onClick={onUnLike}
+                    />
+                  ) : (
+                    <img
+                      src={unlikeIcon}
+                      alt="likeIcon"
+                      className="detail-like-icon"
+                      onClick={onLike}
+                    />
+                  )}
+                  <div>관심 등록</div>
+                </div>
+              )
             ) : null}
           </div>
-          <div className="detail-product-header">
-            <div className="detail-product-name">{detail.itemName}</div>
-            <div className="detail-product-category-time">{detail.itemCategory}</div>
+          <div className="detail-product-info-and-button">
+            <div className="detail-product-header">
+              <div className="detail-product-name">{detail.itemName}</div>
+              <div className="detail-product-category-time">{detail.itemCategory}</div>
+            </div>
+            {detail.owner.ownerId === userId ? (
+                <div className="detail-owner-button">
+                  {/* <Button className="detail-put-product">수정</Button> */}
+                  <Button className="detail-delete-product" onClick={onDeleteProduct}>삭제</Button>
+                </div>
+              ) : null}
+            {/* <Button className="detail-delete-product">삭제</Button> */}
           </div>
           <div className="detail-inquire-buy">
             <div className="detail-oneday-price">

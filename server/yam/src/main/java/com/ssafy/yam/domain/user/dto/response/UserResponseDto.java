@@ -16,7 +16,7 @@ public class UserResponseDto {
         private String accessToken;
         //        private String refreshToken;
         private String userAddress;
-        private String userAreaCode;
+        private int userAreaCode;
     }
 
     @Getter
@@ -47,7 +47,7 @@ public class UserResponseDto {
         private String userNickname;
         private String userImage;
         private String userAddress;
-        private String userAreaCode;
+        private int userAreaCode;
         private int userAuthLevel;
     }
 
@@ -115,6 +115,7 @@ public class UserResponseDto {
         private int dealId;
         private int dealTotalPrice;
         private String dealStatus;
+        private int itemId;
         private String itemName;
         private List<String> itemImage = new ArrayList<>();
         private String itemAddress;
@@ -172,7 +173,7 @@ public class UserResponseDto {
         private String userEmail;
         private String userNickname;
         private String userAddress;
-        private String userAreaCode;
+        private int userAreaCode;
         private String userImage;
         private int userAuthLevel;
     }

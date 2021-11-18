@@ -3,16 +3,10 @@ import "./Filter.css";
 import axios from "../../api/axios";
 import "./SearchItem.css";
 import "./SearchResult.css";
-import Filter from "./Filter";
 import queryString from "query-string";
-import { Input } from "semantic-ui-react";
-import { useLocation } from "react-router";
-import noImage from "../../assets/image/no-image.jpg";
-// import product from "../../assets/image/product.png";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SearchInput from "../../components/SearchInput/SearchInput";
-import { Form, Radio, Button } from "semantic-ui-react";
 import ProductCard from "../Product/ProductCard";
 
 const SearchItem = ({ location, match }) => {
@@ -29,10 +23,14 @@ const SearchItem = ({ location, match }) => {
   //검색 Input tag관련
   const [inputText, setInputText] = useState("");
   const [products, setProducts] = useState();
+  let [isOneSelected, isTwoSelected, isThreeSelected] = useState(false);
+  const [oneStyle, setOneStyle] = useState("search-type-selected");
+  const [twoStyle, setTwoStyle] = useState("search-type");
+  const [threeStyle, setThreeStyle] = useState("search-type");
 
-  console.log("keyword : " + keyword)
-  console.log("category : " + category)
-  console.log("sort : " + sort)
+  // console.log("keyword : " + keyword)
+  // console.log("category : " + category)
+  // console.log("sort : " + sort)
 
   useEffect(() => {
     axios
@@ -40,40 +38,44 @@ const SearchItem = ({ location, match }) => {
         params: {
           category: category,
           keyword: keyword,
-          sort: sort
+          sort: sort,
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setProducts(response.data);
-        // setSearchItem(response.data);
-        // setSearchList(new Array(response.data.length).fill(true));
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [inputText]);
 
   const funcSort = (searchType) => {
-    console.log(searchType)
     axios
-        .get(`/search`, {
-          params: {
-            category: category,
-            keyword: keyword,
-            sort: searchType
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          setProducts(response.data);
-          // setSearchItem(response.data);
-          // setSearchList(new Array(response.data.length).fill(true));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  }
+      .get(`/search`, {
+        params: {
+          category: category,
+          keyword: keyword,
+          sort: searchType,
+        },
+      })
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {});
+
+    if (searchType == 1) {
+      setOneStyle("search-type-selected");
+      setTwoStyle("search-type");
+      setThreeStyle("search-type");
+    } else if (searchType == 2) {
+      setOneStyle("search-type");
+      setTwoStyle("search-type-selected");
+      setThreeStyle("search-type");
+    } else {
+      setOneStyle("search-type");
+      setTwoStyle("search-type");
+      setThreeStyle("search-type-selected");
+    }
+  };
 
   return (
     <>
@@ -85,57 +87,39 @@ const SearchItem = ({ location, match }) => {
       <div className="search-filter">
         <FontAwesomeIcon className="search-filter-icon" icon={faFilter} />
         <h4 className="search-filter-text">정렬</h4>
-        <div className="radio-group">
-          <div className="search-radio" onClick={() => {funcSort(1)}}>최신순</div>
-          <div className="search-radio" onClick={() => {funcSort(2)}}>북마크순</div>
-          <div className="search-radio" onClick={() => {funcSort(3)}}>대여순</div>
+        <div className="search-sort-group">
+          <div
+            className={oneStyle}
+            onClick={() => {
+              funcSort(1);
+            }}
+          >
+            최신순
+          </div>
+          <div
+            className={twoStyle}
+            onClick={() => {
+              funcSort(2);
+            }}
+          >
+            북마크순
+          </div>
+          <div
+            className={threeStyle}
+            onClick={() => {
+              funcSort(3);
+            }}
+          >
+            대여순
+          </div>
         </div>
-        {/*<div>*/}
-        {/*  <Form onSubmit={handleSubmit} className="radio-group">*/}
-        {/*    /!* <Form.Field>*/}
-        {/*  Selected value: <b>{inputStatus}</b>*/}
-        {/*</Form.Field>*/}
-        {/* *!/*/}
-        {/*    <Form.Field>*/}
-        {/*      <Radio*/}
-        {/*          className="search-radio"*/}
-        {/*          id="radio3"*/}
-        {/*          label="최신순"*/}
-        {/*          name="radioGroup"*/}
-        {/*          // checked={inputStatus === "최신순"}*/}
-        {/*          // onClick={() => handleClickRadioButton(1)}*/}
-        {/*      />*/}
-        {/*    </Form.Field>*/}
-        {/*    <Form.Field>*/}
-        {/*      <Radio*/}
-        {/*        className="search-radio"*/}
-        {/*        id="radio1"*/}
-        {/*        label="대여순"*/}
-        {/*        name="radioGroup"*/}
-        {/*        // checked={inputStatus === "대여순"}*/}
-        {/*        // onClick={() => handleClickRadioButton(2)}*/}
-        {/*      />*/}
-        {/*    </Form.Field>*/}
-        {/*    <Form.Field>*/}
-        {/*      <Radio*/}
-        {/*        className="search-radio"*/}
-        {/*        id="radio2"*/}
-        {/*        label="북마크순"*/}
-        {/*        name="radioGroup"*/}
-        {/*        // checked={inputStatus === "북마크순"}*/}
-        {/*        // onClick={() => handleClickRadioButton(3)}*/}
-        {/*      />*/}
-        {/*    </Form.Field>*/}
-        {/*    <hr />*/}
-        {/*  </Form>*/}
-        {/*</div>*/}
       </div>
       <div>
         {products
-            ? products.map((product, idx) => (
-                <ProductCard product={product} key={product.itemId}></ProductCard>
+          ? products.map((product, idx) => (
+              <ProductCard product={product} key={product.itemId}></ProductCard>
             ))
-            : null}
+          : null}
       </div>
     </>
   );

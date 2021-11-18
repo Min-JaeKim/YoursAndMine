@@ -15,6 +15,7 @@ const SearchInput = () => {
   const [searchCategory, setSearchCategory] = useState(undefined);
   const query = queryString.parse(location.search);
   const keyword = query.keyword;
+  const searchedWord = keyword;
   let category
 
   useEffect(() => {
@@ -22,10 +23,8 @@ const SearchInput = () => {
       setSearchCategory(historyState.category);
     }
     category = query.category;
-    // console.log(category)
     if(category !== "undefined")
       setSearchCategory(category);
-    // console.log(searchCategory)
   }, []);
 
   const onChange = (e) => {
@@ -33,10 +32,6 @@ const SearchInput = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // history.push({
-    //   pathname: `/searchitem?category=${searchCategory}&keyword=${inputText}&sort=1`,
-    // });
-    // history.push(`/searchitem?text=${inputText}`);
     window.location.replace(`/searchitem?category=${searchCategory}&keyword=${inputText}&sort=1`); //새로고침
   };
 
@@ -58,7 +53,7 @@ const SearchInput = () => {
                   </div>
                 </div>
             ) : null}
-            <input type="text" onChange={onChange} placeholder="상품명을 입력해주세요" />
+            <input type="text" onChange={onChange} placeholder= {searchedWord == "" ? "상품명을 입력해주세요" : searchedWord} />
           </div>
         </form>
       </>

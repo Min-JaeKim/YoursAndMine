@@ -61,9 +61,7 @@ function App() {
       connectHeaders: {
         "auth-token": "spring-chat-auth-token",
       },
-      debug: function (str) {
-        console.log(str);
-      },
+      debug: function (str) {},
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -78,7 +76,6 @@ function App() {
           },
         })
           .then((response) => {
-            console.log(response.data);
             let mergeData = [];
             for (const key in response.data.conversation) {
               mergeData.push({
@@ -87,40 +84,7 @@ function App() {
               });
             }
 
-            // mergeData.sort(function (a, b) {
-            //   return (
-            //     Date.parse(
-            //       a.conversation.messageList[a.conversation.messageList.length - 1].timestamp
-            //     ) <
-            //     Date.parse(
-            //       b.conversation.messageList[b.conversation.messageList.length - 1].timestamp
-            //     )
-            //   );
-            // });
-
-            // console.log(mergeData);
-
-            // for (const key in mergeData) {
-            //   console.log(key);
-            //   dispatch(
-            //     insertPartner({
-            //       partner: mergeData.conversation[key].partnerPk,
-            //       partnerNickname: mergeData.chatRoomInfo[key].userNickname,
-            //       partnerImg: mergeData.chatRoomInfo[key].userImageUrl,
-            //       itemName: mergeData.chatRoomInfo[key].itemName,
-            //       itemPk: mergeData.chatRoomInfo[key].itemId,
-            //       itemImg: mergeData.chatRoomInfo[key].itemImage[0],
-            //       lastMsg:
-            //         mergeData.conversation[key].messageList[
-            //           mergeData.conversation[key].messageList.length - 1
-            //         ],
-            //       list: [...mergeData.conversation[key].messageList],
-            //     })
-            //   );
-            // }
-            console.log(response.data.conversation);
             for (const key in response.data.conversation) {
-              console.log(key);
               dispatch(
                 insertPartner({
                   partner: response.data.conversation[key].partnerPk,
@@ -156,9 +120,7 @@ function App() {
   const subscribe = () => {
     // 새롭게 들어오는 데이터는 이곳으로
     client.current.subscribe(`/topic/` + userId, ({ body }) => {
-      // console.log(JSON.parse(body));
       const m = JSON.parse(body);
-      console.log(m);
       dispatch(receive(m));
     });
   };
@@ -178,6 +140,7 @@ function App() {
             <PublicRouter path="/findpwd" component={FindPwd} exact />
             <PublicRouter path="/category" component={Category} exact />
             <PublicRouter path="/join" component={Join} exact />
+            <PublicRouter path="/product" component={Product} exact />
 
             <PrivateRouter path="/rent" component={Rent} exact />
             <PrivateRouter path="/mypage" component={MyPage} exact />
@@ -187,14 +150,13 @@ function App() {
             {/* <PrivateRouter path="/charge" component={Charge} exact /> */}
             <PrivateRouter path="/wish" component={Wish} exact />
             <PrivateRouter path="/notice" component={Notice} exact />
-            <PrivateRouter path="/product" component={Product} exact />
             <PrivateRouter path="/write" component={Write} exact />
             <PrivateRouter path="/chat" client={client} component={Chat} exact />
             <PrivateRouter path="/chat/:name" component={ChatRoom} exact />
             <PrivateRouter path="/rentuser/:pNo" component={RentUserList} exact />
             <PrivateRouter path="/tradedetail/:cNo" component={TradeDetail} exact />
             <PrivateRouter path="/myschedule" component={MySchedule} exact />
-            <PrivateRouter path="/test" component={Test} exact />
+            {/* <PrivateRouter path="/test" component={Test} exact /> */}
           </Layout>
         </Switch>
       </Router>
