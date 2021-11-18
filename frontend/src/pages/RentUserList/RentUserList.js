@@ -19,7 +19,6 @@ const RentUserList = ({ history }) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setRentUser(res.data);
       })
       .catch((err) => {
